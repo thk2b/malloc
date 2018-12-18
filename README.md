@@ -73,8 +73,6 @@ t_zones *g_zones = { NULL, NULL, NULL };
 
 We initialize the zones on the first call to `malloc`.
 
-Implicitly moving from one zone to the next when iterating over the list woud be convenient. This way, if one zone is full, memory from the next is automatically allocated. Therefore, `zones` are adjacent heap addresses.
-
 ```c
 //TODO: implement
 ```
