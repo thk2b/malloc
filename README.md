@@ -22,6 +22,8 @@ If no free elements are found in the apropriate zone, the next is used.
 
 - Large allocations are directly satisfied with `mmap`.
 
+- AAllocated memory must be properly alligned.
+
 # architecture
 
 - `malloc` is a first-fit algorithm
