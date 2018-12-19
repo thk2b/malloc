@@ -10,7 +10,7 @@ void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 ```
 
-# requirements
+# Requirements
 
 - Memory must be managed via `mmap(2)` and `mmunmap(2)`
 
@@ -24,32 +24,32 @@ If no free elements are found in the apropriate zone, the next is used.
 
 - Allocated memory must be properly alligned.
 
-# architecture
+# Architecture
 
 - `malloc` is a first-fit algorithm
 
 - `free` immediately coalleses neighboring free blocks
 
-	This is a constant time operation but is ineficient because free block might be coallesed, then split soon thereafter.
+	This is a constant time operation but is ineficient because free blocks might be coallesed, then split soon thereafter.
 
 Memory is managed via two entities, `page`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
 
 Each zone is a set of pages. If a zone becomes fully allocated, we allocate additional pages.
 
-# implementation
+# Implementation
 
 `page`s are a singly-linked list with a reference to its first `block`, and a `size` which muct be a multiple of `getpagesize()`. `block`s are a doubly linked list, and contain their size and free-status.
 
 ```c
 # define BLK_SZ sizeof(t_block)
 # define IS_FREE(block) (block->data == NULL)
+# define BLK_DATA(b) (b + BLK_SZ)
 
 typedef struct		s_block
 {
 	struct s_block	*prev;
 	struct s_block	*next;
 	size_t			size;
-	void			*data; //FIXME: replace with block+sizeof(t_block)?
 }					t_block;
 
 typdef struct		s_page
@@ -83,7 +83,7 @@ We initialize the zones on the first call to `malloc`.
 ```
 Two search operations are defined over the pages:
 
-- To find a free block of at least a certain size
+- To find a free block of at least a certain size. If there is no free block, we append a new one to the page and return it. If the page is full, we allocate and append a page.
 
 ```c
 t_page *get_zone(t_zones *zones, size_t size)
@@ -91,11 +91,33 @@ t_page *get_zone(t_zones *zones, size_t size)
 	if (size < ZONE_S_SZ)
 		return (zones->s);
 	if (size < ZONE_M_SZ)
-		  return (zones->m);
+			return (zones->m);
 	return (zones->l);
 }
 
-inline t_block	*find_free_block_in_page(t_page page, size_t size)
+t_page	*append_page(t_page *page)
+{
+	//TODO: implement
+}
+```
+
+To add a free block in a page, find the last block and add a new free one after it.
+
+```c
+t_block	append_free_block(t_page *page)
+{
+	//TODO: implement
+	t_block	*block;
+
+	block = page->head;
+	while (block && block->next)
+		block = block->next;
+	if (block == NULL)
+		return (NULL);
+	block
+}
+
+inline t_block	*get_free_block_in_page(t_page page, size_t size)
 {
 	t_block *block;
 
@@ -106,17 +128,21 @@ inline t_block	*find_free_block_in_page(t_page page, size_t size)
 			return (block);
 		block = block->next;
 	}
-	return (NULL);
+	if ((block = append_free_block(page))
+		return (block);
+	if ((page = append_page(page) == NULL)
+		return (NULL);
+	return (get_free_block_in_page(page));
 }
 
-t_block *find_free_block(t_zone *zone, size_t)
+t_block	*get_free_block(t_zone *zone, size_t)
 {
 	t_page	*page;
 	t_block	*block;
 
 	page = get_zone(zone);
 	block = NULL;
-	while (page && (block = get_free_block(page, size)) == NULL)
+	while (page && (block = get_free_block_in_page(page, size)) == NULL)
 		page = page->next;
 	return (block);
 ```
@@ -152,4 +178,39 @@ t_block			*find_block(t_zone *zone, size_t)
 
 Once we find a free block, we return the address of the block's data space. If the block is larger than the requested space, the remainder of the block becomes a new free block. This causes blocks to become smaller and smaller. One issue is that the `medium` zone might end up storing blocks of size `small`, thus will never be allocated.
 
-This is a necesary tradeof for our first-fit algorithm. A best-fit algorithm would not suffer this flaw, but at the expence of execution speed. 
+This is a necesary tradeof for our first-fit algorithm. A best-fit algorithm would not suffer this flaw, but at the expence of execution speed.
+
+Malloc looks something like this:
+
+```c
+void	*malloc(size_t size)
+{
+	t_zone	*zone;
+	t_block	*block;
+
+	zone = get_zone(g_zones, size);
+	block = get_free_block(zone, size);
+	block->size = size;
+	block->data = BLK_DATA(block);
+	return (block->data);
+}
+```
+
+Free:
+
+```c
+void	coalesce(t_block *block)
+{
+	//TODO: implement
+}
+
+void	free(void *ptr)
+{
+	t_block	*block;
+
+	if ((block = find_block(ptr)) == NULL)
+		return (free_error("pointer was not allocated"));
+	block->data = NULL;
+	coalesce(block);
+}
+```
