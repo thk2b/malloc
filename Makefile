@@ -2,8 +2,9 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc_$(HOSTTYPE).so
-LINK_NAME = libft_malloc.so
+#NAME = libft_malloc_$(HOSTTYPE).so
+#LINK_NAME = libft_malloc.so
+NAME = libft_malloc.a
 
 LIBDIR = libft
 LIB = libft.a
@@ -29,22 +30,16 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME) create_link
 
 $(NAME): $(LIB) $(OBJ)
-	@echo building $(name)
-	$(CC) -shared $(OBJ) -o $(NAME)
+	ar rcs $(NAME) $(OBJ)
+#	@echo building $(name)
+#	$(COMPILE) -shared -o $(NAME) $(OBJ)
 
 $(LIB):
 	make -C $(LIBDIR)
 
 %.o: %.c
-	$(COMPILE) $(CC_SO_FLAGS) $(LIBDIR)/$(LIB) -c $< -o $@
-
-create_link:
-	ln -sf $(NAME) $(LINK_NAME)
-
-inject:
-	export DYLD_LIBRARY_PATH=.
-	export DYLD_INSERT_LIBRARIES=libft_malloc.so
-	export DYLD_FORCE_FLAT_NAMESPACE=1
+#	$(COMPILE) $(CC_SO_FLAGS) -c $< -o $@
+	$(COMPILE) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
