@@ -2,9 +2,8 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-#NAME = libft_malloc_$(HOSTTYPE).so
-#LINK_NAME = libft_malloc.so
-NAME = libft_malloc.a
+NAME = libft_malloc_$(HOSTTYPE).so
+LINK_NAME = libft_malloc.so
 
 LIBDIR = libft
 LIB = libft.a
@@ -27,19 +26,18 @@ SRC = $(addprefix srcs/,\
 )
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME) create_link
+all: $(NAME)
 
 $(NAME): $(LIB) $(OBJ)
-	ar rcs $(NAME) $(OBJ)
-#	@echo building $(name)
-#	$(COMPILE) -shared -o $(NAME) $(OBJ)
+	@echo building $(NAME)
+	$(COMPILE) -shared $(INC) -o $(NAME) $(OBJ)
+	ln -sf $(NAME) $(LINK_NAME)
 
 $(LIB):
 	make -C $(LIBDIR)
 
 %.o: %.c
-#	$(COMPILE) $(CC_SO_FLAGS) -c $< -o $@
-	$(COMPILE) -c $< -o $@
+	$(COMPILE) $(CC_SO_FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
