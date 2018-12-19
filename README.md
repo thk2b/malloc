@@ -22,7 +22,7 @@ If no free elements are found in the apropriate zone, the next is used.
 
 - Large allocations are directly satisfied with `mmap`.
 
-- AAllocated memory must be properly alligned.
+- Allocated memory must be properly alligned.
 
 # architecture
 
@@ -146,3 +146,7 @@ t_block			*find_block(t_zone *zone, size_t)
 		page = page->next;
 	return (block);
 ```
+
+Once we find a free block, we return the address of the block's data space. If the block is larger than the requested space, the remainder of the block becomes a new free block. This causes blocks to become smaller and smaller. One issue is that the `medium` zone might end up storing blocks of size `small`, thus will never be allocated.
+
+This is a necesary tradeof for our first-fit algorithm. a best-fit algorithm would not suffer thsi flaw, but at the expence of execution speed. 
