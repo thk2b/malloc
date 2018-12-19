@@ -76,10 +76,6 @@ t_zones	g_zones[] = {
 
 ```
 
-This is a necesary tradeof for our first-fit algorithm. A best-fit algorithm would not suffer this flaw, but at the expence of execution speed.
-
-# Implementation
-
 To allocate memory, we first find the zone with the largest minimum-size that can accomodate the given size.
 
 ```c
@@ -164,7 +160,7 @@ t_block	*get_free_block(t_zone *zone, size_t)
 ```
 
 Then, we set the data in the block and return the address.
-Once we find a free block, we return the address of the block's data space. If the block is larger than the requested space, the remainder of the block becomes a new free block. This causes blocks to become smaller and smaller. One issue is that the `medium` zone might end up storing blocks of size `small`, thus will never be allocated. To prevent this, we never split a block smaller than the minimum size of the zone.
+Once we find a free block, we return the address of the block's data space. If the block is larger than the requested space, the remainder of the block becomes a new free block. This is a necesary tradeof for our first-fit algorithm. A best-fit algorithm would not suffer this flaw, but at the expence of execution speed. This causes blocks to become smaller and smaller. One issue is that the `medium` zone might end up storing blocks of size `small`, thus will never be allocated. To prevent this, we never split a block smaller than the minimum size of the zone.
 
 ```c
 void	*malloc(size_t size)
