@@ -30,6 +30,8 @@ If no free elements are found in the apropriate zone, the next is used.
 
 - `free` immediately coalleses neighboring free blocks
 
+	This is a constant time operation but is ineficient because free block might be coallesed, then split soon thereafter.
+
 Memory is managed via two entities, `page`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
 
 Each zone is a set of pages. If a zone becomes fully allocated, we allocate additional pages.
