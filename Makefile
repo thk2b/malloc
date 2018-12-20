@@ -14,7 +14,7 @@ CC_FLAGS = -Wall -Wextra -Werror
 #CC_FLAGS += -g -fsanitize=address
 CC_SO_FLAGS = -fPIC
 
-INC = -I $(LIBDIR)/includes -I ./inc
+INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 CORE = $(addprefix core/,\
@@ -29,23 +29,23 @@ SRC = $(addprefix srcs/,\
 	free.c\
 	realloc.c\
 )
+
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(LIB) $(OBJ)
-	@echo building $(NAME)
-	$(COMPILE) -shared $(INC) -o $(NAME) $(OBJ)
+	$(COMPILE) -shared -o $(NAME) $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 
 $(LIB):
-	make -C $(LIBDIR)
+#	make -C $(LIBDIR)
 
-%.o: %.c
+$(OBJ): %.o: %.c
 	$(COMPILE) $(CC_SO_FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJS)
 	make clean -C $(LIBDIR)
 
 fclean: clean
