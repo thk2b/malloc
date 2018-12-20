@@ -1,16 +1,7 @@
 #include <ft_malloc.h>
 
-static t_block	*append_new_block(t_page *page, t_block *prev, size_t size)
-{
-	if (prev == NULL || page->cur_size + size >= page->size)
-		return (NULL);
-	prev->next = prev + sizeof(t_block);
-	init_block(prev->next, prev, size);
-	return (prev->next);
-}
-
 static inline t_block
-			*get_free_block_in_page(t_page *page, size_t size)
+				*get_free_block_in_page(t_page *page, size_t size)
 {
 	t_block	*block;
 	t_block	*prev;
@@ -26,7 +17,7 @@ static inline t_block
 	return (append_new_block(page, prev, size));
 }
 
-t_block		*get_free_block(t_page *zone, size_t size)
+t_block			*get_free_block(t_page *zone, size_t size)
 {
 	t_page	*page;
 	t_page	*prev;
@@ -41,7 +32,8 @@ t_block		*get_free_block(t_page *zone, size_t size)
 		prev = page;
 		page = page->next;
 	}
-	if (append_page(prev) == NULL)
+	if ((page = append_page(prev)) == NULL)
 		return (NULL);
+	append_new_block(page + sizeof(t_page), NULL, size);
 	return (get_free_block_in_page(prev->next, size));
 }

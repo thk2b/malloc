@@ -8,18 +8,21 @@ void	init_block(t_block *block, t_block *prev, size_t size)
 	block->size = size;
 }
 
-t_block	*append_new_block(t_page *page, t_block *prev, size_t size)
+t_block			*append_new_block(t_page *page, t_block *prev, size_t size)
 {
-	size_t	new_page_size;
+	t_block		*new_block;
+	size_t		new_page_size;
 
-	new_page_size = page->cur_size + size;
-
-	if (prev == NULL || new_page_size >= page->size)
+	new_page_size = sizeof(t_page) + size;
+	if (prev == NULL || page->cur_size + new_page_size >= page->size)
 		return (NULL);
-	prev->next = prev->data + prev->size;
-	init_block(prev->next, prev, size);
+	new_block = prev + sizeof(t_block) + prev->size;
+	init_block(new_block, prev, size);
+	if (page->head == NULL)
+		page->head = new_block;
+	prev->next = new_block;
 	page->cur_size = new_page_size;
-	return (prev->next);
+	return (new_block);
 }
 
 int		split_block(t_block *block)

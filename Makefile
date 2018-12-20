@@ -19,6 +19,7 @@ COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 CORE = $(addprefix core/,\
 	block.c\
+	get_free_block.c\
 	get_zone.c\
 	page.c\
 	zones.c\
