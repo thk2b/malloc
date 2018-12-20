@@ -17,12 +17,17 @@ CC_SO_FLAGS = -fPIC
 INC = -I $(LIBDIR)/includes -I ./inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
-CORE = $(addprefix core/,)
+CORE = $(addprefix core/,\
+	block.c\
+	get_zone.c\
+	page.c\
+	zones.c\
+)
 SRC = $(addprefix srcs/,\
+	$(CORE)\
 	malloc.c\
 	free.c\
 	realloc.c\
-	$(CORE)\
 )
 OBJ = $(SRC:.c=.o)
 
