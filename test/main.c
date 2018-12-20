@@ -2,5 +2,6 @@
 
 int main(void)
 {
-	malloc(1);
+	malloc(10000);
+	show_alloc_mem();
 }

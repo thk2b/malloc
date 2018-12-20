@@ -14,12 +14,11 @@
 			"cwd": "${workspaceFolder}",
 			"environment": [
 				{"Name": "DYLD_LIBRARY_PATH", "Value": "."},
-				{"Name": "DYLD_INSERT_LIBRARIES", "Value": "libft_malloc.o"},
+				{"Name": "DYLD_INSERT_LIBRARIES", "Value": "libft_malloc.so"},
 				{"Name": "DYLD_FORCE_FLAT_NAMESPACE", "Value": "1"},
 				{"Name": "LD_LIBRARY_PATH", "Value": "."},
-				{"Name": "LD_INSERT_LIBRARIES", "Value": "libft_malloc.o"},
+				{"Name": "LD_INSERT_LIBRARIES", "Value": "libft_malloc.so"},
 				{"Name": "LD_FORCE_FLAT_NAMESPACE", "Value": "1"},
-				{"Name": "LD_PRELOAD", "Value": "./libft_malloc.o"}
 			],
 			"externalConsole": false,
 			"MIMode": "gdb",

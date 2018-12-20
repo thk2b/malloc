@@ -29,6 +29,7 @@ SRC = $(addprefix srcs/,\
 	malloc.c\
 	free.c\
 	realloc.c\
+	show_alloc_mem.c\
 )
 
 OBJ = $(SRC:.c=.o)

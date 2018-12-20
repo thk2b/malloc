@@ -4,6 +4,8 @@
 # include			<sys/mman.h>
 # include			<unistd.h>
 
+#include <stdio.h> //
+
 # define PAGES_PER_MAP		2
 # define NZONES		3
 # define ZONE_S_SZ	16
