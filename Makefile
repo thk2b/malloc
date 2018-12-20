@@ -45,7 +45,7 @@ $(OBJ): %.o: %.c
 	$(COMPILE) $(CC_SO_FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJ)
 	make clean -C $(LIBDIR)
 
 fclean: clean

@@ -21,3 +21,9 @@ t_block	*append_new_block(t_page *page, t_block *prev, size_t size)
 	page->cur_size = new_page_size;
 	return (prev->next);
 }
+
+int		split_block(t_block *block)
+{
+	(void)block;
+	return (1);
+}

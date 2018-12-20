@@ -3,6 +3,7 @@
 # include			<stddef.h>
 # include			<sys/mman.h>
 
+# define NZONES		3
 # define ZONE_S_SZ	16
 # define ZONE_M_SZ	128
 
@@ -35,6 +36,7 @@ extern void			show_alloc_mem(void);
 */
 
 t_block				*append_new_block(t_page *page, t_block *prev, size_t size);
+int					split_block(t_block *block);
 
 /*
 **	get_free_block.c
