@@ -57,6 +57,6 @@ t_page				*append_page(t_page *page);
 **	get_zone.c
 */
 
-t_page				*get_zone(t_page **zones, size_t size);
+t_page				*get_zone(size_t size);
 
 #endif

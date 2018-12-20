@@ -1,0 +1,35 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "(gdb) Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/a.out",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [
+				{"Name": "DYLD_LIBRARY_PATH", "Value": "."},
+				{"Name": "DYLD_INSERT_LIBRARIES", "Value": "libft_malloc.o"},
+				{"Name": "DYLD_FORCE_FLAT_NAMESPACE", "Value": "1"},
+				{"Name": "LD_LIBRARY_PATH", "Value": "."},
+				{"Name": "LD_INSERT_LIBRARIES", "Value": "libft_malloc.o"},
+				{"Name": "LD_FORCE_FLAT_NAMESPACE", "Value": "1"},
+				{"Name": "LD_PRELOAD", "Value": "./libft_malloc.o"}
+			],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			]
+		}
+	]
+}

@@ -11,18 +11,18 @@ LIB = libft.a
 CC = gcc
 
 CC_FLAGS = -Wall -Wextra -Werror
-#CC_FLAGS += -g -fsanitize=address
+CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
 INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 CORE = $(addprefix core/,\
+	zones.c\
 	block.c\
 	get_free_block.c\
 	get_zone.c\
 	page.c\
-	zones.c\
 )
 SRC = $(addprefix srcs/,\
 	$(CORE)\
