@@ -6,8 +6,7 @@ int main(void)
 	char *s = malloc(8);
 	char *t = malloc(8);
 	strcpy(s, "1");
-	puts(s);
-	puts(t);
-	printf("%ld\n", t - s);
+	// puts(s);
+	// puts(t);
 	show_alloc_mem();
 }

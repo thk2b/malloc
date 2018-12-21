@@ -29,7 +29,7 @@ void	show_alloc_mem_zone(size_t i, t_page *page)
 
 void	show_alloc_mem(void)
 {
-	extern t_page	*g_zones;
+	extern t_page	g_zones[];
 	size_t			i;
 
 	i = 0;
