@@ -2,11 +2,13 @@
 
 void	init_block(t_block *block, t_block *prev, size_t size)
 {
-	block->prev = block;
-	block->next = prev;
+	block->prev = prev;
+	block->next = NULL;
 	block->data = block + sizeof(t_block);
 	block->size = size;
 	block->next = NULL;
+	if (prev)
+		prev->next = block;
 }
 
 t_block			*append_new_block(t_page *page, t_block *prev, size_t size)
@@ -14,14 +16,14 @@ t_block			*append_new_block(t_page *page, t_block *prev, size_t size)
 	t_block		*new_block;
 	size_t		new_page_size;
 
-	new_page_size = sizeof(t_page) + size;
-	if (prev == NULL || page->cur_size + new_page_size >= page->size)
+	new_page_size = page->cur_size + sizeof(t_block) + size;
+	if (page->cur_size + new_page_size >= page->size)
 		return (NULL);
-	new_block = prev + sizeof(t_block) + prev->size;
+	new_block = prev ?
+		prev + sizeof(t_block) + prev->size : (t_block*)(page + sizeof(t_page));
 	init_block(new_block, prev, size);
 	if (page->head == NULL)
 		page->head = new_block;
-	prev->next = new_block;
 	page->cur_size = new_page_size;
 	return (new_block);
 }

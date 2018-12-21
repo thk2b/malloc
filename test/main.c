@@ -5,7 +5,7 @@ int main(void)
 {
 	char *s = malloc(1);
 	char *t = malloc(1);
-	strcpy(s, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	strcpy(s, "ABCDEFGHIKL");
 	puts(s);
 	puts(t);
 	show_alloc_mem();

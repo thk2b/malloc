@@ -7,6 +7,7 @@ static inline t_block
 	t_block	*prev;
 
 	block = page->head;
+	prev = NULL;
 	while (block)
 	{
 		if (IS_FREE(block) && block->size >= size)
@@ -34,6 +35,5 @@ t_block			*get_free_block(t_page *zone, size_t size)
 	}
 	if ((page = append_page(prev)) == NULL)
 		return (NULL);
-	append_new_block(page + sizeof(t_page), NULL, size);
-	return (get_free_block_in_page(prev->next, size));
+	return (get_free_block_in_page(page, size));
 }
