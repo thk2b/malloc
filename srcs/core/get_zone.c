@@ -6,10 +6,7 @@ t_page	*get_zone(size_t size)
 	size_t	i;
 
 	i = 1;
-	while (i < NZONES)
-		if (size < g_zones[i].min_block_size)
-			return (g_zones + (i - 1));
-		else
-			i++;
+	while (i < NZONES && size > g_zones[i].min_block_size)
+		i++;
 	return (g_zones + (i - 1));
 }

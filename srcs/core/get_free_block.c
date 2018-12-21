@@ -33,7 +33,7 @@ t_block			*get_free_block(t_page *zone, size_t size)
 		prev = page;
 		page = page->next;
 	}
-	if ((page = append_page(prev)) == NULL)
+	if ((page = append_page(prev, size)) == NULL)
 		return (NULL);
 	return (get_free_block_in_page(page, size));
 }

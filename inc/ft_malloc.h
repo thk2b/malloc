@@ -6,7 +6,7 @@
 
 #include <stdio.h> //
 
-# define ALLIGN(size) (((size) + (8 - 1)) & ~(8 - 1))
+# define ALLIGN(size, allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
 
 # define PAGES_PER_MAP		2
 # define NZONES		3
@@ -55,7 +55,7 @@ t_block				*get_free_block(t_page *zone, size_t size);
 **	page.c
 */
 
-t_page				*append_page(t_page *page);
+t_page				*append_page(t_page *page, size_t size);
 
 /*
 **	get_zone.c

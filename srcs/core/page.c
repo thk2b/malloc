@@ -9,15 +9,19 @@ static void	init_page(t_page *page, size_t max_size, size_t min_block_size)
 	page->head = NULL;
 }
 
-t_page	*append_page(t_page *page)
+t_page	*append_page(t_page *page, size_t size)
 {
 	void	*data;
-	size_t	size;
+	size_t	pg_size;
+	size_t	alloc_size;
 
-	size = getpagesize() * PAGES_PER_MAP;
+	pg_size = getpagesize();
+	alloc_size = pg_size * PAGES_PER_MAP;
+	if (size + sizeof(t_block) >= alloc_size)
+		alloc_size = ALLIGN(size, pg_size);
 	data = mmap(
 		NULL,
-		size,
+		alloc_size,
 		PROT_READ | PROT_WRITE,
 		MAP_PRIVATE | MAP_ANONYMOUS,
 		-1, 0
@@ -27,7 +31,7 @@ t_page	*append_page(t_page *page)
 		write(2, "MAP_FAILED\n", 11);
 		return (NULL);
 	}
-	init_page((t_page*)data, size, page->min_block_size);
+	init_page((t_page*)data, alloc_size, page->min_block_size);
 	page->next = (t_page*)data;
 	return (page->next);
 }
