@@ -4,8 +4,9 @@ void	init_block(t_block *block, t_block *prev, size_t size)
 {
 	block->prev = block;
 	block->next = prev;
-	block->data = NULL;
+	block->data = block + sizeof(t_block);
 	block->size = size;
+	block->next = NULL;
 }
 
 t_block			*append_new_block(t_page *page, t_block *prev, size_t size)

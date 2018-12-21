@@ -6,6 +6,8 @@
 
 #include <stdio.h> //
 
+# define ALLIGN(size) (((size) + (8 - 1)) & ~(8 - 1))
+
 # define PAGES_PER_MAP		2
 # define NZONES		3
 # define ZONE_S_SZ	16
