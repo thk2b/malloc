@@ -14,11 +14,13 @@ t_page	*append_page(t_page *page, size_t size)
 	void	*data;
 	size_t	pg_size;
 	size_t	alloc_size;
+	size_t	total_size;
 
 	pg_size = getpagesize();
 	alloc_size = pg_size * PAGES_PER_MAP;
-	if (size + sizeof(t_block) >= alloc_size)
-		alloc_size = ALLIGN(size, pg_size);
+	total_size = size + sizeof(t_page);
+	if (total_size >= alloc_size)
+		alloc_size = ALLIGN(total_size + sizeof(t_block), pg_size);
 	data = mmap(
 		NULL,
 		alloc_size,
@@ -31,7 +33,7 @@ t_page	*append_page(t_page *page, size_t size)
 		write(2, "MAP_FAILED\n", 11);
 		return (NULL);
 	}
-	init_page((t_page*)data, alloc_size, page->min_block_size);
+	init_page((t_page*)data, alloc_size - sizeof(t_block), page->min_block_size);
 	page->next = (t_page*)data;
 	return (page->next);
 }

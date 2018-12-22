@@ -8,7 +8,8 @@ extern void	*malloc(size_t size)
 
 	size = ALLIGN(size, 8);
 	page = get_zone(size);
-	block = get_free_block(page, size);
+	if ((block = get_free_block(page, size)) == NULL)
+		return (NULL);
 	if (block->size > size && block->size - size > page->min_block_size)
 		split_block(block);
 	return (block->data);
