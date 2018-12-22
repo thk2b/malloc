@@ -6,6 +6,8 @@
 
 #include <stdio.h> //
 
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
+
 # define ALLIGN(size, allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
 
 # define PAGES_PER_MAP		2

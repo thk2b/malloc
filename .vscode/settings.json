@@ -4,6 +4,7 @@
 		"ft_malloc.h": "c",
 		"stddef.h": "c",
 		"mman.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"string.h": "c"
 	}
 }

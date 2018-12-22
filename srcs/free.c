@@ -20,6 +20,8 @@ extern void			free(void *ptr)
 {
 	t_block	*block;
 
+	if (ptr == NULL)
+		return ;
 	if ((block = find_block(ptr)) == NULL)
 	{
 		write(2, "pointer was not allocated\n", 27);

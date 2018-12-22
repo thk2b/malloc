@@ -1,6 +1,22 @@
 #include <ft_malloc.h>
 #include <string.h>
 
+/*
+#include <libft.h>
+
+int main(int ac, char **av)
+{
+	(void)ac;
+	char **sv[1000];
+	for (int i = 0; i < 1000; i++)
+		sv[i] = ft_strv_dup(av);
+	for (int i = 0; i < 1000; i++)
+		sv[i] = realloc(sv[i], ac * 1000);
+	for (int i = 0; i < 100; i++)
+		ft_strvdel(sv[i]);
+}
+*/
+/*
 int main(void)
 {
 	char *p[3];
@@ -21,7 +37,7 @@ int main(void)
 		free(p[i]);
 	show_alloc_mem();
 }
-
+*/
 /*
 #define NALLOCS 100
 #define LEN 80
