@@ -22,7 +22,6 @@ CORE = $(addprefix core/,\
 	find_block.c\
 	block.c\
 	get_free_block.c\
-	get_zone.c\
 	page.c\
 )
 SRC = $(addprefix srcs/,\
