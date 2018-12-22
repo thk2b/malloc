@@ -10,7 +10,24 @@ void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 ```
 
-# Requirements
+# Usage & testing
+
+To create the library:
+```sh
+make
+```
+
+To add the shared library as the system malloc library:
+```sh
+source scripts/inject.sh
+```
+
+To reset environment variables:
+```sh
+source scripts/reset.sh
+```
+
+# Implementation requirements
 
 - Memory must be managed via `mmap(2)` and `mmunmap(2)`
 
@@ -30,15 +47,15 @@ If no free elements are found in the apropriate zone, the next is used.
 
 - `free` immediately coalleses neighboring free blocks
 
-	This is a constant time operation but is ineficient because free blocks might be coallesed, then split soon thereafter.
-
 Memory is managed via two entities, `page`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
 
 # Implementation
 
-`page`s are a singly-linked list with a reference to its first `block`, and a `size` which muct be a multiple of `getpagesize()`. `block`s are a doubly linked list, and contain their size and free-status.
+This is a summary of my first draft implementation of the library.
 
-In this draft implementation, pointers to `next` and `data` are explicit. They can be made implicit with pointer arithmetic to reduce memory overhead.
+`page`s are a singly-linked list with a reference to its first `block`, and a `size` which must be a multiple of `getpagesize()`. `block`s are a doubly linked list, and contain their size and free-status.
+
+In this draft implementation, pointers to `next` and `data` are explicit. They can be made implicit with pointer arithmetic in order to reduce memory overhead.
 
 ```c
 // ft_malloc.h
@@ -62,7 +79,7 @@ typedef struct		s_page
 }					t_page;
 ```
 
-We store pointers to the 3 zones. We define pages with 0 sizes as a specification for the minimum size of each zone. Additional pages will have non-zero sizes, but will inherit the minimum-size. When satisfying the first allocation of each zone, a new page will be created with size ` PAGES_PER_MAP * getpagesize()`.
+We store empty header-pages for each zones. We define pages with 0 size and a minimum size, which additional pages will inherit. When satisfying the first allocation in each zone, a new page will be created with size ` PAGES_PER_MAP * getpagesize()`.
 
 ```c
 // core/zones.c
@@ -89,7 +106,7 @@ t_page *get_zone(t_zones *zones, size_t size)
 }
 ```
 
-This is how `malloc` is implemented. We simply find the first free block in the apropriate zone that is large enough to satisfy the request, possibly spliting the block into two. This might cause blocks to become smaller and smaller, so the `medium` zone might end up storing blocks of size `small`, thus will never be allocated. To prevent this, we never split a block smaller than the minimum size of the zone.and return a pointer to the data atrribute of the block.
+This is how `malloc` is implemented. We simply find the first free block, in the apropriate zone, large enough to satisfy the request and possibly split the block into two (TODO). This might cause blocks to become smaller and smaller, so the `medium` zone might end up storing blocks of size `small`, thus will never be allocated. To prevent this, we never split a block smaller than the minimum size of the zone. We return a pointer to the data atrribute of the block.
 
 ```c
 // malloc.c
@@ -108,7 +125,7 @@ extern void	*malloc(size_t size)
 }
 ```
 
-To find a free block, we traverse each page in the zone. If a previously freed block exists, update its metadata and return it. Otherwise, we need to add a new block to the page. If there is no room left on the page, we need to allocate a new page.
+To find a free block, we traverse each page in the zone. If a previously freed block exists, update its metadata and return it. Otherwise, we add a new block to the page. If there is no room left on the page, we allocate a new page.
 
 ```c
 // core/get_free_block.c
@@ -155,7 +172,7 @@ t_block			*get_free_block(t_page *zone, size_t size)
 }
 ```
 
-Creating a block is a matter of adding a block after the last one of a page. The memory overhead of this implementation is obvious.
+Creating a block is a matter of adding a block after the last one of a page. The memory overhead of this implementation is obvious, there is more metadata than necessary.
 
 ```c
 // core/block.c
@@ -230,7 +247,7 @@ t_page	*append_page(t_page *page, size_t size)
 }
 ```
 
-Free is implemented as follows. We Find the block with the asociated data pointer, and mark it as available. If a newly-freed block has free neighbors, they are erged together to reduce memory frgmentation.
+Free is implemented as follows. We Find the block with the asociated data pointer, and mark it as available. If a newly-freed block has free neighbors, they are merged together to reduce memory frgmentation.	This is a constant time operation but is ineficient because free blocks might be coallesed, then split soon thereafter.
 
 ```c
 // free.c
