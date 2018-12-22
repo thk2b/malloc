@@ -10,7 +10,24 @@ void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 ```
 
-# Requirements
+# Usage & testing
+
+To create the library:
+```sh
+make
+```
+
+To add the shared library as the system malloc library:
+```sh
+source scripts/inject.sh
+```
+
+To reset environment variables:
+```sh
+source scripts/reset.sh
+```
+
+# Implementation requirements
 
 - Memory must be managed via `mmap(2)` and `mmunmap(2)`
 
@@ -31,8 +48,6 @@ If no free elements are found in the apropriate zone, the next is used.
 - `free` immediately coalleses neighboring free blocks
 
 Memory is managed via two entities, `page`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
-
-# Usage & testing
 
 # Implementation
 
