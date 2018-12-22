@@ -24,6 +24,5 @@ t_block		*find_block(void *ptr)
 		}
 		zone_i++;
 	}
-	dprintf(2, ">%p\n", ptr);
 	return (NULL);
 }

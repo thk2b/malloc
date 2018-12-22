@@ -33,7 +33,7 @@ t_page	*append_page(t_page *page, size_t size)
 		write(2, "MAP_FAILED\n", 11);
 		return (NULL);
 	}
-	init_page((t_page*)data, alloc_size - sizeof(t_block), page->min_block_size);
+	init_page((t_page*)data, alloc_size - sizeof(t_page), page->min_block_size);
 	page->next = (t_page*)data;
 	return (page->next);
 }

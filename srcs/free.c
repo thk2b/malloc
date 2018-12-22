@@ -24,7 +24,7 @@ extern void			free(void *ptr)
 		return ;
 	if ((block = find_block(ptr)) == NULL)
 	{
-		write(2, "pointer was not allocated\n", 27);
+		// write(2, "pointer was not allocated\n", 27);
 		return ;
 	}
 	block->data = NULL;

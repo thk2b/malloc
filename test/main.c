@@ -1,5 +1,17 @@
 #include <ft_malloc.h>
 #include <string.h>
+#include <stdio.h>
+
+int main(void)
+{
+	char *s = malloc(8);
+	free(s);
+	free(s);
+	dprintf(2, ">>%p\n", s);
+	s = realloc(s, 100);
+	dprintf(2, ">>>%p\n", s);
+	// free(s);
+}
 
 /*
 #include <libft.h>
