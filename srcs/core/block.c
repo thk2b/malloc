@@ -28,7 +28,7 @@ t_block			*append_new_block(t_page *page, t_block *prev, size_t size)
 	return (new_block);
 }
 
-int		split_block(t_block *block)
+int				split_block(t_block *block)
 {
 	(void)block;
 	return (1);

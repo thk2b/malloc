@@ -11,7 +11,10 @@ static inline t_block
 	while (block)
 	{
 		if (IS_FREE(block) && block->size >= size)
+		{
+			block->data = (void*)((char*)block + sizeof(t_block));
 			return (block);
+		}
 		prev = block;
 		block = block->next;
 	}

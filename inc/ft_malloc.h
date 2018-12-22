@@ -43,7 +43,9 @@ extern void			show_alloc_mem(void);
 
 void				init_block(t_block *block, t_block *prev, size_t size);
 t_block				*append_new_block(t_page *page, t_block *prev, size_t size);
+t_block				*find_block(void *ptr);
 int					split_block(t_block *block);
+
 
 /*
 **	get_free_block.c
