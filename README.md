@@ -1,6 +1,8 @@
 # malloc
 A malloc implementation
 
+`Note: This is a first draft. The project is functional, but will be improved and optimized.`
+
 # API
 ```c
 void	*malloc(size_t size);
