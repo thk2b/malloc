@@ -10,7 +10,9 @@ extern void	*malloc(size_t size)
 	page = get_zone(size);
 	if ((block = get_free_block(page, size)) == NULL)
 		return (NULL);
-	if (block->size > size && block->size - size > page->min_block_size)
-		split_block(block);
+	if (block->size > (size + sizeof(t_block)) 
+		&& (block->size - (size + sizeof(t_block)))
+		> (page->min_block_size + sizeof(t_block)))
+		split_block(block, size);
 	return (block->data);
 }

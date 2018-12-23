@@ -19,7 +19,6 @@
 				{"Name": "LD_LIBRARY_PATH", "Value": "/home/theo/malloc"},
 				{"Name": "LD_INSERT_LIBRARIES", "Value": "libft_malloc.so"},
 				{"Name": "LD_FORCE_FLAT_NAMESPACE", "Value": "1"},
-				{"Name": "LD_PRELOAD", "Value": "libft_malloc.so"},
 			],
 			"externalConsole": false,
 			"MIMode": "gdb",

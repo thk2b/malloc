@@ -28,8 +28,14 @@ t_block			*append_new_block(t_page *page, t_block *prev, size_t size)
 	return (new_block);
 }
 
-int				split_block(t_block *block)
+void			split_block(t_block *block, size_t size)
 {
-	(void)block;
-	return (1);
+	t_block		*new_block;
+	t_block		*next;
+
+	new_block = (t_block*)((char*)block + sizeof(t_block) + size);
+	next = block->next;
+	init_block(new_block, block, block->size - size);
+	block->size = size;
+	new_block->next = next;
 }

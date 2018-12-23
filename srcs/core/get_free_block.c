@@ -13,7 +13,6 @@ static inline t_block
 		if (IS_FREE(block) && block->size >= size)
 		{
 			block->data = (void*)((char*)block + sizeof(t_block));
-			block->size = size;
 			return (block);
 		}
 		prev = block;
