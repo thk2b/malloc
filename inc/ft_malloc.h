@@ -42,9 +42,9 @@ typedef struct	s_block
 # define B_FLAG_USED			0x2
 # define B_FLAG_MMAPED			0x4
 
-# define B_IS_FREE(b)			(FLAGS(b) & B_FLAG_FREE)
-# define B_IS_USED(b)			(FLAGS(b) & B_FLAG_USED)
-# define B_IS_MMAPED(b)			(FLAGS(b) & B_FLAG_MMAPED)
+# define B_IS_FREE(b)			(B_FLAGS(b) & B_FLAG_FREE)
+# define B_IS_USED(b)			(B_FLAGS(b) & B_FLAG_USED)
+# define B_IS_MMAPED(b)			(B_FLAGS(b) & B_FLAG_MMAPED)
 
 # define B_SET_FREE(b)			((b)->size |= B_FLAG_FREE)
 # define B_SET_USED(b)			((b)->size |= B_FLAG_USED)
