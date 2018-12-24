@@ -17,17 +17,20 @@ CC_SO_FLAGS = -fPIC
 INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
+LIB = $(addprefix lib/,\
+	putstr.c\
+	putaddr.c\
+)
+
 CORE = $(addprefix core/,\
-	zones.c\
-	find_block.c\
+	area.c\
 	block.c\
-	get_free_block.c\
-	page.c\
+	zone.c\
 )
 SRC = $(addprefix srcs/,\
 	$(CORE)\
-	malloc.c\
 	free.c\
+	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\
 )
@@ -40,7 +43,7 @@ $(NAME): $(LIB) $(OBJ)
 	$(COMPILE) -shared -o $(NAME) $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 
-$(LIB):
+#$(LIB):
 #	make -C $(LIBDIR)
 
 $(OBJ): %.o: %.c
@@ -48,10 +51,10 @@ $(OBJ): %.o: %.c
 
 clean:
 	rm -f $(OBJ)
-	make clean -C $(LIBDIR)
+#	make clean -C $(LIBDIR)
 
 fclean: clean
 	rm -f $(NAME) $(LINK_NAME)
-	make fclean -C $(LIBDIR)
+#	make fclean -C $(LIBDIR)
 
 re: fclean all

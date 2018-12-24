@@ -1,41 +1,49 @@
 #include <ft_malloc.h>
-#include <libft.h>
 
-void	show_alloc_mem_zone(size_t i, t_page *page)
+void		show_block(t_block *block)
 {
-	t_page	*cur;
-	t_block	*block;
-	size_t	total;
-	size_t	n_blocks;
-
-	total = 0;
-	n_blocks = 0;
-	cur = page;
-	printf("=== zone %zu ===\n", i);
-	while (cur)
-	{
-		block = cur->head;
-		while (block)
-		{
-			n_blocks++;
-			total += block->size;
-			printf("\t%p: %zu bytes\n", block->data, block->size);
-			block = block->next;
-		}
-		cur = cur->next;
-	}
-	printf("\ttotal: %zu bytes in %zu blocks\n", total, n_blocks);
+	ft_putstr("\t");
+	ft_putaddr((void *)block);
+	ft_putstr("\n");
 }
 
-void	show_alloc_mem(void)
+void		show_area(t_area *area)
 {
-	extern t_page	g_zones[];
+	t_block	*block;
+
+	ft_putstr("\t ==\n");
+	block = A_HEAD(area);
+	while (block)
+	{
+		show_block(block);
+		block = B_NEXT(block);
+	}
+}
+
+void		show_zone(t_zone *zone, size_t i)
+{
+	t_area	*area;
+
+	ft_putstr("== zone ");
+	ft_putnbr(i);
+	ft_putstr(" ==\n");
+	area = zone->head;
+	while (area)
+	{
+		show_area(area);
+		area = A_NEXT(area);
+	}
+}
+
+extern void	show_alloc_mem(void)
+{
+	extern t_zone	g_zones[];
 	size_t			i;
 
 	i = 0;
-	while (i < NZONES)
+	while (i < N_ZONES)
 	{
-		show_alloc_mem_zone(i, g_zones + i);
+		show_zone(g_zones + i, i);
 		i++;
 	}
 }

@@ -1,18 +1,15 @@
 #include <ft_malloc.h>
-#include <unistd.h>
 
-extern void	*malloc(size_t size)
+void	*malloc(size_t size)
 {
-	t_page			*page;
-	t_block			*block;
+	t_zone	*zone;
+	t_block	*block;
 
 	size = ALLIGN(size, 8);
-	page = get_zone(size);
-	if ((block = get_free_block(page, size)) == NULL)
+	zone = get_zone(size);
+	if ((block = find_block(zone->head)) == NULL)
 		return (NULL);
-	if (block->size > (size + sizeof(t_block)) 
-		&& (block->size - (size + sizeof(t_block)))
-		> (page->min_block_size + sizeof(t_block)))
+	if (0 && B_SIZE(block) > size && B_SIZE(block) - (size + sizeof(t_block)) > zone->min_block_size)
 		split_block(block, size);
-	return (block->data);
+	return (B_DATA(block));
 }

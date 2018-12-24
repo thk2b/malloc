@@ -5,6 +5,7 @@
 		"stddef.h": "c",
 		"mman.h": "c",
 		"unistd.h": "c",
-		"string.h": "c"
+		"string.h": "c",
+		"stdint.h": "c"
 	}
 }
