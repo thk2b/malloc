@@ -18,7 +18,9 @@ INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 LIB = $(addprefix lib/,\
+	strlen.c\
 	putstr.c\
+	putnbr.c\
 	putaddr.c\
 )
 
@@ -28,6 +30,7 @@ CORE = $(addprefix core/,\
 	zone.c\
 )
 SRC = $(addprefix srcs/,\
+	$(LIB)\
 	$(CORE)\
 	free.c\
 	malloc.c\
@@ -39,7 +42,7 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIB) $(OBJ)
+$(NAME): $(OBJ)
 	$(COMPILE) -shared -o $(NAME) $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 

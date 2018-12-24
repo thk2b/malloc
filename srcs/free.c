@@ -6,5 +6,5 @@ void	free(void *ptr)
 
 	block = B_BLOCK(ptr);
 	B_SET_FREE(block);
-	coalesce_block(block);
+	//coalesce_block(block);
 }

@@ -2,10 +2,12 @@
 # define						FT_MALLOC_H
 
 # include <sys/mman.h>
+# include <unistd.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <limits.h>
 
+# define PAGES_PER_MAP			2
 # define ALLIGN(size, allign)	(((size) + ((allign) - 1)) & ~((allign) - 1))
 # define SET(addr, value)		((void*)(addr) = (value))
 
@@ -54,12 +56,14 @@ typedef struct	s_block
 
 typedef struct	s_area
 {
-	size_t		size;
+	size_t			size;
+	size_t			cur_size;
+	struct s_area	*next;
 }				t_area;
 
 # define A_HEAD(a)				((t_block*)((char*)(a) + sizeof(t_area)))
-# define A_NEXT(a)				((t_area*)((char*)(a) + sizeof(t_area) + (a)->size))
-# define A_CAN_FIT(a, size)		((a)->size + sizeof(t_area) + sizeof(t_block) >= (size))
+# define A_NEXT(a)				((a)->next)
+# define A_CAN_FIT(a, size)		((a)->size + sizeof(t_area) >= (size))
 
 /*
 **	zone
@@ -79,8 +83,9 @@ typedef struct	s_zone
 **	core/block.c
 */
 
-void			new_block(t_block *block, t_block *prev, size_t size);
+void			new_block(t_block *block, size_t size);
 void			append_block(t_block *a, t_block *b);
+t_block			*find_free_block(t_area *head, size_t size);
 t_block			*find_block(t_area *head);
 t_block			*split_block(t_block *block, size_t new_size);
 t_block			*coalesce_block(t_block *block);
@@ -102,6 +107,7 @@ t_zone			*get_zone(size_t size);
 **	lib/_.c
 */
 
+size_t	ft_strlen(const char *str);
 void	ft_putstr(const char *str);
 void	ft_putnbr(int n);
 void	ft_putaddr(void *addr);

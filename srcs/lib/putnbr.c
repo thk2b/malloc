@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void	ft_putaddr(int n)
+void	ft_putnbr(int n)
 {
 	printf("%d", n); // TODO: implement
 }

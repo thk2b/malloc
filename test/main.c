@@ -2,15 +2,12 @@
 #include <string.h>
 #include <stdio.h>
 
-/*
+// /*
 int main(void)
 {
-	char *s = malloc(10000);
-	free(s);
-	s = malloc(800);
-	show_alloc_mem();
+	char *s = malloc(100);
 }
-*/
+// */
 /*
 #include <libft.h>
 
@@ -26,7 +23,7 @@ int main(int ac, char **av)
 		ft_strvdel(sv[i]);
 }
 */
-///*
+/*
 int main(void)
 {
 	char *p[3];
@@ -47,7 +44,7 @@ int main(void)
 		free(p[i]);
 	show_alloc_mem();
 }
-//*/
+*/
 /*
 #define NALLOCS 100
 #define LEN 80
