@@ -1,4 +1,5 @@
 #include <ft_malloc.h>
+#include <string.h>
 
 t_area	*new_area(size_t size)
 {
@@ -12,8 +13,9 @@ t_area	*new_area(size_t size)
 		size = alloc_size;
 	else
 		size += sizeof(t_area);
+	size = ALLIGN(size, pg_size);
 	area = (t_area*)mmap(NULL,
-		ALLIGN(size, pg_size),
+		size,
 		PROT_READ | PROT_WRITE,
 		MAP_PRIVATE | MAP_ANONYMOUS,
 		-1, 0);
@@ -23,4 +25,9 @@ t_area	*new_area(size_t size)
 	area->cur_size = 0;
 	area->next = NULL;
 	return (area);
+}
+
+void	append_area(t_area *a, t_area *b)
+{
+	a->next = b;
 }

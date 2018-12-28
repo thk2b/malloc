@@ -22,6 +22,7 @@ extern void		show_alloc_mem(void);
 
 /*
 **	block
+**	first byte of size contains flags
 */
 
 typedef struct	s_block
@@ -35,9 +36,10 @@ typedef struct	s_block
 # define B_BLOCK(ptr)			((t_block*)((char*)ptr - sizeof(t_block)))
 # define B_NEXT(b)				((t_block*)((char*)B_DATA(b) + b->size))
 # define B_PREV(b)				((b)->prev)
-# define B_SIZE(b)				((b)->size & ~0x7)
+# define B_FLAGS(b)				((b)->size & 0xF)
 
-# define B_FLAGS(b)				((b)->size & (SIZE_MAX ^ 0x7))
+# define B_SIZE(b)				((b)->size >> 4) // works on other-endian machines?
+# define B_SET_SIZE(b, s)		((b)->size = (B_FLAGS(b) | s << 4))
 # define B_FLAG_FREE			0x1
 # define B_FLAG_USED			0x2
 # define B_FLAG_MMAPED			0x4
@@ -64,6 +66,9 @@ typedef struct	s_area
 # define A_HEAD(a)				((t_block*)((char*)(a) + sizeof(t_area)))
 # define A_NEXT(a)				((a)->next)
 # define A_CAN_FIT(a, size)		((a)->size + sizeof(t_area) >= (size))
+# define A_CUR_END(a)			((void*)((char*)A_HEAD(a) + (a)->cur_size))
+# define A_END(a)				((void*)((char*)A_HEAD(a) + (a)->size))
+
 
 /*
 **	zone
@@ -83,7 +88,7 @@ typedef struct	s_zone
 **	core/block.c
 */
 
-void			new_block(t_block *block, size_t size);
+void			new_block(t_block *block, size_t size, t_block *prev);
 void			append_block(t_block *a, t_block *b);
 t_block			*find_free_block(t_area *head, size_t size);
 t_block			*find_block(t_area *head);
