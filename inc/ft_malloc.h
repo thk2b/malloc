@@ -34,22 +34,22 @@ typedef struct	s_block
 
 # define B_DATA(b)				((void*)((char*)b + sizeof(t_block)))
 # define B_BLOCK(ptr)			((t_block*)((char*)ptr - sizeof(t_block)))
-# define B_NEXT(b)				((t_block*)((char*)B_DATA(b) + b->size))
+# define B_NEXT(b)				((t_block*)((char*)B_DATA(b) + B_SIZE(b)))
 # define B_PREV(b)				((b)->prev)
 # define B_FLAGS(b)				((b)->size & 0xF)
 
-# define B_SIZE(b)				((b)->size >> 4) // works on other-endian machines?
-# define B_SET_SIZE(b, s)		((b)->size = (B_FLAGS(b) | s << 4))
+# define B_SIZE(b)				((b)->size >> (4)) 
+// works on other-endian machines?
+# define B_SET_SIZE(b, s)		((b)->size = (B_FLAGS(b) | (s) << 4))
 # define B_FLAG_FREE			0x1
-# define B_FLAG_USED			0x2
-# define B_FLAG_MMAPED			0x4
+# define B_FLAG_MMAPED			0x2
 
-# define B_IS_FREE(b)			(B_FLAGS(b) & B_FLAG_FREE)
-# define B_IS_USED(b)			(B_FLAGS(b) & B_FLAG_USED)
+# define B_IS_USED(b)			(B_FLAGS(b) & B_FLAG_FREE)
+# define B_IS_FREE(b)			(!(B_IS_USED(b)))
 # define B_IS_MMAPED(b)			(B_FLAGS(b) & B_FLAG_MMAPED)
 
-# define B_SET_FREE(b)			((b)->size |= B_FLAG_FREE)
-# define B_SET_USED(b)			((b)->size |= B_FLAG_USED)
+# define B_SET_FREE(b)			((b)->size ^= B_FLAG_FREE)
+# define B_SET_USED(b)			((b)->size |= B_FLAG_FREE)
 # define B_SET_MMAPED(b)		((b)->size |= B_FLAG_MMAPED)
 
 /*
@@ -65,7 +65,7 @@ typedef struct	s_area
 
 # define A_HEAD(a)				((t_block*)((char*)(a) + sizeof(t_area)))
 # define A_NEXT(a)				((a)->next)
-# define A_CAN_FIT(a, size)		((a)->size + sizeof(t_area) >= (size))
+# define A_CAN_FIT(a, size)		((a)->cur_size + sizeof(t_area) + (size) < (a)->size)
 # define A_CUR_END(a)			((void*)((char*)A_HEAD(a) + (a)->cur_size))
 # define A_END(a)				((void*)((char*)A_HEAD(a) + (a)->size))
 
@@ -91,9 +91,9 @@ typedef struct	s_zone
 void			new_block(t_block *block, size_t size, t_block *prev);
 void			append_block(t_block *a, t_block *b);
 t_block			*find_free_block(t_area *head, size_t size);
-t_block			*find_block(t_area *head);
+t_block			*find_block(void *data_ptr, t_area **area);
 t_block			*split_block(t_block *block, size_t new_size);
-t_block			*coalesce_block(t_block *block);
+void			coalesce_block(t_block *block, t_area *area);
 
 /*
 **	core/area.c

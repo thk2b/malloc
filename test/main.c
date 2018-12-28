@@ -2,66 +2,84 @@
 #include <string.h>
 #include <stdio.h>
 
-// /*
-int main(void)
+void	test0(void)
 {
-	char *s = malloc(100);
+	char *s = malloc(10000);
+	int i = 0;
+	for (i = 0; i < 10000; i++)
+		s[i] = 'B';
+	puts(s);
+	free(s);
 }
-// */
-/*
-#include <libft.h>
 
-int main(int ac, char **av)
+void test1(void)
 {
-	(void)ac;
-	char **sv[1000];
-	for (int i = 0; i < 1000; i++)
-		sv[i] = ft_strv_dup(av);
-	for (int i = 0; i < 1000; i++)
-		sv[i] = realloc(sv[i], ac * 1000);
 	for (int i = 0; i < 100; i++)
-		ft_strvdel(sv[i]);
+	{
+		test0();
+	}
+	show_alloc_mem();
 }
-*/
-/*
-int main(void)
-{
-	char *p[3];
-	int i;
 
-	for (i = 0; i < 3; i++)
-	{
-		p[i] = malloc(124);
-		strcpy(p[i], "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-	}
-	for (i = 0; i < 3; i++)
-	{
-		p[i] = realloc(p[i], 1240);
-		strcpy(p[i], "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-	}
-	show_alloc_mem();
-	for (i = 0; i < 3; i++)
-		free(p[i]);
-	show_alloc_mem();
-}
-*/
-/*
-#define NALLOCS 100
-#define LEN 80
-
-int main(void)
+void test2(void)
 {
-	char *s[NALLOCS];
-	for (int j = 0; j < NALLOCS; j++)
-	{
-		s[j] = malloc(LEN);
-		for (int i = 0; i < LEN; i++)
-			s[j][i] = 'A';
-	}
-	for (int j = 0; j < NALLOCS; j++)
-	{
-		puts(s[j]);
-	}
+	char *p1 = malloc(20);
+	char *p2 = malloc(20);
+	char *p3 = malloc(20);
+	free(p1);
+	show_alloc_mem();
+	free(p2);
+	show_alloc_mem();
+	free(p3);
 	show_alloc_mem();
 }
-*/
+
+void test3(void)
+{
+	char *p1 = malloc(20);
+	char *p2 = malloc(20);
+	char *p3 = malloc(20);
+	free(p3);
+	show_alloc_mem();
+	free(p2);
+	show_alloc_mem();
+	free(p1);
+	show_alloc_mem();
+}
+
+void test4(void)
+{
+	char *p1 = malloc(20);
+	char *p2 = malloc(20);
+	char *p3 = malloc(20);
+	free(p2);
+	show_alloc_mem();
+	free(p3);
+	show_alloc_mem();
+	free(p1);
+	show_alloc_mem();
+}
+
+void	test5(void)
+{
+	char *p1 = malloc(1000);
+	char *p2 = malloc(1000);
+	(void)p2;
+	strcpy(p1, "0123456789");
+	puts(p1);
+	p1 = realloc(p1, 1500);
+	show_alloc_mem();
+	puts(p1);
+	strcpy(p1, "012345678901234");
+	puts(p1);
+}
+
+int			main(void)
+{
+	setvbuf(stdout, NULL, 0, 0);
+	(void)test2;
+	(void)test3;
+	(void)test4;
+	(void)test1;
+	test5();
+}

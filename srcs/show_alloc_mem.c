@@ -11,7 +11,7 @@ void		show_block(t_block *block)
 	// ft_putstr("\n");
 }
 
-void		show_area(t_area *area)
+void		show_area(t_area *area, size_t *total, size_t *nblocks)
 {
 	t_block	*block;
 	void	*end;
@@ -20,6 +20,8 @@ void		show_area(t_area *area)
 	block = A_HEAD(area);
 	while (block && (void*)block < end)
 	{
+		*total += B_SIZE(block);
+		(*nblocks)++;
 		show_block(block);
 		block = B_NEXT(block);
 	}
@@ -28,18 +30,23 @@ void		show_area(t_area *area)
 void		show_zone(t_zone *zone, size_t i)
 {
 	t_area	*area;
+	size_t	nblocks;
+	size_t	total;
 
 	printf("== zone  %zu ==\n", i);
 	// ft_putstr("== zone ");
 	// ft_putnbr(i);
 	// ft_putstr(" ==\n");
+	total = 0;
+	nblocks = 0;
 	if ((area = zone->head) == NULL)
 		return ;
 	while (area)
 	{
-		show_area(area);
+		show_area(area, &total, &nblocks);
 		area = A_NEXT(area);
 	}
+	printf("%zu bytes in %zu blocks\n", total, nblocks);
 }
 
 extern void	show_alloc_mem(void)

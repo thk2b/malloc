@@ -5,8 +5,8 @@
 */
 void			new_block(t_block *block, size_t size, t_block *prev)
 {
-	B_SET_USED(block);
 	B_SET_SIZE(block, size);
+	B_SET_USED(block);
 	block->prev = prev;
 }
 
@@ -31,7 +31,7 @@ static t_block	*find_free_block_in_area(t_area *area, size_t size)
 	{
 		if (B_IS_FREE(block) && B_SIZE(block) >= size)
 		{
-			area->cur_size += size;
+			B_SET_USED(block);
 			return (block);
 		}
 		prev_block = block;
@@ -44,7 +44,7 @@ static t_block	*find_free_block_in_area(t_area *area, size_t size)
 	{
 		block = prev_block ? B_NEXT(prev_block) : A_HEAD(area);
 		new_block(block, size, prev_block);
-		area->cur_size += size;
+		area->cur_size += size + sizeof(t_block);
 		append_block(prev_block, block);
 		return (block);
 	}
@@ -74,7 +74,37 @@ t_block			*find_free_block(t_area *area, size_t size)
 	append_area(prev_area, area);
 	block = A_HEAD(area);
 	new_block(block, size, NULL);
-	area->cur_size += size;
+	area->cur_size += size + sizeof(t_block);
 	append_block(NULL, block);
 	return (block);
+}
+
+t_block		*find_block(void *data_ptr, t_area **area_ptr)
+{
+	extern t_zone	g_zones[];
+	size_t			zone_i;
+	t_area			*area;
+	t_block			*block;
+	t_block			*last_block;
+
+	zone_i = 0;
+	while (zone_i < N_ZONES)
+	{
+		area = g_zones[zone_i++].head;
+		while (area)
+		{
+			last_block = A_CUR_END(area);
+			block = A_HEAD(area);
+			while (block < last_block)
+				if (B_DATA(block) == data_ptr)
+				{
+					*area_ptr = area;
+					return (block);
+				}
+				else
+					block = B_NEXT(block);
+			area = area->next;
+		}
+	}
+	return (NULL);
 }
