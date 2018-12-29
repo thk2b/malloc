@@ -1,5 +1,6 @@
 #ifndef							FT_MALLOC_H
 # define						FT_MALLOC_H
+// #define LIBFT_MALLOC_LOG
 
 # include <sys/mman.h>
 # include <unistd.h>
@@ -10,12 +11,14 @@
 # define PAGES_PER_MAP			2
 # define ALLIGN(size, allign)	(((size) + ((allign) - 1)) & ~((allign) - 1))
 # define SET(addr, value)		((void*)(addr) = (value))
+# define MIN(a, b)				((a) < (b) ? (a) : (b))
 
 /*
 **	exported API
 */
 
 extern void		*malloc(size_t size);
+extern void		*calloc(size_t count, size_t size);
 extern void		free(void *ptr);
 extern void		*realloc(void *ptr, size_t size);
 extern void		show_alloc_mem(void);

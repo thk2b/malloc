@@ -1,13 +1,18 @@
 #include <ft_malloc.h>
 #include <stdio.h>
+#include <signal.h>
 
-void	*malloc(size_t size)
+extern void	*malloc(size_t size)
 {
 	t_zone	*zone;
 	t_block	*block;
-	setvbuf(stderr, NULL, _IONBF, 0);
 
+	if (size == 0)
+		size = 1;
 	size = ALLIGN(size, 8);
+# ifdef LIBFT_MALLOC_LOG
+	dprintf(2, "malloc(%zu) -> ", size);
+# endif
 	zone = get_zone(size);
 	if (zone->head == NULL && (zone->head = new_area(size)) == NULL)
 	{
@@ -19,5 +24,8 @@ void	*malloc(size_t size)
 	}
 	if (0 && B_SIZE(block) > size && B_SIZE(block) - (size + sizeof(t_block)) > zone->min_block_size)
 		split_block(block, size);
+# ifdef LIBFT_MALLOC_LOG
+	dprintf(2, "%p\n", B_DATA(block));
+# endif
 	return (B_DATA(block));
 }

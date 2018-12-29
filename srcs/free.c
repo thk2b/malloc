@@ -22,15 +22,17 @@ void	coalesce_block(t_block *block, t_area *area)
 	}
 }
 
-void	free(void *ptr)
+extern void	free(void *ptr)
 {
 	t_block	*block;
 	t_area	*area;
 
+	if (ptr == NULL)
+		return ;
 	block = find_block(ptr, &area);
 	if (block == NULL)
 	{
-		write(2, "ERROR: free: pointer was not allocated\n", 40);
+		// write(2, "ERROR: free: pointer was not allocated\n", 40);
 		// dprintf(2, "ERROR: free: %p was not allocated\n", ptr);
 		return ;
 	}

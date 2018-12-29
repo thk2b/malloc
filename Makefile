@@ -34,6 +34,7 @@ SRC = $(addprefix srcs/,\
 	$(CORE)\
 	free.c\
 	malloc.c\
+	calloc.c\
 	realloc.c\
 	show_alloc_mem.c\
 )
