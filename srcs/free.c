@@ -1,5 +1,5 @@
 #include <ft_malloc.h>
-
+#include <stdio.h>
 void	coalesce_block(t_block *block, t_area *area)
 {
 	t_block	*prev;
@@ -31,6 +31,7 @@ void	free(void *ptr)
 	if (block == NULL)
 	{
 		write(2, "ERROR: free: pointer was not allocated\n", 40);
+		// dprintf(2, "ERROR: free: %p was not allocated\n", ptr);
 		return ;
 	}
 	B_SET_FREE(block);

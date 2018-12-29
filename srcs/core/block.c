@@ -85,17 +85,17 @@ t_block		*find_block(void *data_ptr, t_area **area_ptr)
 	size_t			zone_i;
 	t_area			*area;
 	t_block			*block;
-	t_block			*last_block;
+	void			*last_block;
 
 	zone_i = 0;
 	while (zone_i < N_ZONES)
 	{
-		area = g_zones[zone_i++].head;
+		area = g_zones[zone_i].head;
 		while (area)
 		{
 			last_block = A_CUR_END(area);
 			block = A_HEAD(area);
-			while (block < last_block)
+			while ((void*)block < last_block)
 				if (B_DATA(block) == data_ptr)
 				{
 					*area_ptr = area;
@@ -105,6 +105,7 @@ t_block		*find_block(void *data_ptr, t_area **area_ptr)
 					block = B_NEXT(block);
 			area = area->next;
 		}
+		zone_i++;
 	}
 	return (NULL);
 }

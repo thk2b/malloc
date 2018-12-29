@@ -38,7 +38,7 @@ typedef struct	s_block
 # define B_PREV(b)				((b)->prev)
 # define B_FLAGS(b)				((b)->size & 0xF)
 
-# define B_SIZE(b)				((b)->size >> (4)) 
+# define B_SIZE(b)				((b)->size >> (4))
 // works on other-endian machines?
 # define B_SET_SIZE(b, s)		((b)->size = (B_FLAGS(b) | (s) << 4))
 # define B_FLAG_FREE			0x1
@@ -65,10 +65,9 @@ typedef struct	s_area
 
 # define A_HEAD(a)				((t_block*)((char*)(a) + sizeof(t_area)))
 # define A_NEXT(a)				((a)->next)
-# define A_CAN_FIT(a, size)		((a)->cur_size + sizeof(t_area) + (size) < (a)->size)
+# define A_CAN_FIT(a, s)		(((a)->cur_size + sizeof(t_area) + (s)) < (a)->size)
 # define A_CUR_END(a)			((void*)((char*)A_HEAD(a) + (a)->cur_size))
 # define A_END(a)				((void*)((char*)A_HEAD(a) + (a)->size))
-
 
 /*
 **	zone

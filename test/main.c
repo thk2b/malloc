@@ -74,12 +74,52 @@ void	test5(void)
 	puts(p1);
 }
 
+#define A "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+#define AA AA
+
+void	test6(void)
+{
+	char *p[3][1000];
+	for(int i = 0; i < 1000; i++){
+		p[0][i] = malloc(1000);
+		p[1][i] = malloc(100);
+		p[2][i] = malloc(10);
+		memcpy(p[0][i], A, 1000);
+		memcpy(p[1][i], A, 100);
+		memcpy(p[2][i], A, 10);
+		puts(p[0][i]);
+		puts(p[1][i]);
+		puts(p[2][i]);
+	}
+	for(int i = 0; i < 1000; i++){
+		// p[0][i] = realloc(p[0][i], 2000);
+		// p[0][i] = realloc(p[0][i], 200);
+		p[0][i] = realloc(p[0][i], 20);
+		// memcpy(p[0][i], A A, 2000);
+		// memcpy(p[1][i], A A, 200);
+		memcpy(p[2][i], A A, 20);
+		// puts(p[0][i]);
+		// puts(p[1][i]);
+		puts(p[2][i]);
+	}
+	show_alloc_mem();
+	for(int i = 0; i < 3; i++){
+		free(p[0][i]);
+		free(p[1][i]);
+		free(p[2][i]);
+	}
+	// show_alloc_mem();
+}
+
+void	test7(void)
+{
+	char *s = malloc(100);
+	char *t = realloc(s, 200);
+	memcpy(t, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 200);
+	free(t);
+}
+
 int			main(void)
 {
-	setvbuf(stdout, NULL, 0, 0);
-	(void)test2;
-	(void)test3;
-	(void)test4;
-	(void)test1;
-	test5();
+	test6();
 }
