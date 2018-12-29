@@ -157,5 +157,15 @@ void	test6(void)
 }
 int			main(void)
 {
-	test8();
+	// test8();
+	char *s = malloc(1024 * 1024 * 128);
+	int i;
+	for (i = 0; i < 1024 * 1024 * 128; i++)
+	{
+		s[i] = 'A';
+	}
+	s[i-1] = 0;
+	puts(s);
+	show_alloc_mem();
+	free(s);
 }

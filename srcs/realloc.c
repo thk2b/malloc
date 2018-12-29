@@ -36,7 +36,7 @@ void	*realloc(void *ptr, size_t size)
 	}
 	end = A_CUR_END(area);
 	next = B_NEXT(block);
-	if ((void*)next >= end && A_CAN_FIT(area, size - prev_size))
+	if ((void*)next > end && A_CAN_FIT(area, size - prev_size))
 	{
 		B_SET_SIZE(block, size);
 		area->cur_size += (size - prev_size);
