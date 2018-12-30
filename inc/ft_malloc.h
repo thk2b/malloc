@@ -81,6 +81,8 @@ typedef struct	s_zone
 */
 
 void			new_block(t_block *block, size_t size);
+void			merge_blocks(t_block *a, t_block *b,
+	t_free_block *prev_free_block, t_area *area);
 t_block			*find_free_block(t_area *head, size_t size);
 t_block			*find_block(void *data_ptr, t_area **area, t_free_block **last_free_block);
 t_block			*split_block(t_block *block, size_t new_size);

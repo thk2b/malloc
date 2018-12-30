@@ -1,9 +1,40 @@
 #include <ft_malloc.h>
+#include <assert.h>
 
 void			new_block(t_block *block, size_t size)
 {
 	block->used = 1;
 	block->size = size;
+}
+
+/*
+**	merges adjacent blocks a and b into one
+**	a and b must be free, or a must be used and b must be free.
+**	cannot merge a used block into a free one.
+*/
+void			merge_blocks(t_block *a, t_block *b, t_free_block *prev_free_block, t_area *area)
+{
+	t_free_block	*a_f;
+	t_free_block	*b_f;
+
+	assert(b->used == 0);
+	a->size += b->size + sizeof(t_block);
+	area->cur_size -= sizeof(t_block);
+	b_f = (t_free_block*)b;
+	if (a->used == 0)
+	{
+		a_f = (t_free_block*)a;
+		a_f->next = b_f->next;
+		if (b_f->next)
+			b_f->next->prev = a_f;
+	}
+	else
+	{
+		if (prev_free_block)
+			prev_free_block->next = b_f->next;
+		if (b_f->next)
+			b_f->next->prev = prev_free_block;
+	}
 }
 
 static t_block	*find_free_block_in_area(t_area *area, size_t size)
