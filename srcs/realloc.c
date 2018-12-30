@@ -19,14 +19,14 @@ void	*realloc(void *ptr, size_t size)
 	{
 		return (malloc(size));
 	}
-	size = ALLIGN(size, 8);
-	block = find_block(ptr, &area);
+	size = MAX(ALLIGN(size, 8), sizeof(t_free_block*) * 2);
+	block = find_block(ptr, &area, NULL);
 	if (block == NULL)
 	{
 		dprintf(2, "ERROR: realloc %p: pointer was not allocated\n", ptr);
 		return (NULL);
 	}
-	prev_size = B_SIZE(block);
+	prev_size = block->size;
 	if (size == prev_size)
 	{
 		return (ptr);
@@ -35,7 +35,7 @@ void	*realloc(void *ptr, size_t size)
 	next = B_NEXT(block);
 	if ((void*)next > end && size >= prev_size && A_CAN_FIT(area, size - prev_size))
 	{
-		B_SET_SIZE(block, size);
+		block->size = size;
 		area->cur_size += (size - prev_size);
 		return (B_DATA(block));
 	}
@@ -43,7 +43,7 @@ void	*realloc(void *ptr, size_t size)
 	{
 		return (ptr);
 	}
-	memcpy(new_ptr, ptr, MIN(B_SIZE(block), size));
+	memcpy(new_ptr, ptr, MIN(block->size, size));
 	free(ptr);
 	return (new_ptr);
 }

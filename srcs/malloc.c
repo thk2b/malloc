@@ -7,12 +7,7 @@ extern void	*malloc(size_t size)
 	t_zone	*zone;
 	t_block	*block;
 
-	if (size == 0)
-		size = 1;
-	size = ALLIGN(size, 8);
-# ifdef LIBFT_MALLOC_LOG
-	dprintf(2, "malloc(%zu) -> ", size);
-# endif
+	size = ALLIGN(MAX(size, sizeof(t_free_block*) * 2), 8);
 	zone = get_zone(size);
 	if (zone->head == NULL && (zone->head = new_area(size)) == NULL)
 	{
@@ -22,10 +17,10 @@ extern void	*malloc(size_t size)
 	{
 		return (NULL);
 	}
-	if (0 && B_SIZE(block) > size && B_SIZE(block) - (size + sizeof(t_block)) > zone->min_block_size)
-		split_block(block, size);
-# ifdef LIBFT_MALLOC_LOG
-	dprintf(2, "%p\n", B_DATA(block));
-# endif
+	// if (0 && B_SIZE(block) > size && B_SIZE(block) - (size + sizeof(t_block)) > zone->min_block_size)
+		// split_block(block, size);
+	# ifdef LIBFT_MALLOC_LOG
+		dprintf(2, "%p\n", B_DATA(block));
+	# endif
 	return (B_DATA(block));
 }

@@ -3,7 +3,7 @@
 
 void		show_block(t_block *block)
 {
-	printf("\t%p\t%zu (%s)\n", block, B_SIZE(block), B_IS_FREE(block) ? "F":"A");
+	printf("\t%p\t%zu (%s)\n", block, block->size, block->used ? "A":"F");
 	// ft_putstr("\t");
 	// ft_putaddr((void *)block);
 	// ft_putstr("\t");
@@ -20,7 +20,7 @@ void		show_area(t_area *area, size_t *total, size_t *nblocks)
 	block = A_HEAD(area);
 	while (block && (void*)block < end)
 	{
-		*total += B_SIZE(block);
+		*total += block->size;
 		(*nblocks)++;
 		show_block(block);
 		block = B_NEXT(block);
@@ -44,7 +44,7 @@ void		show_zone(t_zone *zone, size_t i)
 	while (area)
 	{
 		show_area(area, &total, &nblocks);
-		area = A_NEXT(area);
+		area = area->next;
 	}
 	printf("%zu bytes in %zu blocks\n", total, nblocks);
 }

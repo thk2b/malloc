@@ -1,113 +1,106 @@
 #include <ft_malloc.h>
 
-/*
-**	initialize a new block
-*/
-void			new_block(t_block *block, size_t size, t_block *prev)
+void			new_block(t_block *block, size_t size)
 {
-	B_SET_SIZE(block, size);
-	B_SET_USED(block);
-	block->prev = prev;
-}
-
-/*
-**	add a block `b` after `a`
-*/
-void			append_block(t_block *a, t_block *b)
-{
-	b->prev = a;
+	block->used = 1;
+	block->size = size;
 }
 
 static t_block	*find_free_block_in_area(t_area *area, size_t size)
 {
-	t_block	*prev_block;
-	t_block	*block;
-	t_block	*end;
+	t_free_block	*cur_block;
+	t_block			*block;
 
-	end = A_CUR_END(area);
-	block = A_HEAD(area);
-	prev_block = NULL;
-	while (block < end)
+	cur_block = area->free_head;
+	while (cur_block)
 	{
-		if (B_IS_FREE(block) && B_SIZE(block) >= size)
+		if (cur_block->used == 0 && cur_block->size >= size)
 		{
-			B_SET_USED(block);
-			return (block);
+			if (cur_block->prev)
+				cur_block->prev->next = cur_block->next;
+			if (cur_block->next)
+				cur_block->next->prev = cur_block->prev;
+			return ((t_block*)cur_block);
 		}
-		prev_block = block;
-		block = B_NEXT(block);
+		cur_block = cur_block->next;
 	}
-	/*
-	**	couldn't find an existing block large enpigh in area
-	*/
-	if (A_CAN_FIT(area, size + sizeof(t_block)))
-	{
-		block = prev_block ? B_NEXT(prev_block) : A_HEAD(area);
-		new_block(block, size, prev_block);
-		area->cur_size += size + sizeof(t_block);
-		append_block(prev_block, block);
-		return (block);
-	}
-	/*
-	**	area cannot fit requested block
-	*/
-	return (NULL);
+	if (!A_CAN_FIT(area, size + sizeof(t_block)))
+		return (NULL);
+	block = A_CUR_END(area);
+	new_block(block, size);
+	area->cur_size += sizeof(t_block) + size;
+	return (block);
 }
 
 t_block			*find_free_block(t_area *area, size_t size)
 {
 	t_area	*prev_area;
+	t_area	*cur_area;
 	t_block	*block;
 
 	prev_area = NULL;
-	while (area)
+	cur_area = area;
+	while (cur_area)
 	{
-		if ((block = find_free_block_in_area(area, size)))
+		if ((block = find_free_block_in_area(cur_area, size)))
+		{
+			block->used = 1;
 			return (block);
-		prev_area = area;
-		area = area->next;
+		}
+		prev_area = cur_area;
+		cur_area = cur_area->next;
 	}
-	/*
-	**	couldn't find an area with enough space for the requested block
-	*/
-	if ((area = new_area(size)) == NULL)
+	if ((cur_area = new_area(size)) == NULL)
 		return (NULL);
-	append_area(prev_area, area);
-	block = A_HEAD(area);
-	new_block(block, size, NULL);
-	area->cur_size += size + sizeof(t_block);
-	append_block(NULL, block);
+	block = A_HEAD(cur_area);
+	new_block(block, size);
+	append_area(prev_area, cur_area);
+	cur_area->cur_size += sizeof(t_block) + size;
 	return (block);
 }
 
-t_block		*find_block(void *data_ptr, t_area **area_ptr)
+t_block		*find_block_in_area(void *data_ptr, t_area *area, t_free_block **last_free_block)
+{
+	void	*end;
+	t_block	*cur_block;
+
+	end = A_END(area);
+	cur_block = A_HEAD(area);
+	*last_free_block = NULL;
+	while ((void*)cur_block < end)
+	{
+		if (B_DATA(cur_block) == data_ptr)
+			return (cur_block);
+		if (cur_block->used == 0)
+			*last_free_block = (t_free_block*)cur_block;
+		cur_block = B_NEXT(cur_block);
+	}
+	return (NULL);
+}
+
+t_block		*find_block(void *data_ptr, t_area **area_ptr, t_free_block **last_free_block)
 {
 	extern t_zone	g_zones[];
-	size_t			zone_i;
-	t_area			*area;
+	size_t			i;
+	t_area			*cur_area;
 	t_block			*block;
-	void			*last_block;
 
 	*area_ptr = NULL;
-	zone_i = 0;
-	while (zone_i < N_ZONES)
+	*last_free_block = NULL;
+	i = 0;
+	while (i < N_ZONES)
 	{
-		area = g_zones[zone_i].head;
-		while (area)
+		cur_area = g_zones[i].head;
+		while (cur_area)
 		{
-			last_block = A_CUR_END(area);
-			block = A_HEAD(area);
-			while ((void*)block < last_block)
-				if (B_DATA(block) == data_ptr)
-				{
-					*area_ptr = area;
-					return (block);
-				}
-				else
-					block = B_NEXT(block);
-			area = area->next;
+			if ((block = find_block_in_area(data_ptr, cur_area, last_free_block)))
+			{
+				*area_ptr = cur_area;
+				return (block);
+			}
+			cur_area = cur_area->next;
 		}
-		zone_i++;
+		i++;
 	}
 	return (NULL);
 }

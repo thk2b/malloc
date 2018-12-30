@@ -47,14 +47,35 @@ If no free elements are found in the apropriate zone, the next is used.
 
 - `malloc` is a first-fit algorithm
 
+- free blocks are held in an explicit free list
+
 - `free` immediately coalleses neighboring free blocks
 
-Memory is managed via two entities, `page`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
+Memory is managed via two entities, `area`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
 
 # Implementation
 
-This is a summary of my first draft implementation of the library.
+Each area has its own free list.
 
-`page`s are a singly-linked list with a reference to its first `block`, and a `size` which must be a multiple of `getpagesize()`. `block`s are a doubly linked list, and contain their size and free-status.
+```c
+typedef struct	s_block
+{
+	size_t		size:1;
+	size_t		size:sizeof(size_t) * 8 - 1;
+}				t_block;
 
-In this draft implementation, pointers to `next` and `data` are explicit. They can be made implicit with pointer arithmetic in order to reduce memory overhead.
+typedef struct	s_free_block
+{
+	t_block				*head;
+	struct s_free_block	*prev;
+	struct s_free_block	*next;
+}				t_free_block;
+
+typedef struct	s_area
+{
+	size_t			size;
+	size_t			cur_size;
+	t_free_block	*free_head;
+	t_area			*next;
+}				t_area;
+```

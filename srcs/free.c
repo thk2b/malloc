@@ -1,45 +1,50 @@
 #include <ft_malloc.h>
-#include <stdio.h>
+#include <stdio.h>//
+#include <assert.h>//
 
-void	coalesce_block(t_block *block, t_area *area)
+void		coalesce_block(t_block *block, t_area *area)
 {
-	t_block	*prev;
-	t_block	*next;
-	void	*end;
-	end = A_CUR_END(area);
+	(void)block;
+	(void)area;
+	return ;
+}
 
-	next = B_NEXT(block);
-	if ((void*)next < end && B_IS_FREE(next))
+void		new_free_block(t_block *block, t_free_block *last_free_block)
+{
+	t_free_block	*free_block;
+
+	free_block = (t_free_block*)block;
+	assert(free_block->used == block->used);
+	assert(free_block->size == block->size);
+	free_block->prev = last_free_block;
+	if (last_free_block)
 	{
-		B_SET_SIZE(block, B_SIZE(block) + B_SIZE(next) + sizeof(t_block));
-		next->prev = block->prev;
+		if (last_free_block->next)
+			last_free_block->next->prev = free_block;
+		last_free_block->next = free_block;
 	}
-	prev = B_PREV(block);
-	if (prev && B_IS_FREE(prev))
-	{
-		B_SET_SIZE(prev, B_SIZE(prev) + B_SIZE(block) + sizeof(t_block));
-		if ((void*)(next = B_NEXT(block)) < end)
-			next->prev = prev;
-	}
+	free_block->next = last_free_block ? last_free_block->next : NULL;
 }
 
 extern void	free(void *ptr)
 {
-	t_block	*block;
-	t_area	*area;
+	t_block			*block;
+	t_free_block	*last_free_block;
+	t_area			*area;
 
-#ifdef LIBFT_MALLOC_LOG
-	// dprintf(2, "free\n");
-#endif
 	if (ptr == NULL)
 		return ;
-	block = find_block(ptr, &area);
+	area = NULL;
+	last_free_block = NULL;
+	block = find_block(ptr, &area, &last_free_block);
 	if (block == NULL)
 	{
 		write(2, "ERROR: free: pointer was not allocated\n", 40);
-		// dprintf(2, "ERROR: free: %p was not allocated\n", ptr);
 		return ;
 	}
-	B_SET_FREE(block);
+	block->used = 0;
+	new_free_block(block, last_free_block);
+	if (area->free_head == NULL)
+		area->free_head = (t_free_block*)block;
 	coalesce_block(block, area);
 }
