@@ -1,5 +1,6 @@
 #include <ft_malloc.h>
 #include <string.h>//
+#include <stdlib.h>
 #include <stdio.h>
 
 void	*realloc(void *ptr, size_t size)
@@ -14,10 +15,6 @@ void	*realloc(void *ptr, size_t size)
 #ifdef LIBFT_MALLOC_LOG
 	dprintf(2, "realloc(%p, %zu) -> ", ptr, size);
 #endif
-	if (size == 0)
-	{
-		size = 1;
-	}
 	if (ptr == NULL)
 	{
 		return (malloc(size));
@@ -30,13 +27,13 @@ void	*realloc(void *ptr, size_t size)
 		return (NULL);
 	}
 	prev_size = B_SIZE(block);
-	if (size <= prev_size)
+	if (size == prev_size)
 	{
 		return (ptr);
 	}
 	end = A_CUR_END(area);
 	next = B_NEXT(block);
-	if ((void*)next > end && A_CAN_FIT(area, size - prev_size))
+	if ((void*)next > end && size >= prev_size && A_CAN_FIT(area, size - prev_size))
 	{
 		B_SET_SIZE(block, size);
 		area->cur_size += (size - prev_size);
@@ -44,7 +41,7 @@ void	*realloc(void *ptr, size_t size)
 	}
 	if ((new_ptr = malloc(size)) == NULL)
 	{
-		return (NULL);
+		return (ptr);
 	}
 	memcpy(new_ptr, ptr, MIN(B_SIZE(block), size));
 	free(ptr);

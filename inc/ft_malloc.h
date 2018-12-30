@@ -8,7 +8,7 @@
 # include <stdint.h>
 # include <limits.h>
 
-# define PAGES_PER_MAP			2
+# define PAGES_PER_MAP			10
 # define ALLIGN(size, allign)	(((size) + ((allign) - 1)) & ~((allign) - 1))
 # define SET(addr, value)		((void*)(addr) = (value))
 # define MIN(a, b)				((a) < (b) ? (a) : (b))
@@ -43,7 +43,7 @@ typedef struct	s_block
 
 # define B_SIZE(b)				((b)->size >> (4))
 // works on other-endian machines?
-# define B_SET_SIZE(b, s)		((b)->size = (B_FLAGS(b) | (s) << 4))
+# define B_SET_SIZE(b, s)		((b)->size = (B_FLAGS(b) | ((s) << 4)))
 # define B_FLAG_FREE			0x1
 # define B_FLAG_MMAPED			0x2
 
@@ -77,7 +77,7 @@ typedef struct	s_area
 */
 
 #define N_ZONES					3
-#define ZONE_S_SZ				32
+#define ZONE_S_SZ				64
 #define ZONE_M_SZ				256
 
 typedef struct	s_zone

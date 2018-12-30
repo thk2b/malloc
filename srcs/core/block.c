@@ -59,6 +59,7 @@ t_block			*find_free_block(t_area *area, size_t size)
 	t_area	*prev_area;
 	t_block	*block;
 
+	prev_area = NULL;
 	while (area)
 	{
 		if ((block = find_free_block_in_area(area, size)))
@@ -87,6 +88,7 @@ t_block		*find_block(void *data_ptr, t_area **area_ptr)
 	t_block			*block;
 	void			*last_block;
 
+	*area_ptr = NULL;
 	zone_i = 0;
 	while (zone_i < N_ZONES)
 	{

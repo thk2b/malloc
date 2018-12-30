@@ -18,9 +18,12 @@ t_area	*new_area(size_t size)
 		size,
 		PROT_READ | PROT_WRITE,
 		MAP_PRIVATE | MAP_ANONYMOUS,
-		-1, 0);
+		0, 0);
 	if (area == MAP_FAILED)
+	{
+		write(2, "ERROR: mmap failed\n", 20);
 		return (NULL);
+	}
 	area->size = size;
 	area->cur_size = 0;
 	area->next = NULL;
@@ -29,5 +32,6 @@ t_area	*new_area(size_t size)
 
 void	append_area(t_area *a, t_area *b)
 {
-	a->next = b;
+	if (a)
+		a->next = b;
 }

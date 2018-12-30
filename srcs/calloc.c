@@ -13,6 +13,6 @@ extern void	*calloc(size_t count, size_t size)
 	total = count * size;
 	if ((ptr = malloc(total)) == NULL)
 		return (NULL);
-	memset(ptr, 0, total);
+	memset(ptr, '\0', total);
 	return (ptr);
 }

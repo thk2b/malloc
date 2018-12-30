@@ -1,5 +1,6 @@
 #include <ft_malloc.h>
 #include <stdio.h>
+
 void	coalesce_block(t_block *block, t_area *area)
 {
 	t_block	*prev;
@@ -17,7 +18,7 @@ void	coalesce_block(t_block *block, t_area *area)
 	if (prev && B_IS_FREE(prev))
 	{
 		B_SET_SIZE(prev, B_SIZE(prev) + B_SIZE(block) + sizeof(t_block));
-		if ((void*)(next = B_NEXT(block)) < end && B_IS_USED(next))
+		if ((void*)(next = B_NEXT(block)) < end)
 			next->prev = prev;
 	}
 }
@@ -27,12 +28,15 @@ extern void	free(void *ptr)
 	t_block	*block;
 	t_area	*area;
 
+#ifdef LIBFT_MALLOC_LOG
+	// dprintf(2, "free\n");
+#endif
 	if (ptr == NULL)
 		return ;
 	block = find_block(ptr, &area);
 	if (block == NULL)
 	{
-		// write(2, "ERROR: free: pointer was not allocated\n", 40);
+		write(2, "ERROR: free: pointer was not allocated\n", 40);
 		// dprintf(2, "ERROR: free: %p was not allocated\n", ptr);
 		return ;
 	}
