@@ -77,50 +77,13 @@
 
 #define A "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
-
-void	test8(void)
-{
-	char *p[3][1000];
-	for(int i = 0; i < 1000; i++){
-		p[0][i] = malloc(1000);
-		p[1][i] = malloc(100);
-		p[2][i] = malloc(10);
-		memcpy(p[0][i], A, 1000);
-		p[0][i][999] = 0;
-		memcpy(p[1][i], A, 100);
-		memcpy(p[2][i], A, 10);
-		// puts(p[0][i]);
-		// puts(p[1][i]);
-		// puts(p[2][i]);
-	}
-	// for(int i = 0; i < 1000; i++){
-	// 	p[0][i] = realloc(p[0][i], 2000);
-	// 	p[1][i] = realloc(p[1][i], 200);
-	// 	p[2][i] = realloc(p[2][i], 20);
-	// 	memcpy(p[0][i], A A, 2000);
-	// 	p[0][i][1999] = 0;
-	// 	memcpy(p[1][i], A A, 200);
-	// 	memcpy(p[2][i], A A, 20);
-	// 	puts(p[0][i]);
-	// 	puts(p[1][i]);
-	// 	puts(p[2][i]);
-	// }
-	// show_alloc_mem();
-	for(int i = 0; i < 1000; i++){
-		free(p[0][i]);
-		free(p[1][i]);
-		free(p[2][i]);
-	}
-	show_alloc_mem();
-}
-
-// // void	test7(void)
-// // {
-// // 	char *s = malloc(100);
-// // 	char *t = realloc(s, 200);
-// // 	memcpy(t, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 200);
-// // 	free(t);
-// // }
+// void	test7(void)
+// {
+// 	char *s = malloc(100);
+// 	char *t = realloc(s, 200);
+// 	memcpy(t, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 200);
+// 	free(t);
+// }
 
 void	test6(void)
 {
@@ -136,7 +99,7 @@ void	test6(void)
 		// puts(p[1][i]);
 		// puts(p[2][i]);
 	}
-	for(int i = 0; i < 1000; i++){
+	for(int i = 750; i < 1000; i++){
 		p[0][i] = realloc(p[0][i], 2000);
 		p[1][i] = realloc(p[1][i], 200);
 		p[2][i] = realloc(p[2][i], 20);
@@ -148,7 +111,7 @@ void	test6(void)
 		puts(p[2][i]);
 	}
 	// show_alloc_mem();
-	for(int i = 0; i < 1000; i++){
+	for(int i = 500; i < 1000; i++){
 		free(p[0][i]);
 		free(p[1][i]);
 		free(p[2][i]);
@@ -157,6 +120,26 @@ void	test6(void)
 }
 
 void	test7(void)
+{
+	char *p[3][1000];
+	for(int i = 0; i < 1000; i++){
+		p[0][i] = calloc(1, 1000);
+		p[1][i] = calloc(1, 100);
+		p[2][i] = calloc(1, 10);
+		p[0][i] = realloc(p[0][i], 2000);
+		p[1][i] = realloc(p[1][i], 200);
+		p[2][i] = realloc(p[2][i], 20);
+		memcpy(p[0][i], A A, 1999);
+		memcpy(p[1][i], A A, 200);
+		memcpy(p[2][i], A A, 20);
+		free(p[0][i]);
+		free(p[1][i]);
+		free(p[2][i]);
+	}
+	show_alloc_mem();
+}
+
+void	test8(void)
 {
 	char *m[10];
 
@@ -174,11 +157,6 @@ void	test7(void)
 
 int	main(void)
 {
-	test6();
-	// char *s = malloc(100);
-	// char *t = malloc(100);
-	// s = realloc(s, 200);
-	// s = realloc(s, 200);
-	// show_alloc_mem();
-	// free(t);
+	test7();
+
 }

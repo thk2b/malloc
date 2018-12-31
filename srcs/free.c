@@ -17,13 +17,14 @@ void		new_free_block(t_block *block, t_free_block *last_free_block)
 	assert(free_block->used == block->used);
 	assert(free_block->size == block->size);
 	free_block->prev = last_free_block;
+	free_block->next = NULL;
 	if (last_free_block)
 	{
 		if (last_free_block->next)
 			last_free_block->next->prev = free_block;
+		free_block->next = last_free_block->next;
 		last_free_block->next = free_block;
 	}
-	free_block->next = last_free_block ? last_free_block->next : NULL;
 }
 
 extern void	free(void *ptr)

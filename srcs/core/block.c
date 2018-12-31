@@ -95,7 +95,7 @@ t_block		*find_block_in_area(void *data_ptr, t_area *area, t_free_block **last_f
 	void	*end;
 	t_block	*cur_block;
 
-	end = A_END(area);
+	end = A_CUR_END(area);
 	cur_block = A_HEAD(area);
 	*last_free_block = NULL;
 	while ((void*)cur_block < end)
