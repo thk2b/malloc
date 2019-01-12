@@ -5,8 +5,8 @@ endif
 NAME = libft_malloc_$(HOSTTYPE).so
 LINK_NAME = libft_malloc.so
 
-LIBDIR = libft
-LIB = libft.a
+# LIBDIR = libft
+# LIB = libft.a
 
 CC = gcc
 
@@ -17,26 +17,13 @@ CC_SO_FLAGS = -fPIC
 INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
-LIB = $(addprefix lib/,\
-	strlen.c\
-	putstr.c\
-	putnbr.c\
-	putaddr.c\
-)
-
-CORE = $(addprefix core/,\
-	area.c\
-	block.c\
-	zone.c\
-)
-SRC = $(addprefix srcs/,\
-	$(LIB)\
-	$(CORE)\
+SRC = $(addprefix src/,\
 	free.c\
 	malloc.c\
 	calloc.c\
 	realloc.c\
 	show_alloc_mem.c\
+	dump_mem.c\
 )
 
 OBJ = $(SRC:.c=.o)
