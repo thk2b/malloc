@@ -45,37 +45,8 @@ If no free elements are found in the apropriate zone, the next is used.
 
 # Architecture
 
-- `malloc` is a first-fit algorithm
+- placement policy: first fit
 
-- free blocks are held in an explicit free list
+- free blocks are held in explicit address-ordered segregated free lists
 
-- `free` immediately coalleses neighboring free blocks
-
-Memory is managed via two entities, `area`s, representing virtual memory pages, and `block`s, representing allocated blocks of memory.
-
-# Implementation
-
-Each area has its own free list.
-
-```c
-typedef struct	s_block
-{
-	size_t		size:1;
-	size_t		size:sizeof(size_t) * 8 - 1;
-}				t_block;
-
-typedef struct	s_free_block
-{
-	t_block				*head;
-	struct s_free_block	*prev;
-	struct s_free_block	*next;
-}				t_free_block;
-
-typedef struct	s_area
-{
-	size_t			size;
-	size_t			cur_size;
-	t_free_block	*free_head;
-	t_area			*next;
-}				t_area;
-```
+- adjacent free blocks are coallesed before additional memory is requested from the operating system
