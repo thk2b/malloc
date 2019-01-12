@@ -13,8 +13,34 @@
 **	else
 **		allocate a new area
 */
-
-extern void	*malloc(size_t size)
+inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {
-	return (NULL);
+	fblock->block.free = 0;
+	fblock->block.size = size; // TODO: split
+	return (DATA(&fblock->block));
+}
+
+inline void		*allocate_new_block(size_t size)
+{
+	t_area	*area;
+	t_block	*block;
+
+	if ((area = find_area_with_available_size(size)) == NULL)
+	|| ((area = new_area(size)) == NULL)
+		return (NULL);
+	block = (t_block*)((char*)area + area->cur_size);
+	block->free = 0;
+	block->size = size;
+	area->cur_size += size + sizeof(t_block);
+	return (DATA(block));
+}
+
+extern void		*malloc(size_t size)
+{
+	t_fblock	*fblock;
+
+	size = MAX(ALLIGN(size, 8), MIN_BLOCK_SIZE);
+	if ((fblock = find_free_block(size)) == NULL)
+		return (allocate_new_block(size));
+	return (allocate_free_block(fblock, size));
 }

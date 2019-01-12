@@ -1,0 +1,52 @@
+#include <malloc.h>
+
+#include <sys/mman.h>
+#include <unistd.h>
+
+/*
+**	link new area to existing ones
+*/
+static inline void	link_new_area(t_area *area)
+{
+	extern t_area	*g_area_head;
+	extern t_area	*g_area_tail;
+
+	if (g_area_tail)
+		g_area_tail->next = area;
+	else
+		g_area_head = area;
+	g_area_tail = area;
+}
+
+/*
+**	create a new area
+*/
+t_area			*new_area(size_t size)
+{
+	extern t_area	*g_area_tail;
+	size_t			pgsz;
+	t_area			*area;
+
+	pgsz = getpagesize();
+	size = MAX(ALLIGN(size, pgsz), MIN_AREA_SIZE(pgsz));
+	area = (t_area*)mmap((void*)g_area_tail, size,
+		PROT_READ | PROT_WRITE,
+		MAP_ANNONYMOUS | MAP_PRIVATE,
+		0, 0);
+	if (area == NULL)
+		return (NULL);
+	area->size = size;
+	area->cur_size = sizeof(t_area);
+	area->next = NULL;
+	link_new_area(area);
+	return (area);
+}
+
+/*
+**	find an area with size available (O(n))
+**		return NULL if not available
+*/
+t_area			*find_area_with_available_size(size_t size)
+{
+	return (NULL);
+}

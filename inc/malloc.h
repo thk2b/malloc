@@ -49,18 +49,28 @@ typedef struct	s_area
 	struct s_area	*next;
 }				t_area;
 
+# define		N_FREE_LISTS 3
 typedef struct	s_free_list
 {
 	size_t		min_size;
-	t_block		*head;
+	t_fblock	*head;
 }				t_free_list;
 
 /*
 **	core
 */
 
+# define		MIN(a,b) ((a) < (b) ? (a) : (b))
+# define		MAX(a,b) ((a) > (b) ? (a) : (b))
+# define		ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
+# define		MIN_BLOCK_SIZE ALLIGN((sizeof(struct s_free_list*) * 2), 8)
+# define		MIN_AREA_SIZE(pgsz) ((pgsz) * 2)
+# define		DATA(b) ((b) + sizeof(t_block))
+
+t_area			*new_area(size_t size);
+t_area			*find_area_with_available_size(size_t size);
 t_fblock		*find_free_block(size_t size);
 t_block			*find_block(void *ptr);
-void			free_list_insert()
+void			free_list_insert();
 
 #endif
