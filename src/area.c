@@ -31,7 +31,7 @@ t_area			*new_area(size_t size)
 	size = MAX(ALLIGN(size, pgsz), MIN_AREA_SIZE(pgsz));
 	area = (t_area*)mmap((void*)g_area_tail, size,
 		PROT_READ | PROT_WRITE,
-		MAP_ANNONYMOUS | MAP_PRIVATE,
+		MAP_ANONYMOUS | MAP_PRIVATE,
 		0, 0);
 	if (area == NULL)
 		return (NULL);
@@ -48,5 +48,17 @@ t_area			*new_area(size_t size)
 */
 t_area			*find_area_with_available_size(size_t size)
 {
+	extern t_area	*g_area_head;
+	t_area			*area;
+
+	if (g_area_head == NULL)
+		return (NULL);
+	area = g_area_head;
+	while (area)
+	{
+		if (AREA_AVAILABLE_SIZE(area) >= size)
+			return (area);
+		area = area->next;
+	}
 	return (NULL);
 }

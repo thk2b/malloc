@@ -18,12 +18,16 @@ INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
+	area.c\
+	calloc.c\
+	dump_mem.c\
+	find_block.c\
+	find_free_block.c\
+	globals.c\
 	free.c\
 	malloc.c\
-	calloc.c\
 	realloc.c\
 	show_alloc_mem.c\
-	dump_mem.c\
 )
 
 OBJ = $(SRC:.c=.o)

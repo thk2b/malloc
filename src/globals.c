@@ -15,4 +15,4 @@ t_free_list g_free_lists[N_FREE_LISTS] = {
 	{ 0		, NULL	},
 	{ 56	, NULL	},
 	{ 256	, NULL	}
-}
+};

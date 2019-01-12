@@ -66,6 +66,7 @@ typedef struct	s_free_list
 # define		MIN_BLOCK_SIZE ALLIGN((sizeof(struct s_free_list*) * 2), 8)
 # define		MIN_AREA_SIZE(pgsz) ((pgsz) * 2)
 # define		DATA(b) ((b) + sizeof(t_block))
+# define		AREA_AVAILABLE_SIZE(a) ((a)->size - (a)->cur_size)
 
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);

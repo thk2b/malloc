@@ -7,4 +7,7 @@
 void	*calloc(size_t count, size_t size)
 {
 
+	(void)count;
+	(void)size;
+	return (NULL);
 }
