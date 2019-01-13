@@ -95,10 +95,12 @@ void			put_dec(int fd, size_t n);
 void			put_str(int fd, char *s);
 
 /*
-**	colors
+**	hexdump
 */
 
+# define		HEXDUMP_WIDTH	32
 # define		RESET			"\x1b[0m"
+# define		BLACK			"\x1b[30m"
 # define		RED				"\x1b[31m"
 # define		GREEN			"\x1b[32m"
 # define		BLUE			"\x1b[34m"
@@ -106,12 +108,20 @@ void			put_str(int fd, char *s);
 # define		CYAN			"\x1b[36m"
 # define		WHITE			"\x1b[37m"
 
+#define			BG_WHITE "\x1b[47m"
+#define			BG_RED "\xbb[42m"
+#define			BG_GREEN "\x1b[42m"
+#define			BG_YELLOW "\x1b[43m"
+#define			BG_BLUE "\x1b[44m"
+#define			BG_MAGENTA "\x1b[46m"
+#define			BG_CYAN "\x1b[47m"
 
+# define		ADDRESS					""
 # define		BLOCK_HEADER			YELLOW
 # define		BLOCK_DATA				GREEN
 # define		FREE_LIST_NODE			BLUE
 # define		FREE_BLOCK_REMAINDER	RED
-# define		AREA_HEADER				CYAN
+# define		AREA_HEADER				BLACK CYAN
 # define		AREA_UNUSED				WHITE
 
 #endif
