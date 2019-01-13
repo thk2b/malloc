@@ -2,14 +2,18 @@
 
 #include <sys/mman.h>
 #include <unistd.h>
-#include <string.h>
 
-// static inline void	merge_areas(t_area *prev, t_area *next)
-// {
-	
-// 	bzero(next, sizeof(t_area));
-// }
-
+/*
+**	new_area(size)
+**		allocate memory for a new area
+**	link_new_area(area, size)
+**		add a new area to the list of areas
+**		if area is adjacent to the last area, merge them
+**		else add it at the tail of the area list
+**		return the last area and initialize it
+**	init_new_area(area, size)
+**		initialize a new area
+*/
 static inline t_area	*init_new_area(t_area *area, size_t size)
 {
 	area->size = size;
@@ -21,10 +25,6 @@ static inline t_area	*init_new_area(t_area *area, size_t size)
 	return (area);
 }
 
-/*
-**	link new area to existing ones
-**		if areas area adjacent, merge them
-*/
 static inline t_area	*link_new_area(t_area *area, size_t size)
 {
 	extern t_area	*g_area_head;
@@ -48,9 +48,6 @@ static inline t_area	*link_new_area(t_area *area, size_t size)
 	return (init_new_area(area, size));
 }
 
-/*
-**	create a new area
-*/
 t_area					*new_area(size_t size)
 {
 	extern t_area	*g_area_tail;
