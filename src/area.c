@@ -5,6 +5,7 @@
 
 /*
 **	link new area to existing ones
+**		if areas area adjacent, merge them
 */
 static inline void	link_new_area(t_area *area)
 {
@@ -33,12 +34,15 @@ t_area			*new_area(size_t size)
 		PROT_READ | PROT_WRITE,
 		MAP_ANONYMOUS | MAP_PRIVATE,
 		0, 0);
-	if (area == NULL)
+	if (area == MAP_FAILED)
 		return (NULL);
 	area->size = size;
 	area->cur_size = sizeof(t_area);
 	area->next = NULL;
 	link_new_area(area);
+	#ifdef MALLOC_LOG
+	malloc_log_new_area(area);
+	#endif
 	return (area);
 }
 

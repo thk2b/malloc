@@ -27,11 +27,14 @@ static inline void	*allocate_new_block(size_t size)
 	t_block	*block;
 
 	if ((area = find_area_with_available_size(size)) == NULL
-	|| ((area = new_area(size)) == NULL))
+	&& ((area = new_area(size)) == NULL))
 		return (NULL);
 	block = (t_block*)((char*)area + area->cur_size);
 	block->free = 0;
 	block->size = size;
+	#ifdef MALLOC_LOG
+	malloc_log_new_block(block);
+	#endif
 	area->cur_size += size + sizeof(t_block);
 	assert(area->cur_size < area->size);
 	return (DATA(block));

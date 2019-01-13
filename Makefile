@@ -23,8 +23,10 @@ SRC = $(addprefix src/,\
 	dump_mem.c\
 	find_block.c\
 	find_free_block.c\
-	globals.c\
 	free.c\
+	globals.c\
+	lib.c\
+	log.c\
 	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\

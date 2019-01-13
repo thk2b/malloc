@@ -74,4 +74,30 @@ t_fblock		*find_free_block(size_t size);
 t_block			*find_block(void *ptr);
 void			free_list_insert();
 
+#ifdef MALLOC_LOG
+
+void			init_log(void);
+void			malloc_log_new_block(t_block *block);
+void			malloc_log_new_area(t_area *area);
+
+#endif
+
+/*
+**	lib.c
+*/
+
+void			put_hex(int fd, size_t n);
+void			put_dec(int fd, size_t n);
+void			put_str(int fd, char *s);
+
+/*
+**	colors
+*/
+
+# define		BLOCK_HEADER	""
+# define		BLOCK_DATA		""
+# define		FREE_LIST_NODE	""
+# define		AREA_HEADER		""
+# define		AREA_BODY		""
+
 #endif
