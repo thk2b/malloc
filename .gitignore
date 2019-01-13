@@ -1,1 +1,2 @@
-.malloc_log a.out* 
+.malloc_log
+a.out* 
