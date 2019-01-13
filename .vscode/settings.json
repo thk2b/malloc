@@ -23,6 +23,7 @@
 		"stdlib.h": "c",
 		"__config": "c",
 		"malloc.h": "c",
-		"random": "c"
+		"random": "c",
+		"fcntl.h": "c"
 	}
 }

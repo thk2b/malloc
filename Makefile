@@ -21,6 +21,7 @@ SRC = $(addprefix src/,\
 	area.c\
 	calloc.c\
 	dump_mem.c\
+	error.c\
 	find_block.c\
 	find_free_block.c\
 	free.c\

@@ -57,6 +57,12 @@ typedef struct	s_free_list
 }				t_free_list;
 
 /*
+**	errors
+*/
+
+void			*error_ptr_was_not_allocated(void *ptr);
+
+/*
 **	core
 */
 
@@ -71,6 +77,7 @@ typedef struct	s_free_list
 # define		AREA_CUR_END(a) ((void*)((char*)(a) + (a)->cur_size))
 # define		AREA_HEAD(a) ((t_block*)((char*)(a) + sizeof(t_area)))
 # define		AREA_CAN_FIT(a, s) ((a)->cur_size + s <= (a)->size)
+# define		AREA_PTR_IS_IN_RANGE(a, addr) ((void*)(addr) >= (void*)AREA_HEAD(a) && (void*)(addr) < (void*)AREA_CUR_END(a))
 # define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
 
 t_area			*new_area(size_t size);
@@ -85,6 +92,7 @@ void			init_log(void);
 void			malloc_log_new_block(t_block *block);
 void			malloc_log_new_area(t_area *area);
 void			malloc_log_extended_area(t_area *area);
+void			malloc_log_freed_block(t_block *block);
 
 #endif
 
@@ -122,7 +130,7 @@ void			put_str(int fd, char *s);
 # define		BLOCK_HEADER			YELLOW
 # define		BLOCK_DATA				GREEN
 # define		FREE_LIST_NODE			BLUE
-# define		FREE_BLOCK_REMAINDER	RED
+# define		FREE_BLOCK_REMAINDER	WHITE
 # define		AREA_HEADER				BLACK CYAN
 # define		AREA_UNUSED				WHITE
 

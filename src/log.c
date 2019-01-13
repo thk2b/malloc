@@ -50,3 +50,16 @@ void	malloc_log_extended_area(t_area *area)
 	put_dec(g_logfd, area->size);
 	put_str(g_logfd, "\n");
 }
+
+void	malloc_log_freed_block(t_block *block)
+{
+	extern int	g_logfd;
+
+	if (g_logfd == -1)
+		init_log();
+	put_str(g_logfd, "freed block\t");
+	put_hex(g_logfd, (size_t)block, 1);
+	put_str(g_logfd, "\t");
+	put_dec(g_logfd, block->size);
+	put_str(g_logfd, "\n");
+}

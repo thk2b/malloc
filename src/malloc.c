@@ -34,11 +34,11 @@ static inline void	*allocate_new_block(size_t size)
 	block = AREA_CUR_END(area);
 	block->free = 0;
 	block->size = size;
+	area->cur_size += total_block_size;
+	assert(area->cur_size <= area->size);
 	#ifdef MALLOC_LOG
 	malloc_log_new_block(block);
 	#endif
-	area->cur_size += total_block_size;
-	assert(area->cur_size <= area->size);
 	return (DATA(block));
 }
 
