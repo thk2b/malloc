@@ -67,6 +67,10 @@ typedef struct	s_free_list
 # define		MIN_AREA_SIZE(pgsz) ((pgsz) * 2)
 # define		DATA(b) ((b) + sizeof(t_block))
 # define		AREA_AVAILABLE_SIZE(a) ((a)->size - (a)->cur_size)
+# define		AREA_END(a) ((void*)((char*)(a) + (a)->size))
+# define		AREA_CUR_END(a) ((void*)((char*)(a) + (a)->cur_size))
+# define		AREA_HEAD(a) ((t_block*)((char*)(a) + sizeof(t_area)))
+# define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
 
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);
@@ -86,7 +90,7 @@ void			malloc_log_new_area(t_area *area);
 **	lib.c
 */
 
-void			put_hex(int fd, size_t n);
+void			put_hex(int fd, size_t n, int prefix);
 void			put_dec(int fd, size_t n);
 void			put_str(int fd, char *s);
 
@@ -94,10 +98,20 @@ void			put_str(int fd, char *s);
 **	colors
 */
 
-# define		BLOCK_HEADER	""
-# define		BLOCK_DATA		""
-# define		FREE_LIST_NODE	""
-# define		AREA_HEADER		""
-# define		AREA_BODY		""
+# define		RESET			"\x1b[0m"
+# define		RED				"\x1b[31m"
+# define		GREEN			"\x1b[32m"
+# define		BLUE			"\x1b[34m"
+# define		YELLOW			"\x1b[33m"
+# define		CYAN			"\x1b[36m"
+# define		WHITE			"\x1b[37m"
+
+
+# define		BLOCK_HEADER			YELLOW
+# define		BLOCK_DATA				GREEN
+# define		FREE_LIST_NODE			BLUE
+# define		FREE_BLOCK_REMAINDER	RED
+# define		AREA_HEADER				CYAN
+# define		AREA_UNUSED				WHITE
 
 #endif

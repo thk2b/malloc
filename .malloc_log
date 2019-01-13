@@ -1,0 +1,12 @@
+EVENT		ADDRESS		SIZE
+new area	0x10c071000	8192
+new block	0x10c071018	16
+new block	0x10c071030	16
+new block	0x10c071048	16
+new block	0x10c071060	16
+new block	0x10c071078	16
+new block	0x10c071090	16
+new block	0x10c0710a8	16
+new block	0x10c0710c0	16
+new block	0x10c0710d8	16
+new block	0x10c0710f0	16

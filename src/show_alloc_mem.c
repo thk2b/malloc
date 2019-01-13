@@ -6,7 +6,7 @@ static void	print_block(t_block *block)
 	put_str(1, block->free ? "f\t" : "u\t");
 	put_dec(1, block->size);
 	put_str(1, "\t");
-	put_hex(1, (size_t)DATA(block));
+	put_hex(1, (size_t)DATA(block), 1);
 	put_str(1, "\n");
 }
 
@@ -22,7 +22,7 @@ static void	print_area(t_area *area, size_t i)
 	put_str(1, "area\t");
 	put_dec(1, i);
 	put_str(1, "\t");
-	put_hex(1, (size_t)area);
+	put_hex(1, (size_t)area, 1);
 	put_str(1, "\t");
 	put_dec(1, area->cur_size);
 	put_str(1, " / ");

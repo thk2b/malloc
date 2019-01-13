@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-void	put_hex(int fd, size_t n)
+void	put_hex(int fd, size_t n, int prefix)
 {
 	char		buf[67] = {0};
 	static char	sym[] = "0123456789abcdef";
@@ -9,12 +9,15 @@ void	put_hex(int fd, size_t n)
 	size_t		div;
 	size_t		i;
 
-	buf[0] = '0';
-	buf[1] = 'x';
+	if (prefix)
+	{
+		buf[0] = '0';
+		buf[1] = 'x';
+	}
 	div = 1;
 	while ((n_div = div * 16) <= n && n_div > div)
 		div = n_div;
-	i = 2;
+	i = prefix ? 2 : 0;
 	while (div)
 	{
 		buf[i++] = sym[n / div % 16];

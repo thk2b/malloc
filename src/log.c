@@ -19,7 +19,7 @@ void	malloc_log_new_block(t_block *block)
 	if (g_logfd == -1)
 		init_log();
 	put_str(g_logfd, "new block\t");
-	put_hex(g_logfd, (size_t)block);
+	put_hex(g_logfd, (size_t)block, 1);
 	put_str(g_logfd, "\t");
 	put_dec(g_logfd, block->size);
 	put_str(g_logfd, "\n");
@@ -32,7 +32,7 @@ void	malloc_log_new_area(t_area *area)
 	if (g_logfd == -1)
 		init_log();
 	put_str(g_logfd, "new area\t");
-	put_hex(g_logfd, (size_t)area);
+	put_hex(g_logfd, (size_t)area, 1);
 	put_str(g_logfd, "\t");
 	put_dec(g_logfd, area->size);
 	put_str(g_logfd, "\n");

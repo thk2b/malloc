@@ -14,4 +14,5 @@ int	main(void)
 	for (int i = 0; i < 10; i++)
 		puts(s[i]);
 	show_alloc_mem();
+	dump_mem();
 }
