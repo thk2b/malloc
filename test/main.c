@@ -9,6 +9,8 @@ int	main(void)
 		s[i] = 'a';
 	char *t = malloc(10000);
 	t[10000 - 1] = 'b';
+	char *u = malloc(4528);
+	u[4528 - 1] = 'c';
 	show_alloc_mem();
 	dump_mem();
 }

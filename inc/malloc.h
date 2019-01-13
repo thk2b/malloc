@@ -70,6 +70,7 @@ typedef struct	s_free_list
 # define		AREA_END(a) ((void*)((char*)(a) + (a)->size))
 # define		AREA_CUR_END(a) ((void*)((char*)(a) + (a)->cur_size))
 # define		AREA_HEAD(a) ((t_block*)((char*)(a) + sizeof(t_area)))
+# define		AREA_CAN_FIT(a, s) ((a)->cur_size + s <= (a)->size)
 # define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
 
 t_area			*new_area(size_t size);

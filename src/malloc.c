@@ -25,9 +25,11 @@ static inline void	*allocate_new_block(size_t size)
 {
 	t_area	*area;
 	t_block	*block;
+	size_t	total_block_size;
 
-	if ((area = find_area_with_available_size(size)) == NULL
-	&& ((area = new_area(size)) == NULL))
+	total_block_size = size + sizeof(t_block);
+	if ((area = find_area_with_available_size(total_block_size)) == NULL
+	&& ((area = new_area(total_block_size)) == NULL))
 		return (NULL);
 	block = AREA_CUR_END(area);
 	block->free = 0;
@@ -35,8 +37,8 @@ static inline void	*allocate_new_block(size_t size)
 	#ifdef MALLOC_LOG
 	malloc_log_new_block(block);
 	#endif
-	area->cur_size += size + sizeof(t_block);
-	assert(area->cur_size < area->size);
+	area->cur_size += total_block_size;
+	assert(area->cur_size <= area->size);
 	return (DATA(block));
 }
 

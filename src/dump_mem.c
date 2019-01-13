@@ -5,28 +5,28 @@ static void	hexdump(void *ptr, size_t size, char *color)
 {
 	static size_t	count = 0;
 	size_t			i;
-	size_t			n;
-	char			*d;
+	unsigned char	n;
+	unsigned char	*d;
 
 	if (ptr == NULL)
 		return ((void) (count = 0));
 	i = 0;
-	d = (char*)ptr;
+	d = (unsigned char*)ptr;
 	while (i < size)
 	{
 		if (count == 0)
 		{
 			put_str(1, ADDRESS);
-			put_hex(1, (size_t)((char*)ptr + i), 0);
+			put_hex(1, (size_t)(d + i), 0);
 			put_str(1, " ");
 			put_str(1, RESET);
 		}
 		put_str(1, color);
 		while (i < size && count++ < HEXDUMP_WIDTH)
 		{
-			n = (char)d[i];
+			n = d[i];
 			i += 1;
-			put_hex(1, n, 0);
+			put_hex(1, (size_t)n, 0);
 			if (n < 10)
 				put_str(1, "0");
 			put_str(1, " ");
