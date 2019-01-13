@@ -18,6 +18,7 @@ INC = -I $(LIBDIR)/includes -I inc
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
+	free_list_index.c\
 	area.c\
 	calloc.c\
 	dump_mem.c\

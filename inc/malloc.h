@@ -56,6 +56,7 @@ typedef struct	s_free_list
 	t_fblock	*head;
 }				t_free_list;
 
+size_t			free_list_index(size_t block_size);//TODO:macro or inline
 /*
 **	errors
 */
@@ -92,6 +93,7 @@ void			malloc_log_new_block(t_block *block);
 void			malloc_log_new_area(t_area *area);
 void			malloc_log_extended_area(t_area *area);
 void			malloc_log_freed_block(t_block *block);
+void			malloc_log_allocated_free_block(t_block *block);
 
 #endif
 

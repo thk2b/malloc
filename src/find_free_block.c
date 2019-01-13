@@ -1,6 +1,7 @@
 #include <malloc.h>
 
 /*
+**	first fit free list search (O(n))
 **	find a free block of size inside the free lists.
 **	checks if adjacent free blocks can be merged.
 **	return the block, or NULL if there is no free blocks available.
@@ -18,6 +19,19 @@
 
 t_fblock	*find_free_block(size_t size)
 {
-	(void)size;
+	extern t_free_list	g_free_lists[];
+	t_free_list			*free_list;
+	t_fblock			*cur;
+
+	if((free_list = g_free_lists + free_list_index(size)) == NULL)
+		return (NULL);
+	cur = free_list->head;
+	while (cur)
+	{
+		if (cur->block.size >= size)
+			return (cur);
+		cur = cur->next;
+		// TODO: check for free neighbors
+	}
 	return (NULL);
 }

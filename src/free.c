@@ -12,15 +12,6 @@
 **		error
 */
 
-static inline size_t	free_list_index(size_t block_size)//FIXME
-{
-	if (block_size >= 265)
-		return (2);
-	if (block_size >= 56)
-		return (1);
-	return (0);
-}
-
 static inline void		free_list_insert(t_fblock *prev, t_fblock *fblock)
 {
 	extern t_free_list	g_free_lists[];

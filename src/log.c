@@ -63,3 +63,16 @@ void	malloc_log_freed_block(t_block *block)
 	put_dec(g_logfd, block->size);
 	put_str(g_logfd, "\n");
 }
+
+void	malloc_log_allocated_free_block(t_block *block)
+{
+	extern int	g_logfd;
+
+	if (g_logfd == -1)
+		init_log();
+	put_str(g_logfd, "unfreed block\t");
+	put_hex(g_logfd, (size_t)block, 1);
+	put_str(g_logfd, "\t");
+	put_dec(g_logfd, block->size);
+	put_str(g_logfd, "\n");
+}

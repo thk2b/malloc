@@ -12,15 +12,6 @@
 **	return nil
 */
 
-static inline size_t	free_list_index(size_t block_size)
-{
-	if (block_size >= 265)
-		return (2);
-	if (block_size >= 56)
-		return (1);
-	return (0);
-}
-
 static inline t_block	*find_block_in_area(t_area *area, void *ptr, t_fblock **local_prev_fblock, t_fblock **prev_fblock)
 {
 	t_block		*block;

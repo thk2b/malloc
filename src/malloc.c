@@ -14,11 +14,30 @@
 **	else
 **		allocate a new area
 */
+static inline void	free_list_remove(t_fblock *fblock)
+{
+	extern t_free_list	g_free_lists[];
+
+	if (fblock->prev == NULL)
+		g_free_lists[free_list_index(fblock->block.size)].head = fblock->next;
+	else
+		fblock->prev->next = fblock->next;
+	if (fblock->next)
+		fblock->next->prev = fblock->prev;
+	fblock->next = NULL;//TODO: remove me
+	fblock->prev = NULL;
+}
+
 static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {
 	fblock->block.free = 0;
-	fblock->block.size = size; // TODO: split
-	return (DATA(&fblock->block));
+	// TODO: split
+	(void)size;
+	free_list_remove(fblock);
+	#ifdef MALLOC_LOG
+	malloc_log_allocated_free_block((t_block*)fblock);
+	#endif
+	return (DATA((t_block*)fblock));
 }
 
 static inline void	*allocate_new_block(size_t size)
