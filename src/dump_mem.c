@@ -27,7 +27,7 @@ static void	hexdump(void *ptr, size_t size, char *color)
 			n = d[i];
 			i += 1;
 			put_hex(1, (size_t)n, 0);
-			if (n < 10)
+			if (n < 16)
 				put_str(1, "0");
 			put_str(1, " ");
 		}
@@ -50,7 +50,7 @@ static void	dump_block(t_block *block)
 	if (block->free)
 	{
 		hexdump(DATA(block), MIN_BLOCK_SIZE, FREE_LIST_NODE);
-		hexdump((char*)block + sizeof(t_free_list), block->size - MIN_BLOCK_SIZE, FREE_BLOCK_REMAINDER);
+		hexdump((char*)block + sizeof(t_fblock), block->size - MIN_BLOCK_SIZE, FREE_BLOCK_REMAINDER);
 	}
 	else
 		hexdump(DATA(block), block->size, BLOCK_DATA);

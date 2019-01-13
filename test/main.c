@@ -4,14 +4,11 @@
 
 int	main(void)
 {
-	char *s = malloc(10000);
-	for (int i = 0; i < 10000; i++)
-		s[i] = 'a';
-	char *t = malloc(10000);
-	t[10000 - 1] = 'b';
-	char *u = malloc(4529);
-	u[4529 - 1] = 'c';
-	free(t);
+	char *p[10];
+	p[0] = malloc(32);
+	p[1] = malloc(1);
+	free(p[0]);
+	free(p[1]);
 	show_alloc_mem();
 	dump_mem();
 }

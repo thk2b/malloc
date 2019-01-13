@@ -83,8 +83,7 @@ void			*error_ptr_was_not_allocated(void *ptr);
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);
 t_fblock		*find_free_block(size_t size);
-t_block			*find_block(void *ptr);
-void			free_list_insert();
+t_block			*find_block(void *ptr, t_fblock **prev_fblock);
 
 #ifdef MALLOC_LOG
 
