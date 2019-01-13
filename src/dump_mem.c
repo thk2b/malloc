@@ -1,4 +1,5 @@
 #include <malloc.h>
+#include <stdint.h>
 
 static void	hexdump(void *ptr, size_t size, char *color)
 {
@@ -22,7 +23,8 @@ static void	hexdump(void *ptr, size_t size, char *color)
 		put_str(1, color);
 		while (i < size && count++ < 32)
 		{
-			n = (size_t)d[i++];
+			n = (char)d[i];
+			i += 1;
 			put_hex(1, n, 0);
 			if (n < 10)
 				put_str(1, "0");
@@ -30,8 +32,8 @@ static void	hexdump(void *ptr, size_t size, char *color)
 		}
 		if (i >= size)
 			break ;
-		put_str(1, "\n");
 		count = 0;
+		put_str(1, "\n");
 	}
 }
 
@@ -54,11 +56,9 @@ static void	dump_block(t_block *block)
 
 static void	dump_area_body(t_area *area)
 {
-	void	*area_end;
 	void	*area_cur_end;
 	t_block	*block;
 
-	area_end = AREA_END(area);
 	area_cur_end = AREA_CUR_END(area);
 	block = AREA_HEAD(area);
 	while ((void*)block < area_cur_end)

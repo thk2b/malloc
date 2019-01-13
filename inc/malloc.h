@@ -65,7 +65,7 @@ typedef struct	s_free_list
 # define		ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
 # define		MIN_BLOCK_SIZE ALLIGN((sizeof(struct s_free_list*) * 2), 8)
 # define		MIN_AREA_SIZE(pgsz) ((pgsz) * 2)
-# define		DATA(b) ((b) + sizeof(t_block))
+# define		DATA(b) ((char*)(b) + sizeof(t_block))
 # define		AREA_AVAILABLE_SIZE(a) ((a)->size - (a)->cur_size)
 # define		AREA_END(a) ((void*)((char*)(a) + (a)->size))
 # define		AREA_CUR_END(a) ((void*)((char*)(a) + (a)->cur_size))

@@ -8,11 +8,18 @@ int	main(void)
 
 	for (int i = 0; i < 10; i++)
 	{
-		s[i] = malloc(16);
-		memcpy(s[i], "0123456789012345", 16);
+		s[i] = malloc(17);
+		memcpy(s[i], "aaaaaaaaaaaaaaa", 16);
 	}
 	for (int i = 0; i < 10; i++)
 		puts(s[i]);
+	// s[0] = malloc(17);
+	// s[0][0] = 127;
+	// s[0][MIN_BLOCK_SIZE - 1] = 'A';
+	// s[1] = malloc(17);
+	// s[1][0] = 127;
+	// s[1][MIN_BLOCK_SIZE - 1] = 'A';
+	// malloc(1);
 	show_alloc_mem();
 	dump_mem();
 }
