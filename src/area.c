@@ -2,27 +2,56 @@
 
 #include <sys/mman.h>
 #include <unistd.h>
+#include <string.h>
+
+// static inline void	merge_areas(t_area *prev, t_area *next)
+// {
+	
+// 	bzero(next, sizeof(t_area));
+// }
+
+static inline t_area	*init_new_area(t_area *area, size_t size)
+{
+	area->size = size;
+	area->cur_size = sizeof(t_area);
+	area->next = NULL;
+	#ifdef MALLOC_LOG
+	malloc_log_new_area(area);
+	#endif
+	return (area);
+}
 
 /*
 **	link new area to existing ones
 **		if areas area adjacent, merge them
 */
-static inline void	link_new_area(t_area *area)
+static inline t_area	*link_new_area(t_area *area, size_t size)
 {
 	extern t_area	*g_area_head;
 	extern t_area	*g_area_tail;
+	void			*prev_area_end;
 
+	if (g_area_tail && (prev_area_end = AREA_END(g_area_tail)) == area)
+	{
+		g_area_tail->size += size;
+
+		#ifdef MALLOC_LOG
+		malloc_log_extended_area(g_area_tail);
+		#endif
+		return (g_area_tail);
+	}
 	if (g_area_tail)
 		g_area_tail->next = area;
 	else
 		g_area_head = area;
 	g_area_tail = area;
+	return (init_new_area(area, size));
 }
 
 /*
 **	create a new area
 */
-t_area			*new_area(size_t size)
+t_area					*new_area(size_t size)
 {
 	extern t_area	*g_area_tail;
 	size_t			pgsz;
@@ -36,14 +65,7 @@ t_area			*new_area(size_t size)
 		0, 0);
 	if (area == MAP_FAILED)
 		return (NULL);
-	area->size = size;
-	area->cur_size = sizeof(t_area);
-	area->next = NULL;
-	link_new_area(area);
-	#ifdef MALLOC_LOG
-	malloc_log_new_area(area);
-	#endif
-	return (area);
+	return (link_new_area(area, size));
 }
 
 /*

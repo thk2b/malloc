@@ -88,5 +88,6 @@ void	dump_mem(void)
 		area = area->next;
 		put_str(1, RESET);
 		hexdump(NULL, 0, NULL);
+		put_str(1, "\n    ⋮\n");
 	}
 }

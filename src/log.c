@@ -37,3 +37,16 @@ void	malloc_log_new_area(t_area *area)
 	put_dec(g_logfd, area->size);
 	put_str(g_logfd, "\n");
 }
+
+void	malloc_log_extended_area(t_area *area)
+{
+	extern int	g_logfd;
+
+	if (g_logfd == -1)
+		init_log();
+	put_str(g_logfd, "extended area\t");
+	put_hex(g_logfd, (size_t)area, 1);
+	put_str(g_logfd, "\t");
+	put_dec(g_logfd, area->size);
+	put_str(g_logfd, "\n");
+}

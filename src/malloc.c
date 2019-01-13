@@ -29,7 +29,7 @@ static inline void	*allocate_new_block(size_t size)
 	if ((area = find_area_with_available_size(size)) == NULL
 	&& ((area = new_area(size)) == NULL))
 		return (NULL);
-	block = (t_block*)((char*)area + area->cur_size);
+	block = AREA_CUR_END(area);
 	block->free = 0;
 	block->size = size;
 	#ifdef MALLOC_LOG

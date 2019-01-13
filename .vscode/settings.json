@@ -22,6 +22,7 @@
 		"vector": "c",
 		"stdlib.h": "c",
 		"__config": "c",
-		"malloc.h": "c"
+		"malloc.h": "c",
+		"random": "c"
 	}
 }

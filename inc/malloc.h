@@ -23,7 +23,7 @@ extern void		dump_mem(void);
 typedef struct	s_block
 {
 	size_t		free:1;
-	size_t		size:sizeof(size_t) - 1;
+	size_t		size:sizeof(size_t) * 8 - 1;
 }				t_block;
 
 /*
@@ -83,6 +83,7 @@ void			free_list_insert();
 void			init_log(void);
 void			malloc_log_new_block(t_block *block);
 void			malloc_log_new_area(t_area *area);
+void			malloc_log_extended_area(t_area *area);
 
 #endif
 
