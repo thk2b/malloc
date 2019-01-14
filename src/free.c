@@ -38,7 +38,10 @@ void					free(void *ptr)
 	t_fblock	*prev_fblock;
 
 	if ((block = find_block(ptr, &prev_fblock)) == NULL)
-		return ((void)error_ptr_was_not_allocated(ptr));
+	{
+		error_ptr_was_not_allocated(ptr);
+		return ;
+	}
 	block->free = 1;
 	free_list_insert(prev_fblock, (t_fblock*)block);
 	#ifdef MALLOC_LOG

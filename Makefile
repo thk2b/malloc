@@ -10,7 +10,7 @@ LINK_NAME = libft_malloc.so
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -Werror
+CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
@@ -20,6 +20,7 @@ COMPILE = $(CC) $(CC_FLAGS) $(INC)
 SRC = $(addprefix src/,\
 	free_list_index.c\
 	area.c\
+	block.c\
 	calloc.c\
 	dump_mem.c\
 	error.c\

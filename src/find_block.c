@@ -49,7 +49,7 @@ static inline void		init_prev_fblocks(t_fblock **fblocks)
 */
 t_block					*find_block(void *ptr, t_fblock **prev_fblock)
 {
-	extern t_area	*g_area_head;
+	extern t_area	*g_area_head;//FIXME: start from the end?
 	t_area			*area;
 	t_fblock		*local_prev_fblock[N_FREE_LISTS] = {0};
 

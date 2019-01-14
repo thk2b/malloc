@@ -6,23 +6,47 @@
 #define FACTOR 10
 #define D "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 #define D1 "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-int	main(void)
+// int	main(void)
+// {
+// 	char *p[LIM];
+// 	for (int i = 0; i < LIM; i++)
+// 		p[i] = malloc(i * FACTOR);
+// 	for (int i = 0; i < LIM; i++)
+// 		memcpy(p[i], D, ALLIGN(i * FACTOR, 8));
+// 	dump_mem();
+// 	show_alloc_mem();
+// 	for (int i = 0; i < LIM; i++)
+// 		free(p[i]);
+// 	dump_mem();
+// 	show_alloc_mem();
+// 	for (int i = 0; i < LIM; i++)
+// 		p[i] = malloc(i * FACTOR * 2);
+// 	for (int i = 0; i < LIM; i++)
+// 		memcpy(p[i], D1, ALLIGN(i * FACTOR * 2, 8));
+// 	dump_mem();
+// 	show_alloc_mem();
+// }
+
+// int main(void)
+// {
+// 	char *s = malloc(3000);
+// 	memcpy(s, D D D D D D D D D D D D D D , 3000);
+// 	free(s);
+// 	char *t = malloc(2000);
+// 	(void)t;
+// 	dump_mem();
+// }
+
+int main(void)
+//stress test
 {
-	char *p[LIM];
-	for (int i = 0; i < LIM; i++)
-		p[i] = malloc(i * FACTOR);
-	for (int i = 0; i < LIM; i++)
-		memcpy(p[i], D, ALLIGN(i * FACTOR, 8));
-	dump_mem();
-	show_alloc_mem();
-	for (int i = 0; i < LIM; i++)
-		free(p[i]);
-	dump_mem();
-	show_alloc_mem();
-	for (int i = 0; i < LIM; i++)
-		p[i] = malloc(i * FACTOR * 2);
-	for (int i = 0; i < LIM; i++)
-		memcpy(p[i], D1, ALLIGN(i * FACTOR * 2, 8));
-	dump_mem();
+	char *p[10000];
+	for (int j = 0; j < 10000; j++)
+	{
+		p[j] = malloc(10000);
+		memcpy(p[j], D, 100);
+		memcpy(p[j] + 10000 - 100, D, 100);
+	}
+	// dump_mem();
 	show_alloc_mem();
 }

@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#ifdef MALLOC_LOG
+
 void		init_log(void)
 {
 	extern int	g_logfd;
@@ -76,3 +78,5 @@ void	malloc_log_allocated_free_block(t_block *block)
 	put_dec(g_logfd, block->size);
 	put_str(g_logfd, "\n");
 }
+
+#endif

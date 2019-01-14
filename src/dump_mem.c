@@ -9,7 +9,10 @@ static void	hexdump(void *ptr, size_t size, char *color)
 	unsigned char	*d;
 
 	if (ptr == NULL)
-		return ((void) (count = 0));
+	{
+		count = 0;
+		return ;
+	}
 	i = 0;
 	d = (unsigned char*)ptr;
 	while (i < size)
