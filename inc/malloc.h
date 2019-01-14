@@ -22,8 +22,9 @@ extern void		dump_mem(void);
 
 typedef struct	s_block
 {
+	size_t		prev_free:1;
 	size_t		free:1;
-	size_t		size:sizeof(size_t) * 8 - 1;
+	size_t		size:sizeof(size_t) * 8 - 2;
 }				t_block;
 
 /*
@@ -73,7 +74,8 @@ void			*error_ptr_was_not_allocated(void *ptr);
 # define		MIN(a,b) ((a) < (b) ? (a) : (b))
 # define		MAX(a,b) ((a) > (b) ? (a) : (b))
 # define		ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
-# define		MIN_BLOCK_SIZE ALLIGN((sizeof(struct s_free_list*) * 2), 8)
+# define		FREE_LIST_NODE_SIZE ((sizeof(struct s_fblock*) * 2))
+# define		MIN_BLOCK_SIZE (FREE_LIST_NODE_SIZE + sizeof(size_t))
 # define		MIN_AREA_SIZE(pgsz) ((pgsz) * 2)
 # define		DATA(b) ((char*)(b) + sizeof(t_block))
 # define		AREA_AVAILABLE_SIZE(a) ((a)->size - (a)->cur_size)
@@ -83,7 +85,7 @@ void			*error_ptr_was_not_allocated(void *ptr);
 # define		AREA_CAN_FIT(a, s) ((a)->cur_size + s <= (a)->size)
 # define		AREA_PTR_IS_IN_RANGE(a, addr) ((void*)(addr) >= (void*)AREA_HEAD(a) && (void*)(addr) < (void*)AREA_CUR_END(a))
 # define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
-# define		BLOCK_PREV(b) (*NULL)
+# define		BLOCK_PREV(b) ()
 
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);
@@ -141,6 +143,7 @@ void			put_str(int fd, char *s);
 # define		BLOCK_DATA				GREEN
 # define		FREE_LIST_NODE			BLUE
 # define		FREE_BLOCK_REMAINDER	WHITE
+# define		FREE_BLOCK_FOOTER		YELLOW
 # define		AREA_HEADER				BLACK CYAN
 # define		AREA_UNUSED				WHITE
 

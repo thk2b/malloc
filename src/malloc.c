@@ -39,6 +39,8 @@ static inline void	*allocate_new_block(size_t size)
 	&& ((area = new_area(total_block_size)) == NULL))
 		return (NULL);
 	block = AREA_CUR_END(area);
+	block->prev_free = 0;
+	/* prev block is guaranteed to be used, if free it would have been extended */
 	block->free = 0;
 	block->size = size;
 	area->cur_size += total_block_size;

@@ -38,20 +38,33 @@ static size_t	lookahead(t_block *block, size_t until, t_area *area)
 }
 
 // requires boundary blocks
-// static size_t	lookback(t_block *block, size_t until, void *area_start)
-// {
-// 	size_t	sum;
-// 	t_block	*cur;
+static inline t_block	*prev_block(t_block *block)
+{
+	t_block	*prev_block;
 
-// 	sum = 0;
-// 	cur = BLOCK_PREV(block);
-// 	while (cur >= area_start && cur->free && sum < until)
-// 	{
-// 		sum += cur->size + sizeof(t_block);
-// 		cur = BLOCK_PREV(block);
-// 	}
-// 	return (sum);
-// }
+	prev_block = (t_block*)((char*)block - (*(size_t*)((char*)block - sizeof(size_t)) + sizeof(t_block)));
+	return (prev_block);
+}
+
+static size_t	lookback(t_block *block, size_t until, void *area_start)
+{
+	size_t		sum;
+	t_block		*cur;
+
+	sum = 0;
+	if (block->prev_free == 0)
+		return (0);
+	cur = prev_block(block);
+	while ((void*)cur >= area_start && cur->free && sum < until)
+	{
+		sum += cur->size + sizeof(t_block);
+		if (cur->prev_free == 0)
+			break ;
+		cur = prev_block(cur);
+		// cur = BLOCK_PREV(block);
+	}
+	return (sum);
+}
 
 /*
 **	coalesce
@@ -63,15 +76,19 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	void		*area_end;
 	t_block		*cur;
 	t_block		*next;
+	static int	total_free = 0;
 
 	total = 0;
+	if (block->free == 1 && (block->free = 0) == 0)
+		free_list_remove((t_fblock*)block);
 	cur = BLOCK_NEXT(block);
 	area_end = AREA_CUR_END(area);
 	while (total < size && (void*)cur < area_end)
 	{
 		next = BLOCK_NEXT(cur);
-		assert(cur->free == 1);
-		free_list_remove((t_fblock*)cur);
+		assert(cur->free == 1 || total_free++ == 0);
+		if (block->free)
+			free_list_remove((t_fblock*)cur);
 		total += sizeof(t_block) + cur->size;
 		cur = next;
 	}
@@ -87,12 +104,25 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	return (1);
 }
 
-int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)
+static inline int extend_block_back(t_block *block, size_t size, t_area *area, size_t size_ahead)
+{
+	size_t	size_behind;
+	size_t	total_size;
+	t_block	*back_block;
+
+	size_behind = lookback(block, size, AREA_HEAD(area));
+	if ((total_size = size_behind + size_ahead) < size)
+		return (0);
+	back_block = (t_block*)((char*)block - size_behind);
+	coalesce(back_block, total_size, area);
+	memmove(DATA(back_block), DATA(block), block->size);
+	split_block(back_block, size);
+	return (1);
+}
+int					extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)
 {
 	size_t	size_ahead;
 	size_t	extention_size;
-	// size_t	size_behind;
-	// size_t	total;
 
 	(void)last_free_block;
 	if (BLOCK_NEXT(block) == AREA_CUR_END(area) && AREA_CAN_FIT(area, size))
@@ -107,14 +137,11 @@ int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_ar
 	assert(size > block->size);
 	extention_size = size - block->size;
 	size_ahead = lookahead(block, extention_size, area);
-	if (size_ahead >= extention_size)
-		return (coalesce(block, size_ahead, area));
-	return (0);
-	// size_behind = lookback(block, size, AREA_HEAD(area));
-	// if ((total = size_behind + size_ahead) < size)
-	// 	return (0);
-	// memmove(DATA((char*)block - size), DATA(block), size);
-	// return (coalesce((char*)block + size, size));
+	if (size_ahead < extention_size)
+		return (extend_block_back(block, size, area, size_ahead));
+	coalesce(block, size_ahead, area);
+	split_block(block, size);
+	return (1);
 }
 
 /*
