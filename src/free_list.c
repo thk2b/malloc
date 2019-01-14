@@ -1,16 +1,22 @@
 #include <malloc.h>
+#include <assert.h>
 
 void	free_list_insert(t_fblock *fblock)
 {
 	extern t_free_list	g_free_lists[];
 	t_free_list			*free_list;
 	t_fblock			*cur;
+	t_fblock			*prev;
 
 	free_list = g_free_lists + free_list_index(fblock->block.size);
 	cur = free_list->head;
-	while (cur && (void*)fblock < (void*)cur)
+	prev = cur;
+	while (cur && (void*)fblock > (void*)cur)
+	{
+		prev = cur;
 		cur = cur->next;
-	free_list_insert_after(cur, fblock);
+	}
+	free_list_insert_after(prev, fblock);
 }
 
 void	free_list_insert_after(t_fblock *prev, t_fblock *fblock)
@@ -31,6 +37,8 @@ void	free_list_insert_after(t_fblock *prev, t_fblock *fblock)
 		next->prev = fblock;
 	fblock->next = next;
 	fblock->prev = prev;
+	assert((void*)fblock->prev < (void*)fblock);
+	assert(fblock->next == NULL || (void*)fblock->next > (void*)fblock);
 }
 
 void	free_list_remove(t_fblock *fblock)

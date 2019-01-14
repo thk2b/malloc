@@ -44,7 +44,7 @@ void				*realloc(void *ptr, size_t size)
 		return (ptr);
 	if (block->size > size)
 	{
-		split_block(block, size, prev_free_block);
+		split_block(block, size);
 		return (DATA(block));
 	}
 	if (extend_block(block, size, prev_free_block, area)) //TODO: split block

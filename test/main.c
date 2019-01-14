@@ -80,8 +80,24 @@
 // }
 int main(void)
 {
-	char *s = malloc(5000);
-	free(s);
-	malloc(2000);
+	char *s[10];
+	char *t[10];
+	char *u;
+
+	for (int i = 0; i < 10; i++)
+	{
+		s[i] = malloc(240);
+		t[i] = malloc(25);
+		if (i == 5)
+			u = malloc(240);
+	}
 	dump_mem();
+	for (int i = 3; i < 10; i++)
+	{
+		free(s[i]);
+		free(t[i]);
+	}
+	realloc(u, 1);
+	dump_mem();
+	show_alloc_mem();
 }

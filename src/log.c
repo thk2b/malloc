@@ -9,8 +9,11 @@ void		init_log(void)
 {
 	extern int	g_logfd;
 
-	if((g_logfd = open(".malloc_log", O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
+	if((g_logfd = open("/tmp/.malloc_log", O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
+	{
+		write(2, "can't open log\n", 16);
 		exit(1);
+	}
 	put_str(g_logfd, "EVENT\t\tADDRESS\t\tSIZE\n");
 }
 
