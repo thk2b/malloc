@@ -24,7 +24,7 @@ void					free(void *ptr)
 		return ;
 	}
 	block->free = 1;
-	free_list_insert(prev_fblock, (t_fblock*)block);
+	free_list_insert_after(prev_fblock, (t_fblock*)block);
 	#ifdef MALLOC_LOG
 	malloc_log_freed_block(block);
 	#endif

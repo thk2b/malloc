@@ -21,6 +21,7 @@ static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 	// TODO: split
 	(void)size;
 	free_list_remove(fblock);
+	split_block(&fblock->block, size);
 	#ifdef MALLOC_LOG
 	malloc_log_allocated_free_block((t_block*)fblock);
 	#endif

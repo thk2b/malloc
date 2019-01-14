@@ -51,26 +51,25 @@
 // 	show_alloc_mem();
 // }
 
-int main(void)
-{
-	char *p[10];
-	for (int i = 0; i < 10; i++)
-	{
-		p[i] = malloc(100);
-		memcpy(p[i], D, 100);
-	}
-	for (int i = 0; i < 10; i++)
-		if (i != 5)
-			free(p[i]);
-	dump_mem();
-	// realloc(p[5], 300);
-	realloc(p[5], 600);
-	// realloc(p[5], 500);
-	free(p[5]);
-	p[0] = malloc(300);
-	dump_mem();
-	show_alloc_mem();
-}
+// int main(void)
+// {
+// 	char *p[10];
+// 	for (int i = 0; i < 10; i++)
+// 	{
+// 		p[i] = malloc(100);
+// 		memcpy(p[i], D, 100);
+// 	}
+// 	dump_mem();
+// 	for (int i = 0; i < 10; i++)
+// 		if (i != 5 && i != 9)
+// 			free(p[i]);
+// 	dump_mem();
+// 	realloc(p[5], 300);
+// 	// realloc(p[5], 600);
+// 	// realloc(p[5], 500);
+// 	dump_mem();
+// 	show_alloc_mem();
+// }
 
 // int main(void)
 // {
@@ -79,3 +78,10 @@ int main(void)
 // 	(void)s;
 // 	dump_mem();
 // }
+int main(void)
+{
+	char *s = malloc(5000);
+	free(s);
+	malloc(2000);
+	dump_mem();
+}

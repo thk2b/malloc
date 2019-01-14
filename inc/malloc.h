@@ -57,7 +57,8 @@ typedef struct	s_free_list
 }				t_free_list;
 
 size_t			free_list_index(size_t block_size);//TODO:macro or inline
-void			free_list_insert(t_fblock *prev, t_fblock *fblock);
+void			free_list_insert(t_fblock *fblock);
+void			free_list_insert_after(t_fblock *prev, t_fblock *fblock);
 void			free_list_remove(t_fblock *fblock);
 /*
 **	errors
@@ -88,7 +89,7 @@ t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);
 t_fblock		*find_free_block(size_t size);
 t_block			*find_block(void *ptr, t_fblock **prev_fblock, t_area **area);
-int				split_block(t_block *block, size_t size, t_fblock *last_free_block);
+t_fblock		*split_block(t_block *block, size_t size);
 int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area);
 
 #ifdef MALLOC_LOG
@@ -101,6 +102,7 @@ void			malloc_log_freed_block(t_block *block);
 void			malloc_log_allocated_free_block(t_block *block);
 void			malloc_log_coalesced(t_block *block);
 void			malloc_log_extended_block(t_block *block);
+void			malloc_log_split_block(t_block *block);
 
 #endif
 

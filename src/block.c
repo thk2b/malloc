@@ -3,20 +3,6 @@
 #include <string.h>
 
 /*
-**	split block into two adjacent blocks of size `size` and `initial_size - size` bytes
-**	the new block is free and added to the apropriate list
-**	if `initial_size - size` < MIN_BLOCK_SIZE, the operation is not performed
-**	returns whether the block was split
-*/
-int		split_block(t_block *block, size_t size, t_fblock *last_free_block)
-{
-	(void)block;
-	(void)size;
-	(void)last_free_block;
-	return (0);
-}
-
-/*
 **	extend_block()
 **		extend the allocated block so that it can fit size bytes
 **		find all adjacent blocks that are free untill their combined size >= size
@@ -129,4 +115,30 @@ int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_ar
 	// 	return (0);
 	// memmove(DATA((char*)block - size), DATA(block), size);
 	// return (coalesce((char*)block + size, size));
+}
+
+/*
+**	split_block(block, new_size)
+**		resize block to newsize and create a free block immediately after it.
+**		add the free block to the appropriate free list
+*/
+t_fblock	*split_block(t_block *block, size_t new_size)
+{
+	t_fblock	*fblock;
+	size_t		fblock_size;
+
+	assert(new_size < block->size);
+	fblock_size = block->size - new_size;
+	if (fblock_size < sizeof(t_block) + MIN_BLOCK_SIZE)
+		return (NULL);
+	block->size = new_size;
+	fblock = (t_fblock*)BLOCK_NEXT(block);
+	fblock->block.free = 1;
+	fblock->block.size = fblock_size - sizeof(t_block);
+	#ifdef MALLOC_LOG
+	malloc_log_split_block(block);
+	malloc_log_new_block(&fblock->block);
+	#endif
+	free_list_insert(fblock);
+	return (fblock);
 }
