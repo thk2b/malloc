@@ -14,19 +14,6 @@
 **	else
 **		allocate a new area
 */
-static inline void	free_list_remove(t_fblock *fblock)
-{
-	extern t_free_list	g_free_lists[];
-
-	if (fblock->prev == NULL)
-		g_free_lists[free_list_index(fblock->block.size)].head = fblock->next;
-	else
-		fblock->prev->next = fblock->next;
-	if (fblock->next)
-		fblock->next->prev = fblock->prev;
-	fblock->next = NULL;//TODO: remove me
-	fblock->prev = NULL;
-}
 
 static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {

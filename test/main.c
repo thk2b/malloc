@@ -37,16 +37,33 @@
 // 	dump_mem();
 // }
 
+// int main(void)
+// //stress test
+// {
+// 	char *p[10000];
+// 	for (int j = 0; j < 10000; j++)
+// 	{
+// 		p[j] = malloc(10000);
+// 		memcpy(p[j], D, 100);
+// 		memcpy(p[j] + 10000 - 100, D, 100);
+// 	}
+// 	// dump_mem();
+// 	show_alloc_mem();
+// }
+
 int main(void)
-//stress test
 {
-	char *p[10000];
-	for (int j = 0; j < 10000; j++)
+	char *p[10];
+	for (int i = 0; i < 10; i++)
 	{
-		p[j] = malloc(10000);
-		memcpy(p[j], D, 100);
-		memcpy(p[j] + 10000 - 100, D, 100);
+		p[i] = malloc(100);
+		memcpy(p[i], D, 100);
 	}
-	// dump_mem();
-	show_alloc_mem();
+	for (int i = 0; i < 10; i++)
+		if (i != 5)
+			free(p[i]);
+	dump_mem();
+	realloc(p[5], 300);
+	// realloc(p[5], 500);
+	dump_mem();
 }

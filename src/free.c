@@ -12,32 +12,13 @@
 **		error
 */
 
-static inline void		free_list_insert(t_fblock *prev, t_fblock *fblock)
-{
-	extern t_free_list	g_free_lists[];
-	t_fblock			*next;
-
-	if (prev == NULL)
-	{
-		fblock->prev = NULL;
-		fblock->next = NULL;
-		g_free_lists[free_list_index(fblock->block.size)].head = fblock;
-		return ;
-	}
-	next = prev->next;
-	prev->next = fblock;
-	if (next)
-		next->prev = fblock;
-	fblock->next = next;
-	fblock->prev = prev;
-}
-
 void					free(void *ptr)
 {
 	t_block		*block;
 	t_fblock	*prev_fblock;
+	t_area		*area;
 
-	if ((block = find_block(ptr, &prev_fblock)) == NULL)
+	if ((block = find_block(ptr, &prev_fblock, &area)) == NULL)
 	{
 		error_ptr_was_not_allocated(ptr);
 		return ;

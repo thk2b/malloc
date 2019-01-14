@@ -57,6 +57,8 @@ typedef struct	s_free_list
 }				t_free_list;
 
 size_t			free_list_index(size_t block_size);//TODO:macro or inline
+void			free_list_insert(t_fblock *prev, t_fblock *fblock);
+void			free_list_remove(t_fblock *fblock);
 /*
 **	errors
 */
@@ -80,13 +82,14 @@ void			*error_ptr_was_not_allocated(void *ptr);
 # define		AREA_CAN_FIT(a, s) ((a)->cur_size + s <= (a)->size)
 # define		AREA_PTR_IS_IN_RANGE(a, addr) ((void*)(addr) >= (void*)AREA_HEAD(a) && (void*)(addr) < (void*)AREA_CUR_END(a))
 # define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
+# define		BLOCK_PREV(b) (*NULL)
 
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);
 t_fblock		*find_free_block(size_t size);
-t_block			*find_block(void *ptr, t_fblock **prev_fblock);
-void			contract_block(t_block *block, size_t size);
-int				extend_block(t_block *block, size_t size);
+t_block			*find_block(void *ptr, t_fblock **prev_fblock, t_area **area);
+int				split_block(t_block *block, size_t size, t_fblock *last_free_block);
+int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area);
 
 #ifdef MALLOC_LOG
 
@@ -96,6 +99,7 @@ void			malloc_log_new_area(t_area *area);
 void			malloc_log_extended_area(t_area *area);
 void			malloc_log_freed_block(t_block *block);
 void			malloc_log_allocated_free_block(t_block *block);
+void			malloc_log_coalesced(t_block *block);
 
 #endif
 

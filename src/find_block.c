@@ -47,7 +47,7 @@ static inline void		init_prev_fblocks(t_fblock **fblocks)
 **	find the nearest previous free list node
 **		since we don't know the block size, keep track of the last element of every free list
 */
-t_block					*find_block(void *ptr, t_fblock **prev_fblock)
+t_block					*find_block(void *ptr, t_fblock **prev_fblock, t_area **areap)
 {
 	extern t_area	*g_area_head;//FIXME: start from the end?
 	t_area			*area;
@@ -58,9 +58,13 @@ t_block					*find_block(void *ptr, t_fblock **prev_fblock)
 	while (area)
 	{
 		if (AREA_PTR_IS_IN_RANGE(area, ptr))
+		{
+			*areap = area;
 			return (find_block_in_area(area, ptr, local_prev_fblock, prev_fblock));
+		}
 		area = area->next;
 	}
 	*prev_fblock = NULL;
+	*areap = NULL;
 	return (NULL);
 }
