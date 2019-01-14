@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <malloc.h>
 #include <string.h>
 
@@ -31,11 +32,13 @@ int		split_block(t_block *block, size_t size, t_fblock *last_free_block)
 **	==
 **	
 */
-static size_t	lookahead(t_block *block, size_t until, void *area_end)
+static size_t	lookahead(t_block *block, size_t until, t_area *area)
 {
 	size_t	sum;
 	t_block	*cur;
+	void	*area_end;
 
+	area_end = AREA_CUR_END(area);
 	sum = 0;
 	cur = BLOCK_NEXT(block);
 	while ((void*)cur < area_end && cur->free && sum < until)
@@ -43,7 +46,7 @@ static size_t	lookahead(t_block *block, size_t until, void *area_end)
 		sum += cur->size + sizeof(t_block);
 		cur = BLOCK_NEXT(cur);
 	}
-	if (cur == area_end)
+ 	if (cur == area_end && AREA_CAN_FIT(area, until))
 		return (until);
 	return (sum);
 }
@@ -66,24 +69,32 @@ static size_t	lookahead(t_block *block, size_t until, void *area_end)
 
 /*
 **	coalesce
+**		extend block by size bytes by removing all necesary free blocks ahead
 */
-int				coalesce(t_block *block, size_t size)
+int				coalesce(t_block *block, size_t size, t_area *area)
 {
 	size_t		total;
-	void		*limit;
+	void		*area_end;
 	t_block		*cur;
 	t_block		*next;
 
 	total = 0;
-	limit = (char*)block + size;
 	cur = BLOCK_NEXT(block);
-	while ((void*)cur < limit)
+	area_end = AREA_CUR_END(area);
+	while (total < size && (void*)cur < area_end)
 	{
 		next = BLOCK_NEXT(cur);
+		assert(cur->free == 1);
 		free_list_remove((t_fblock*)cur);
+		total += sizeof(t_block) + cur->size;
 		cur = next;
 	}
-	block->size += size;
+	if (cur == area_end)
+	{
+		area->cur_size += size - total;
+		total = size;
+	}
+	block->size += total;
 	#ifdef MALLOC_LOG
 	malloc_log_coalesced(block);
 	#endif
@@ -93,6 +104,7 @@ int				coalesce(t_block *block, size_t size)
 int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)
 {
 	size_t	size_ahead;
+	size_t	extention_size;
 	// size_t	size_behind;
 	// size_t	total;
 
@@ -101,11 +113,16 @@ int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_ar
 	{
 		block->size += size;
 		area->cur_size += size;
+		#ifdef MALLOC_LOG
+		malloc_log_extended_block(block);
+		#endif
 		return (1);
 	}
-	size_ahead = lookahead(block, size, AREA_CUR_END(area));
-	if (size_ahead >= size)
-		return (coalesce(block, size_ahead));
+	assert(size > block->size);
+	extention_size = size - block->size;
+	size_ahead = lookahead(block, extention_size, area);
+	if (size_ahead >= extention_size)
+		return (coalesce(block, size_ahead, area));
 	return (0);
 	// size_behind = lookback(block, size, AREA_HEAD(area));
 	// if ((total = size_behind + size_ahead) < size)

@@ -1,4 +1,5 @@
 #include <malloc.h>
+#include <assert.h>
 
 /*
 **	first fit free list search (O(n))
@@ -28,6 +29,7 @@ t_fblock	*find_free_block(size_t size)
 	cur = free_list->head;
 	while (cur)
 	{
+		assert(cur->block.free == 1);
 		if (cur->block.size >= size)
 			return (cur);
 		cur = cur->next;

@@ -100,6 +100,7 @@ void			malloc_log_extended_area(t_area *area);
 void			malloc_log_freed_block(t_block *block);
 void			malloc_log_allocated_free_block(t_block *block);
 void			malloc_log_coalesced(t_block *block);
+void			malloc_log_extended_block(t_block *block);
 
 #endif
 

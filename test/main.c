@@ -63,7 +63,19 @@ int main(void)
 		if (i != 5)
 			free(p[i]);
 	dump_mem();
-	realloc(p[5], 300);
+	// realloc(p[5], 300);
+	realloc(p[5], 600);
 	// realloc(p[5], 500);
+	free(p[5]);
+	p[0] = malloc(300);
 	dump_mem();
+	show_alloc_mem();
 }
+
+// int main(void)
+// {
+// 	char *s = malloc(8160);
+// 	s = realloc(s, 10000);
+// 	(void)s;
+// 	dump_mem();
+// }

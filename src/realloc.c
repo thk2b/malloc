@@ -37,7 +37,8 @@ void				*realloc(void *ptr, size_t size)
 
 	if (ptr == NULL)
 		return (malloc(size));
-	if ((block = find_block(ptr, &prev_free_block, &area)) == NULL)
+	size = ALLIGN(size, 8);
+	if ((block = find_block(ptr, &prev_free_block, &area)) == NULL || block->free)
 		return (error_ptr_was_not_allocated(ptr));
 	if (block->size == size)
 		return (ptr);
