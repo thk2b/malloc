@@ -102,27 +102,27 @@
 // 	show_alloc_mem();
 // }
 
-// int main(void)//realloc resize back
-// {
-// 	char *a = malloc(0);
-// 	memcpy(a, D, MIN_BLOCK_SIZE);
-// 	char *b = malloc(80);
-// 	memcpy(b, D, 80);
-// 	char *c = malloc(80);
-// 	memcpy(c, D, 80);
-// 	(void)c;
-// 	free(a);
-// 	free(b);
-// 	dump_mem();
-// 	char *d = malloc(88);
+int main(void)//realloc resize back
+{
+	char *a = malloc(0);
+	memcpy(a, D, MIN_BLOCK_SIZE);
+	char *b = malloc(80);
+	memcpy(b, D, 80);
+	char *c = malloc(80);
+	memcpy(c, D, 80);
+	(void)c;
+	free(a);
+	free(b);
+	dump_mem();
+	char *d = malloc(88);
 
-// 	memcpy(d, D, 80);
-// 	c = realloc(c, 88);
-// 	memcpy(c, D, 88);
-// 	dump_mem();
-// 	show_alloc_mem();
-// 	(void)d;
-// }
+	memcpy(d, D, 80);
+	c = realloc(c, 88);
+	memcpy(c, D, 88);
+	dump_mem();
+	show_alloc_mem();
+	(void)d;
+}
 
 // int main(void)//coalesce 3 blocks + wilderness
 // {
@@ -160,20 +160,20 @@
 // 	show_alloc_mem();
 // }
 
-int main(void)
-{
-	char *a = malloc(300);
-	(void)a;
-	char *b = malloc(300);
-	char *c = malloc(300);
-	char *d = malloc(300);
-	char *e = malloc(300);
-	(void)e;
+// int main(void)
+// {
+// 	char *a = malloc(300);
+// 	(void)a;
+// 	char *b = malloc(300);
+// 	char *c = malloc(300);
+// 	char *d = malloc(300);
+// 	char *e = malloc(300);
+// 	(void)e;
 
-	free(b);
-	free(c);
-	free(d);
-	malloc(1500);
-	dump_mem();
-	show_alloc_mem();
-}
+// 	free(b);
+// 	free(c);
+// 	free(d);
+// 	malloc(1500);
+// 	dump_mem();
+// 	show_alloc_mem();
+// }

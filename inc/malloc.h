@@ -85,7 +85,8 @@ void			*error_ptr_was_not_allocated(void *ptr);
 # define		AREA_CAN_FIT(a, s) ((a)->cur_size + s <= (a)->size)
 # define		AREA_PTR_IS_IN_RANGE(a, addr) ((void*)(addr) >= (void*)AREA_HEAD(a) && (void*)(addr) < (void*)AREA_CUR_END(a))
 # define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
-# define		BLOCK_PREV(b) ()
+# define		PREV_BLOCK_FOOTER(b) (*(size_t*)((char*)(b) - sizeof(size_t)))
+# define		BLOCK_PREV(b) ((t_block*)((char*)(b) - PREV_BLOCK_FOOTER(b) + sizeof(t_block)))
 
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);

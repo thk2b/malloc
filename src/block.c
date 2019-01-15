@@ -20,33 +20,29 @@
 */
 static size_t	lookahead(t_block *block, size_t until, t_area *area, t_fblock **last_free_block)
 {
-	size_t	sum;
-	t_block	*cur;
-	void	*area_end;
-	size_t	free_list_id;
+	size_t		sum;
+	t_block		*cur;
+	void		*area_end;
+	size_t		free_list_id;
+	t_fblock	*local_lfb;
 
 	area_end = AREA_CUR_END(area);
 	sum = 0;
 	cur = BLOCK_NEXT(block);
 	free_list_id = free_list_index(block->size);
+	local_lfb = NULL;
 	while ((void*)cur < area_end && cur->free && sum < until)
 	{
-		if (last_free_block && free_list_index(cur->size) == free_list_id)
-			*last_free_block = (t_fblock*)cur;
+		if (free_list_index(cur->size) == free_list_id)
+			local_lfb = (t_fblock*)cur;
 		sum += cur->size + sizeof(t_block);
 		cur = BLOCK_NEXT(cur);
 	}
+	if (last_free_block)
+		*last_free_block = local_lfb;
  	if (cur == area_end && AREA_CAN_FIT(area, until))
 		return (until);
 	return (sum);
-}
-
-static inline t_block	*prev_block(t_block *block)//TODO: macro me
-{
-	t_block	*prev_block;
-
-	prev_block = (t_block*)((char*)block - (*(size_t*)((char*)block - sizeof(size_t)) + sizeof(t_block)));
-	return (prev_block);
 }
 
 static size_t	lookback(t_block *block, size_t until, void *area_start)
@@ -57,14 +53,13 @@ static size_t	lookback(t_block *block, size_t until, void *area_start)
 	sum = 0;
 	if (block->prev_free == 0)
 		return (0);
-	cur = prev_block(block);
+	cur = BLOCK_PREV(block);
 	while ((void*)cur >= area_start && cur->free && sum < until)
 	{
 		sum += cur->size + sizeof(t_block);
 		if (cur->prev_free == 0)
 			break ;
-		cur = prev_block(cur);
-		// cur = BLOCK_PREV(block);
+		cur = BLOCK_PREV(block);
 	}
 	return (sum);
 }
@@ -124,7 +119,7 @@ static inline t_block	*extend_block_back(t_block *block, size_t size, t_area *ar
 	return (back_block);
 }
 
-t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block, t_area *area)//TODO: remove last free block arg
+t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block, t_area *area)
 {
 	size_t	size_ahead;
 	size_t	extention_size;
