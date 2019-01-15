@@ -78,26 +78,102 @@
 // 	(void)s;
 // 	dump_mem();
 // }
-int main(void)
-{
-	char *s[10];
-	char *t[10];
-	char *u;
+// int main(void)
+// {
+// 	char *s[10];
+// 	char *t[10];
+// 	char *u;
 
-	for (int i = 0; i < 10; i++)
-	{
-		s[i] = malloc(240);
-		t[i] = malloc(25);
-		if (i == 5)
-			u = malloc(240);
-	}
+// 	for (int i = 0; i < 10; i++)
+// 	{
+// 		s[i] = malloc(240);
+// 		t[i] = malloc(25);
+// 		if (i == 5)
+// 			u = malloc(240);
+// 	}
+// 	dump_mem();
+// 	for (int i = 3; i < 10; i++)
+// 	{
+// 		free(s[i]);
+// 		free(t[i]);
+// 	}
+// 	realloc(u, 1);
+// 	dump_mem();
+// 	show_alloc_mem();
+// }
+
+int main(void)//realloc resize back
+{
+	char *a = malloc(0);
+	memcpy(a, D, MIN_BLOCK_SIZE);
+	char *b = malloc(80);
+	memcpy(b, D, 80);
+	char *c = malloc(80);
+	memcpy(c, D, 80);
+	(void)c;
+	free(a);
+	free(b);
 	dump_mem();
-	for (int i = 3; i < 10; i++)
-	{
-		free(s[i]);
-		free(t[i]);
-	}
-	realloc(u, 1);
+	char *d = malloc(88);
+
+	memcpy(d, D, 80);
+	c = realloc(c, 88);
+	memcpy(c, D, 88);
 	dump_mem();
 	show_alloc_mem();
+	(void)d;
 }
+
+// int main(void)//coalesce 3 blocks + wilderness
+// {
+// 	char *a = malloc(10);
+// 	char *b = malloc(10);
+// 	char *c = malloc(10);
+// 	malloc(10);
+// 	malloc(10);
+// 	free(a);
+// 	free(b);
+// 	free(c);
+// 	dump_mem();
+// 	char *d = malloc(40);
+// 	(void)d;
+// 	dump_mem();
+// 	show_alloc_mem();
+// }
+
+// int main(void)//coalesce 2 blocks + wilderness
+// {
+// 	char *a = malloc(10);
+// 	(void)a;
+// 	char *b = malloc(10);
+// 	char *c = malloc(10);
+// 	free(a);
+// 	free(b);
+// 	// free(c);
+// 	dump_mem();
+// 	char *d = malloc(100);
+// 	(void)d;
+// 	dump_mem();
+// 	b = malloc(10);
+// 	c = malloc(10);
+// 	dump_mem();
+// 	show_alloc_mem();
+// }
+
+// int main(void)
+// {
+// 	char *a = malloc(300);
+// 	(void)a;
+// 	char *b = malloc(300);
+// 	char *c = malloc(300);
+// 	char *d = malloc(300);
+// 	char *e = malloc(300);
+// 	(void)e;
+
+// 	free(b);
+// 	free(c);
+// 	free(d);
+// 	malloc(1500);
+// 	dump_mem();
+// 	show_alloc_mem();
+// }

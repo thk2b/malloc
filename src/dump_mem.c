@@ -52,8 +52,9 @@ static void	dump_block(t_block *block)
 	hexdump(block, sizeof(t_block), BLOCK_HEADER);
 	if (block->free)
 	{
-		hexdump(DATA(block), MIN_BLOCK_SIZE, FREE_LIST_NODE);
+		hexdump(DATA(block), FREE_LIST_NODE_SIZE, FREE_LIST_NODE);
 		hexdump((char*)block + sizeof(t_fblock), block->size - MIN_BLOCK_SIZE, FREE_BLOCK_REMAINDER);
+		hexdump((char*)BLOCK_NEXT(block) - sizeof(size_t), sizeof(size_t), FREE_BLOCK_FOOTER);
 	}
 	else
 		hexdump(DATA(block), block->size, BLOCK_DATA);

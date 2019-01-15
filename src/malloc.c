@@ -17,13 +17,14 @@
 
 static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {
+	if (fblock->block.free)
+		return (DATA((t_block*)fblock));
 	fblock->block.free = 0;
-	// TODO: split
 	(void)size;
 	free_list_remove(fblock);
 	split_block(&fblock->block, size);
 	#ifdef MALLOC_LOG
-	malloc_log_allocated_free_block((t_block*)fblock);
+	malloc_log((t_block*)fblock, "allocated free block");
 	#endif
 	return (DATA((t_block*)fblock));
 }
@@ -39,11 +40,13 @@ static inline void	*allocate_new_block(size_t size)
 	&& ((area = new_area(total_block_size)) == NULL))
 		return (NULL);
 	block = AREA_CUR_END(area);
+	block->prev_free = 0;
+	/* prev block is guaranteed to be used, if free it would have been extended */
 	block->free = 0;
 	block->size = size;
 	area->cur_size += total_block_size;
 	#ifdef MALLOC_LOG
-	malloc_log_new_block(block);
+	malloc_log(block, "new block");
 	#endif
 	return (DATA(block));
 }

@@ -44,10 +44,10 @@ void				*realloc(void *ptr, size_t size)
 		return (ptr);
 	if (block->size > size)
 	{
-		split_block(block, size);
+		split_block(block, size);//TESTME
 		return (DATA(block));
 	}
-	if (extend_block(block, size, prev_free_block, area)) //TODO: split block
+	if ((block = extend_block(block, size, NULL, area)) != NULL)
 		return (DATA(block));
 	return (malloc_copy_free(ptr, size));
 }

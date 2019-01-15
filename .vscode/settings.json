@@ -24,6 +24,8 @@
 		"__config": "c",
 		"malloc.h": "c",
 		"random": "c",
-		"fcntl.h": "c"
+		"fcntl.h": "c",
+		"__bit_reference": "c",
+		"chrono": "c"
 	}
 }

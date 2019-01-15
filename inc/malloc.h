@@ -22,8 +22,9 @@ extern void		dump_mem(void);
 
 typedef struct	s_block
 {
+	size_t		prev_free:1;
 	size_t		free:1;
-	size_t		size:sizeof(size_t) * 8 - 1;
+	size_t		size:sizeof(size_t) * 8 - 2;
 }				t_block;
 
 /*
@@ -73,7 +74,8 @@ void			*error_ptr_was_not_allocated(void *ptr);
 # define		MIN(a,b) ((a) < (b) ? (a) : (b))
 # define		MAX(a,b) ((a) > (b) ? (a) : (b))
 # define		ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
-# define		MIN_BLOCK_SIZE ALLIGN((sizeof(struct s_free_list*) * 2), 8)
+# define		FREE_LIST_NODE_SIZE ((sizeof(struct s_fblock*) * 2))
+# define		MIN_BLOCK_SIZE (FREE_LIST_NODE_SIZE + sizeof(size_t))
 # define		MIN_AREA_SIZE(pgsz) ((pgsz) * 2)
 # define		DATA(b) ((char*)(b) + sizeof(t_block))
 # define		AREA_AVAILABLE_SIZE(a) ((a)->size - (a)->cur_size)
@@ -83,26 +85,22 @@ void			*error_ptr_was_not_allocated(void *ptr);
 # define		AREA_CAN_FIT(a, s) ((a)->cur_size + s <= (a)->size)
 # define		AREA_PTR_IS_IN_RANGE(a, addr) ((void*)(addr) >= (void*)AREA_HEAD(a) && (void*)(addr) < (void*)AREA_CUR_END(a))
 # define		BLOCK_NEXT(b) ((t_block*)((char*)(b) + sizeof(t_block) + (b)->size))
-# define		BLOCK_PREV(b) (*NULL)
+# define		PREV_BLOCK_FOOTER(b) (*(size_t*)((char*)(b) - sizeof(size_t)))
+# define		BLOCK_PREV(b) ((t_block*)((char*)(b) - PREV_BLOCK_FOOTER(b) + sizeof(t_block)))
 
 t_area			*new_area(size_t size);
 t_area			*find_area_with_available_size(size_t size);
+t_area			*find_area_fblock(t_fblock *fblock);
 t_fblock		*find_free_block(size_t size);
 t_block			*find_block(void *ptr, t_fblock **prev_fblock, t_area **area);
 t_fblock		*split_block(t_block *block, size_t size);
-int				extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area);
+t_block			*extend_block(t_block *block, size_t size, t_fblock **last_free_block, t_area *area);
 
 #ifdef MALLOC_LOG
 
 void			init_log(void);
-void			malloc_log_new_block(t_block *block);
-void			malloc_log_new_area(t_area *area);
-void			malloc_log_extended_area(t_area *area);
-void			malloc_log_freed_block(t_block *block);
-void			malloc_log_allocated_free_block(t_block *block);
-void			malloc_log_coalesced(t_block *block);
-void			malloc_log_extended_block(t_block *block);
-void			malloc_log_split_block(t_block *block);
+void			malloc_log(t_block *block, char *message);
+void			malloc_log_area(t_area *area, char *message);
 
 #endif
 
@@ -141,6 +139,7 @@ void			put_str(int fd, char *s);
 # define		BLOCK_DATA				GREEN
 # define		FREE_LIST_NODE			BLUE
 # define		FREE_BLOCK_REMAINDER	WHITE
+# define		FREE_BLOCK_FOOTER		YELLOW
 # define		AREA_HEADER				BLACK CYAN
 # define		AREA_UNUSED				WHITE
 
