@@ -138,7 +138,7 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block,
 	size_ahead = lookahead(block, extention_size, area);
 	if (size_ahead < extention_size)
 		return (extend_block_back(block, size, area, size_ahead));
-	coalesce(block, size_ahead, area); //TESTME
+	coalesce(block, size_ahead, area);
 	split_block(block, size);
 	return (block);
 }
@@ -153,7 +153,7 @@ t_fblock	*split_block(t_block *block, size_t new_size)
 	t_fblock	*fblock;
 	size_t		fblock_size;
 
-	assert(new_size < block->size);
+	assert(new_size <= block->size);
 	fblock_size = block->size - new_size;
 	if (fblock_size < sizeof(t_block) + MIN_BLOCK_SIZE)
 		return (NULL);

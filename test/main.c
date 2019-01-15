@@ -124,30 +124,37 @@
 // 	(void)d;
 // }
 
-int main(void)//coalesce 3 blocks + wilderness
-{
-	char *a = malloc(10);
-	char *b = malloc(10);
-	char *c = malloc(10);
-	malloc(10);
-	malloc(10);
-	free(a);
-	free(b);
-	free(c);
-	char *d = malloc(40);
-	(void)d;
-	dump_mem();
-	show_alloc_mem();
-}
 // int main(void)//coalesce 3 blocks + wilderness
 // {
 // 	char *a = malloc(10);
 // 	char *b = malloc(10);
 // 	char *c = malloc(10);
+// 	malloc(10);
+// 	malloc(10);
+// 	free(a);
 // 	free(b);
 // 	free(c);
+// 	dump_mem();
 // 	char *d = malloc(40);
 // 	(void)d;
 // 	dump_mem();
 // 	show_alloc_mem();
 // }
+
+int main(void)//coalesce 2 blocks + wilderness
+{
+	char *a = malloc(10);
+	(void)a;
+	char *b = malloc(10);
+	char *c = malloc(10);
+	free(b);
+	free(c);
+	dump_mem();
+	char *d = malloc(40);
+	(void)d;
+	dump_mem();
+	b = malloc(10);
+	c = malloc(10);
+	dump_mem();
+	show_alloc_mem();
+}
