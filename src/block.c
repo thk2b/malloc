@@ -75,7 +75,7 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	void		*area_end;
 	t_block		*cur;
 	t_block		*next;
-	static int	total_free = 0;
+	static int	total_free = 0;//TODO:remove me
 
 	total = 0;
 	if (block->free == 1 && (block->free = 0) == 0)
@@ -118,7 +118,7 @@ static inline t_block	*extend_block_back(t_block *block, size_t size, t_area *ar
 	split_block(back_block, size);
 	return (back_block);
 }
-t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)
+t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)//TODO: remove last free block arg
 {
 	size_t	size_ahead;
 	size_t	extention_size;
@@ -142,14 +142,6 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block,
 	split_block(block, size);
 	return (block);
 }
-
-// int					extend_fblock(t_fblock **fblock, size_t size)
-// {
-// 	t_area	*area;
-
-// 	area = find_area_fblock(*fblock);
-	
-// }
 
 /*
 **	split_block(block, new_size)

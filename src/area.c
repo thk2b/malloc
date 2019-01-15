@@ -86,7 +86,17 @@ t_area			*find_area_with_available_size(size_t size)
 	return (NULL);
 }
 
-// t_area			*find_area_fblock(t_fblock *fblock)
-// {
-// 	return (NULL);
-// }
+t_area			*find_area_fblock(t_fblock *fblock)
+{
+	extern t_area	*g_area_head;
+	t_area			*area;
+
+	area = g_area_head;
+	while (area)
+	{
+		if (AREA_PTR_IS_IN_RANGE(area, (void*)fblock))
+			return (area);
+		area = area->next;
+	}
+	return (NULL);
+}

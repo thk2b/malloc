@@ -22,6 +22,7 @@ t_fblock	*find_free_block(size_t size)
 {
 	extern t_free_list	g_free_lists[];
 	t_free_list			*free_list;
+	t_block				*extended_block;
 	t_fblock			*cur;
 
 	if((free_list = g_free_lists + free_list_index(size)) == NULL)
@@ -32,10 +33,9 @@ t_fblock	*find_free_block(size_t size)
 		assert(cur->block.free == 1);
 		if (cur->block.size >= size)
 			return (cur);
-		// if (extend_fblock(&cur, size))
-		// 	return (cur);
+		if ((extended_block = extend_block(&cur->block, size, NULL, find_area_fblock(cur))))
+			return ((t_fblock*)extended_block);
 		cur = cur->next;
-		// TODO: check for free neighbors
 	}
 	return (NULL);
 }
