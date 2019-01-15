@@ -85,3 +85,8 @@ t_area			*find_area_with_available_size(size_t size)
 	}
 	return (NULL);
 }
+
+// t_area			*find_area_fblock(t_fblock *fblock)
+// {
+// 	return (NULL);
+// }

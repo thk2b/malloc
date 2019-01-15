@@ -117,7 +117,8 @@ int main(void)
 	char *d = malloc(88);
 
 	memcpy(d, D, 80);
-	realloc(c, 88);
+	c = realloc(c, 88);
+	memcpy(c, D, 88);
 	dump_mem();
 	show_alloc_mem();
 	(void)d;

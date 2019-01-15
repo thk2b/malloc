@@ -47,7 +47,7 @@ void				*realloc(void *ptr, size_t size)
 		split_block(block, size);//TESTME
 		return (DATA(block));
 	}
-	if (extend_block(block, size, prev_free_block, area)) //TODO: split block
+	if ((block = extend_block(block, size, prev_free_block, area)) != NULL)
 		return (DATA(block));
 	return (malloc_copy_free(ptr, size));
 }

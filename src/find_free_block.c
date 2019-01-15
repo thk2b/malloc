@@ -32,6 +32,8 @@ t_fblock	*find_free_block(size_t size)
 		assert(cur->block.free == 1);
 		if (cur->block.size >= size)
 			return (cur);
+		// if (extend_fblock(&cur, size))
+		// 	return (cur);
 		cur = cur->next;
 		// TODO: check for free neighbors
 	}

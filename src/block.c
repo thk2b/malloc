@@ -37,8 +37,7 @@ static size_t	lookahead(t_block *block, size_t until, t_area *area)
 	return (sum);
 }
 
-// requires boundary blocks
-static inline t_block	*prev_block(t_block *block)
+static inline t_block	*prev_block(t_block *block)//TODO: macro me
 {
 	t_block	*prev_block;
 
@@ -104,7 +103,7 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	return (1);
 }
 
-static inline int extend_block_back(t_block *block, size_t size, t_area *area, size_t size_ahead)
+static inline t_block	*extend_block_back(t_block *block, size_t size, t_area *area, size_t size_ahead)
 {
 	size_t	size_behind;
 	size_t	total_size;
@@ -112,14 +111,14 @@ static inline int extend_block_back(t_block *block, size_t size, t_area *area, s
 
 	size_behind = lookback(block, size, AREA_HEAD(area));
 	if ((total_size = size_behind + size_ahead) < size)
-		return (0);
+		return (NULL);
 	back_block = (t_block*)((char*)block - size_behind);
 	coalesce(back_block, total_size, area);
 	memmove(DATA(back_block), DATA(block), block->size);
 	split_block(back_block, size);
-	return (1);
+	return (back_block);
 }
-int					extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)
+t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)
 {
 	size_t	size_ahead;
 	size_t	extention_size;
@@ -132,17 +131,25 @@ int					extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_a
 		#ifdef MALLOC_LOG
 		malloc_log_extended_block(block);
 		#endif
-		return (1);
+		return (block);
 	}
 	assert(size > block->size);
 	extention_size = size - block->size;
 	size_ahead = lookahead(block, extention_size, area);
 	if (size_ahead < extention_size)
 		return (extend_block_back(block, size, area, size_ahead));
-	coalesce(block, size_ahead, area);
+	coalesce(block, size_ahead, area); //TESTME
 	split_block(block, size);
-	return (1);
+	return (block);
 }
+
+// int					extend_fblock(t_fblock **fblock, size_t size)
+// {
+// 	t_area	*area;
+
+// 	area = find_area_fblock(*fblock);
+	
+// }
 
 /*
 **	split_block(block, new_size)
