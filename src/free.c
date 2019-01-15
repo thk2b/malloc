@@ -27,6 +27,8 @@ void				free(void *ptr)
 	t_fblock	*prev_fblock;
 	t_area		*area;
 
+	if (ptr == NULL)
+		return ;
 	if ((block = find_block(ptr, &prev_fblock, &area)) == NULL)
 	{
 		error_ptr_was_not_allocated(ptr);

@@ -102,27 +102,27 @@
 // 	show_alloc_mem();
 // }
 
-int main(void)//realloc resize back
-{
-	char *a = malloc(0);
-	memcpy(a, D, MIN_BLOCK_SIZE);
-	char *b = malloc(80);
-	memcpy(b, D, 80);
-	char *c = malloc(80);
-	memcpy(c, D, 80);
-	(void)c;
-	free(a);
-	free(b);
-	dump_mem();
-	char *d = malloc(88);
+// int main(void)//realloc resize back
+// {
+// 	char *a = malloc(0);
+// 	memcpy(a, D, MIN_BLOCK_SIZE);
+// 	char *b = malloc(80);
+// 	memcpy(b, D, 80);
+// 	char *c = malloc(80);
+// 	memcpy(c, D, 80);
+// 	(void)c;
+// 	free(a);
+// 	free(b);
+// 	dump_mem();
+// 	char *d = malloc(88);
 
-	memcpy(d, D, 80);
-	c = realloc(c, 88);
-	memcpy(c, D, 88);
-	dump_mem();
-	show_alloc_mem();
-	(void)d;
-}
+// 	memcpy(d, D, 80);
+// 	c = realloc(c, 88);
+// 	memcpy(c, D, 88);
+// 	dump_mem();
+// 	show_alloc_mem();
+// 	(void)d;
+// }
 
 // int main(void)//coalesce 3 blocks + wilderness
 // {
@@ -177,3 +177,55 @@ int main(void)//realloc resize back
 // 	dump_mem();
 // 	show_alloc_mem();
 // }
+
+int main(void)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		char *p = malloc(32);
+		memcpy(p, D, 32);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		char * p = malloc(64);
+		memcpy(p, D, 64);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		char *p = malloc(32);
+		memcpy(p, D, 32);
+	}
+	for (int i = 0; i < 107; i++)
+	{
+		char *p = malloc(64);
+		memcpy(p, D, 64);
+	}
+	char *p = realloc(NULL, 256);
+	memcpy(p, D, 256);
+	free(p);
+	p = realloc(NULL, 256);
+	memcpy(p, D, 256);
+	p = realloc(p, 768);
+	memcpy(p, D, ALLIGN(768, 8));
+
+	// char *p = malloc(256);
+	
+	// p = realloc(p, 1024);
+	// memcpy(p + 64, D, 1024 - 64);
+	// free(p);
+	// p = malloc(256);
+	// memcpy(p, D, 256);
+	// free(p);
+	// char *p[10];
+	// p[0] = malloc(64);
+	// memcpy(p[0], D, 64);
+	// p[1] = malloc(256);
+	// memcpy(p[1], D, 256);
+	// p[1] = realloc(p[1], 1024);
+	// memcpy(p[1], D D, 1024);
+	// free(p[1]);
+	// p[2] = malloc(256);
+	// memcpy(p[2], D, 256);
+	// free(p[2]);
+	dump_mem();
+}

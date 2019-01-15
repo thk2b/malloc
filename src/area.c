@@ -1,5 +1,5 @@
 #include <malloc.h>
-
+#include <assert.h>
 #include <sys/mman.h>
 #include <unistd.h>
 
@@ -38,6 +38,7 @@ static inline t_area	*link_new_area(t_area *area, size_t size)
 		#ifdef MALLOC_LOG
 		malloc_log_area(g_area_tail, "extended area");
 		#endif
+		assert(g_area_tail->next == NULL);
 		return (g_area_tail);
 	}
 	if (g_area_tail)

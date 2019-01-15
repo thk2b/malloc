@@ -100,6 +100,7 @@ t_block			*extend_block(t_block *block, size_t size, t_fblock **last_free_block,
 
 void			init_log(void);
 void			malloc_log(t_block *block, char *message);
+void			malloc_log_realloc(void* ptr, size_t size);
 void			malloc_log_area(t_area *area, char *message);
 
 #endif

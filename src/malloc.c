@@ -17,15 +17,15 @@
 
 static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {
-	if (fblock->block.free)
+	#ifdef MALLOC_LOG
+	malloc_log((t_block*)fblock, "allocated free block");
+	#endif
+	if (fblock->block.free == 0)
 		return (DATA((t_block*)fblock));
 	fblock->block.free = 0;
 	(void)size;
 	free_list_remove(fblock);
 	split_block(&fblock->block, size);
-	#ifdef MALLOC_LOG
-	malloc_log((t_block*)fblock, "allocated free block");
-	#endif
 	return (DATA((t_block*)fblock));
 }
 

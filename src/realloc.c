@@ -18,10 +18,11 @@
 **		error
 */
 
-static inline void	*malloc_copy_free(void *ptr, size_t size)
+static inline void	*malloc_copy_free(void *ptr, size_t size, size_t old_size)
 {
 	void	*new_ptr;
 
+	(void)old_size;//FIXME
 	if ((new_ptr = malloc(size)) == NULL)
 		return (NULL);
 	memcpy(new_ptr, ptr, size);
@@ -35,6 +36,9 @@ void				*realloc(void *ptr, size_t size)
 	t_fblock	*prev_free_block;
 	t_area		*area;
 
+	#ifdef MALLOC_LOG
+	malloc_log_realloc(ptr, size);
+	#endif
 	if (ptr == NULL)
 		return (malloc(size));
 	size = ALLIGN(size, 8);
@@ -44,10 +48,10 @@ void				*realloc(void *ptr, size_t size)
 		return (ptr);
 	if (block->size > size)
 	{
-		split_block(block, size);//TESTME
+		split_block(block, size);
 		return (DATA(block));
 	}
 	if ((block = extend_block(block, size, NULL, area)) != NULL)
 		return (DATA(block));
-	return (malloc_copy_free(ptr, size));
+	return (malloc_copy_free(ptr, size, block->size));
 }
