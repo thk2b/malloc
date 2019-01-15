@@ -180,52 +180,35 @@
 
 int main(void)
 {
-	for (int i = 0; i < 2; i++)
-	{
-		char *p = malloc(32);
-		memcpy(p, D, 32);
-	}
-	for (int i = 0; i < 5; i++)
-	{
-		char * p = malloc(64);
-		memcpy(p, D, 64);
-	}
-	for (int i = 0; i < 1; i++)
-	{
-		char *p = malloc(32);
-		memcpy(p, D, 32);
-	}
-	for (int i = 0; i < 107; i++)
-	{
-		char *p = malloc(64);
-		memcpy(p, D, 64);
-	}
-	char *p = realloc(NULL, 256);
-	memcpy(p, D, 256);
-	free(p);
-	p = realloc(NULL, 256);
-	memcpy(p, D, 256);
-	p = realloc(p, 768);
-	memcpy(p, D, ALLIGN(768, 8));
-
-	// char *p = malloc(256);
-	
-	// p = realloc(p, 1024);
-	// memcpy(p + 64, D, 1024 - 64);
-	// free(p);
-	// p = malloc(256);
+	// for (int i = 0; i < 2; i++)
+	// {
+	// 	char *p = malloc(32);
+	// 	memcpy(p, D, 32);
+	// }
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	char * p = malloc(64);
+	// 	memcpy(p, D, 64);
+	// }
+	// for (int i = 0; i < 1; i++)
+	// {
+	// 	char *p = malloc(32);
+	// 	memcpy(p, D, 32);
+	// }
+	// for (int i = 0; i < 107; i++)
+	// {
+	// 	char *p = malloc(64);
+	// 	memcpy(p, D, 64);
+	// }
+	// char *p = realloc(NULL, 256);
 	// memcpy(p, D, 256);
 	// free(p);
-	// char *p[10];
-	// p[0] = malloc(64);
-	// memcpy(p[0], D, 64);
-	// p[1] = malloc(256);
-	// memcpy(p[1], D, 256);
-	// p[1] = realloc(p[1], 1024);
-	// memcpy(p[1], D D, 1024);
-	// free(p[1]);
-	// p[2] = malloc(256);
-	// memcpy(p[2], D, 256);
-	// free(p[2]);
+	// p = realloc(NULL, 256);
+	// memcpy(p, D, 256);
+	// p = realloc(p, 768);
+	// memcpy(p, D, ALLIGN(768, 8));
+
+	char *s = malloc(256);
+	s = realloc(s, 102392);
 	dump_mem();
 }

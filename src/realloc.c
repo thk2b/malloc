@@ -33,6 +33,7 @@ static inline void	*malloc_copy_free(void *ptr, size_t size, size_t old_size)
 void				*realloc(void *ptr, size_t size)
 {
 	t_block		*block;
+	t_block		*extended_block;
 	t_fblock	*prev_free_block;
 	t_area		*area;
 
@@ -51,7 +52,7 @@ void				*realloc(void *ptr, size_t size)
 		split_block(block, size);
 		return (DATA(block));
 	}
-	if ((block = extend_block(block, size, NULL, area)) != NULL)
-		return (DATA(block));
+	if ((extended_block = extend_block(block, size, NULL, area)) != NULL)
+		return (DATA(extended_block));
 	return (malloc_copy_free(ptr, size, block->size));
 }
