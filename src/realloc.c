@@ -22,10 +22,10 @@ static inline void	*malloc_copy_free(void *ptr, size_t size, size_t old_size)
 {
 	void	*new_ptr;
 
-	(void)old_size;//FIXME
+	(void)old_size;
 	if ((new_ptr = malloc(size)) == NULL)
 		return (NULL);
-	memcpy(new_ptr, ptr, size);
+	memcpy(new_ptr, ptr, old_size);
 	free(ptr);
 	return (new_ptr);
 }
