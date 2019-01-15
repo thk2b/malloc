@@ -20,7 +20,7 @@ static inline t_area	*init_new_area(t_area *area, size_t size)
 	area->cur_size = sizeof(t_area);
 	area->next = NULL;
 	#ifdef MALLOC_LOG
-	malloc_log_new_area(area);
+	malloc_log_area(area, "new area");
 	#endif
 	return (area);
 }
@@ -36,7 +36,7 @@ static inline t_area	*link_new_area(t_area *area, size_t size)
 		g_area_tail->size += size;
 
 		#ifdef MALLOC_LOG
-		malloc_log_extended_area(g_area_tail);
+		malloc_log_area(g_area_tail, "extended area");
 		#endif
 		return (g_area_tail);
 	}

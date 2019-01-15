@@ -87,7 +87,7 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 			free_list_remove((t_fblock*)cur);
 		total += sizeof(t_block) + cur->size;
 		#ifdef MALLOC_LOG
-		malloc_log_reaped_block(cur);
+		malloc_log(cur, "reaped block");
 		#endif
 		cur = next;
 	}
@@ -98,7 +98,7 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	}
 	block->size += total;
 	#ifdef MALLOC_LOG
-	malloc_log_coalesced(block);
+	malloc_log(block, "coalesced");
 	#endif
 	return (1);
 }
@@ -130,7 +130,7 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block
 		block->size += size;
 		area->cur_size += size;
 		#ifdef MALLOC_LOG
-		malloc_log_extended_block(block);
+		malloc_log(block, "extended block");
 		#endif
 		return (block);
 	}
@@ -166,8 +166,8 @@ t_fblock	*split_block(t_block *block, size_t new_size)
 	fblock->block.free = 1;
 	fblock->block.size = fblock_size - sizeof(t_block);
 	#ifdef MALLOC_LOG
-	malloc_log_split_block(block);
-	malloc_log_new_block(&fblock->block);
+	malloc_log(block, "block");
+	malloc_log(&fblock->block, "new block");
 	#endif
 	free_list_insert(fblock);
 	return (fblock);

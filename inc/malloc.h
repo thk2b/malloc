@@ -99,15 +99,8 @@ t_block			*extend_block(t_block *block, size_t size, t_fblock **last_free_block,
 #ifdef MALLOC_LOG
 
 void			init_log(void);
-void			malloc_log_new_block(t_block *block);
-void			malloc_log_new_area(t_area *area);
-void			malloc_log_extended_area(t_area *area);
-void			malloc_log_freed_block(t_block *block);
-void			malloc_log_allocated_free_block(t_block *block);
-void			malloc_log_coalesced(t_block *block);
-void			malloc_log_extended_block(t_block *block);
-void			malloc_log_split_block(t_block *block);
-void			malloc_log_reaped_block(t_block *block);
+void			malloc_log(t_block *block, char *message);
+void			malloc_log_area(t_area *area, char *message);
 
 #endif
 
