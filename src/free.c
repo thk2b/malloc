@@ -1,4 +1,5 @@
 #include <malloc.h>
+#include <assert.h>
 
 /*
 **	Signals to the allocator that the memory pointed to by ptr can be reused.
@@ -27,6 +28,9 @@ void				free(void *ptr)
 	t_fblock	*prev_fblock;
 	t_area		*area;
 
+	#ifdef MALLOC_LOG
+	malloc_log_free(ptr);
+	#endif
 	if (ptr == NULL)
 		return ;
 	if ((block = find_block(ptr, &prev_fblock, &area)) == NULL)
@@ -38,6 +42,7 @@ void				free(void *ptr)
 	write_boundary_tag(block);
 	if ((void*)(next = BLOCK_NEXT(block)) < AREA_CUR_END(area))
 		next->prev_free = 1;
+	assert(prev_fblock < (t_fblock*)block);
 	free_list_insert_after(prev_fblock, (t_fblock*)block);
 	#ifdef MALLOC_LOG
 	malloc_log(block, "freed_block");

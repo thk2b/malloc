@@ -56,6 +56,9 @@ extern void			*malloc(size_t size)
 	t_fblock	*fblock;
 
 	size = MAX(ALLIGN(size, 8), MIN_BLOCK_SIZE);
+	#ifdef MALLOC_LOG
+	malloc_log_malloc(size);
+	#endif
 	if ((fblock = find_free_block(size)) == NULL)
 		return (allocate_new_block(size));
 	return (allocate_free_block(fblock, size));

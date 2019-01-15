@@ -30,6 +30,7 @@ static inline t_block	*find_block_in_area(t_area *area, void *ptr, t_fblock **lo
 		}
 		block = BLOCK_NEXT(block);
 	}
+	*prev_fblock = NULL;
 	return (NULL);
 }
 
@@ -37,9 +38,9 @@ static inline void		init_prev_fblocks(t_fblock **fblocks)
 {
 	extern t_free_list	g_free_lists[];
 
-	fblocks[0] = g_free_lists[0].head;
-	fblocks[1] = g_free_lists[1].head;
-	fblocks[2] = g_free_lists[2].head;
+	fblocks[0] = NULL;
+	fblocks[1] = NULL;
+	fblocks[2] = NULL;
 }
 
 /*

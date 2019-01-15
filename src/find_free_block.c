@@ -31,6 +31,8 @@ t_fblock	*find_free_block(size_t size)
 	cur = free_list->head;
 	while (cur)
 	{
+		if (cur->block.free == 0)
+			malloc_log(&cur->block, "not free but on free list");
 		assert(cur->block.free == 1);
 		if (cur->block.size >= size)
 			return (cur);

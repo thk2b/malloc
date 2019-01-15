@@ -12,8 +12,11 @@ void	sigsegv(int s)
 	static int	c = 0;
 
 	if (g_logfd != -1)
-		put_str(g_logfd, "caught SEGV\n");
-	(void)s;
+	{
+		put_str(g_logfd, "caught signal ");
+		put_dec(g_logfd, s);
+		put_str(g_logfd, "\n");
+	}
 	if (c == 0)
 	{
 		dump_mem();
@@ -27,6 +30,7 @@ void		init_log(void)
 	extern int	g_logfd;
 
 	signal(SIGSEGV, sigsegv);
+	signal(SIGABRT, sigsegv);
 	if((g_logfd = open("/tmp/.malloc_log", O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
 	{
 		write(2, "can't open log\n", 16);
@@ -46,7 +50,7 @@ void	malloc_log_area(t_area *area, char *message)
 	put_hex(g_logfd, (size_t)area, 1);
 	put_str(g_logfd, "\t");
 	put_dec(g_logfd, area->size);
-	put_str(g_logfd, "\n");	
+	put_str(g_logfd, "\n");
 }
 
 void	malloc_log(t_block *block, char *message)
@@ -65,17 +69,39 @@ void	malloc_log(t_block *block, char *message)
 	put_str(g_logfd, "\n");
 }
 
+void	malloc_log_malloc(size_t size)
+{
+	extern int	g_logfd;
+
+	if (g_logfd == -1)
+		init_log();
+	put_str(g_logfd, "\tmalloc\t");
+	put_dec(g_logfd, size);
+	put_str(g_logfd, "\n");
+}
+
+void	malloc_log_free(void *ptr)
+{
+	extern int	g_logfd;
+
+	if (g_logfd == -1)
+		init_log();
+	put_str(g_logfd, "\tfree\t");
+	put_hex(g_logfd, (size_t)ptr, 1);
+	put_str(g_logfd, "\n");
+}
+
 void	malloc_log_realloc(void *ptr, size_t size)
 {
 	extern int	g_logfd;
 
 	if (g_logfd == -1)
 		init_log();
-	put_str(g_logfd, "realloc\t");
+	put_str(g_logfd, "\trealloc\t");
 	put_hex(g_logfd, (size_t)ptr, 1);
 	put_str(g_logfd, "\t");
 	put_dec(g_logfd, size);
-	put_str(g_logfd, "\n");	
+	put_str(g_logfd, "\n");
 }
 
 #endif

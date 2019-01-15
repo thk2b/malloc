@@ -10,12 +10,13 @@ void	free_list_insert(t_fblock *fblock)
 
 	free_list = g_free_lists + free_list_index(fblock->block.size);
 	cur = free_list->head;
-	prev = cur;
+	prev = NULL;
 	while (cur && (void*)fblock > (void*)cur)
 	{
 		prev = cur;
 		cur = cur->next;
 	}
+	assert(prev < fblock);
 	free_list_insert_after(prev, fblock);
 }
 

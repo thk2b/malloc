@@ -83,7 +83,7 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	while (total < size && (void*)cur < area_end)
 	{
 		next = BLOCK_NEXT(cur);
-		if (block->free)
+		if (cur->free)
 			free_list_remove((t_fblock*)cur);
 		total += sizeof(t_block) + cur->size;
 		#ifdef MALLOC_LOG
@@ -166,7 +166,7 @@ t_fblock	*split_block(t_block *block, size_t new_size)
 	fblock->block.free = 1;
 	fblock->block.size = fblock_size - sizeof(t_block);
 	#ifdef MALLOC_LOG
-	malloc_log(block, "block");
+	malloc_log(block, "split block");
 	malloc_log(&fblock->block, "new block");
 	#endif
 	free_list_insert(fblock);
