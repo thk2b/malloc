@@ -95,6 +95,20 @@ void			malloc_log_coalesced(t_block *block)
 	put_str(g_logfd, "\n");
 }
 
+void			malloc_log_reaped_block(t_block *block)
+{
+	extern int	g_logfd;
+
+	if (g_logfd == -1)
+		init_log();
+	put_str(g_logfd, "reaped block\t");
+	put_hex(g_logfd, (size_t)block, 1);
+	put_str(g_logfd, "\t");
+	put_dec(g_logfd, block->size);
+	put_str(g_logfd, "\n");
+}
+
+
 void			malloc_log_extended_block(t_block *block)
 {
 	extern int	g_logfd;

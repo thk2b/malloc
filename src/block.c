@@ -18,17 +18,21 @@
 **	==
 **	
 */
-static size_t	lookahead(t_block *block, size_t until, t_area *area)
+static size_t	lookahead(t_block *block, size_t until, t_area *area, t_fblock **last_free_block)
 {
 	size_t	sum;
 	t_block	*cur;
 	void	*area_end;
+	size_t	free_list_id;
 
 	area_end = AREA_CUR_END(area);
 	sum = 0;
 	cur = BLOCK_NEXT(block);
+	free_list_id = free_list_index(block->size);
 	while ((void*)cur < area_end && cur->free && sum < until)
 	{
+		if (last_free_block && free_list_index(cur->size) == free_list_id)
+			*last_free_block = (t_fblock*)cur;
 		sum += cur->size + sizeof(t_block);
 		cur = BLOCK_NEXT(cur);
 	}
@@ -75,7 +79,6 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	void		*area_end;
 	t_block		*cur;
 	t_block		*next;
-	static int	total_free = 0;//TODO:remove me
 
 	total = 0;
 	if (block->free == 1 && (block->free = 0) == 0)
@@ -85,10 +88,12 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 	while (total < size && (void*)cur < area_end)
 	{
 		next = BLOCK_NEXT(cur);
-		assert(cur->free == 1 || total_free++ == 0);
 		if (block->free)
 			free_list_remove((t_fblock*)cur);
 		total += sizeof(t_block) + cur->size;
+		#ifdef MALLOC_LOG
+		malloc_log_reaped_block(cur);
+		#endif
 		cur = next;
 	}
 	if (cur == area_end)
@@ -118,7 +123,8 @@ static inline t_block	*extend_block_back(t_block *block, size_t size, t_area *ar
 	split_block(back_block, size);
 	return (back_block);
 }
-t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block, t_area *area)//TODO: remove last free block arg
+
+t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block, t_area *area)//TODO: remove last free block arg
 {
 	size_t	size_ahead;
 	size_t	extention_size;
@@ -135,7 +141,7 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock *last_free_block,
 	}
 	assert(size > block->size);
 	extention_size = size - block->size;
-	size_ahead = lookahead(block, extention_size, area);
+	size_ahead = lookahead(block, extention_size, area, last_free_block);
 	if (size_ahead < extention_size)
 		return (extend_block_back(block, size, area, size_ahead));
 	coalesce(block, size_ahead, area);
@@ -156,7 +162,10 @@ t_fblock	*split_block(t_block *block, size_t new_size)
 	assert(new_size <= block->size);
 	fblock_size = block->size - new_size;
 	if (fblock_size < sizeof(t_block) + MIN_BLOCK_SIZE)
+	{
+		// malloc_log_internal_fragmentation();
 		return (NULL);
+	}
 	block->size = new_size;
 	fblock = (t_fblock*)BLOCK_NEXT(block);
 	fblock->block.free = 1;

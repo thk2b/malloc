@@ -24,6 +24,7 @@ t_fblock	*find_free_block(size_t size)
 	t_free_list			*free_list;
 	t_block				*extended_block;
 	t_fblock			*cur;
+	t_fblock			*last_encountered;
 
 	if((free_list = g_free_lists + free_list_index(size)) == NULL)
 		return (NULL);
@@ -33,9 +34,10 @@ t_fblock	*find_free_block(size_t size)
 		assert(cur->block.free == 1);
 		if (cur->block.size >= size)
 			return (cur);
-		if ((extended_block = extend_block(&cur->block, size, NULL, find_area_fblock(cur))))
+		last_encountered = NULL;
+		if ((extended_block = extend_block(&cur->block, size, &last_encountered, find_area_fblock(cur))))
 			return ((t_fblock*)extended_block);
-		cur = cur->next;
+		cur = last_encountered ? last_encountered->next : cur->next;
 	}
 	return (NULL);
 }

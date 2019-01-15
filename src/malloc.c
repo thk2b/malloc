@@ -20,7 +20,6 @@ static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 	if (fblock->block.free)
 		return (DATA((t_block*)fblock));
 	fblock->block.free = 0;
-	// TODO: split
 	(void)size;
 	free_list_remove(fblock);
 	split_block(&fblock->block, size);
