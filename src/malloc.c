@@ -19,7 +19,7 @@ static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {
 	t_area		*area;
 
-	if (fblock->block.free == 0)
+	if (fblock->block.free == 0) // FIXME
 	{
 		#ifdef MALLOC_LOG
 		malloc_log((t_block*)fblock, "allocated free block");
@@ -44,6 +44,7 @@ static inline void	*allocate_new_block(size_t size)
 	size_t	total_block_size;
 
 	total_block_size = size + sizeof(t_block);
+	extern int g_logfd;
 	if ((area = find_area_with_available_size(total_block_size)) == NULL
 	&& ((area = new_area(total_block_size)) == NULL))
 		return (NULL);

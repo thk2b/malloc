@@ -14,7 +14,7 @@ CC_FLAGS = -Wall -Wextra -Werror -Wpedantic #-Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
-INC = -I $(LIBDIR)/includes -I inc
+INC = -I inc #-I $(LIBDIR)/includes 
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\

@@ -41,7 +41,7 @@ void	free_list_insert_after(t_fblock *prev, t_fblock *fblock, t_area *area)
 
 	if (BLOCK_NEXT((t_block*)fblock) == AREA_CUR_END(area))
 	{
-		area->cur_size -= (fblock->block.size + sizeof(t_area));
+		area->cur_size -= (fblock->block.size + sizeof(t_block));
 		malloc_log((t_block*)fblock, "removed wilderness block");
 		return ;
 	}
@@ -67,7 +67,7 @@ void	free_list_remove(t_fblock *fblock, t_area *area)
 {
 	extern t_free_list	g_free_lists[];
 
-	set_next_block_prev_block_free(fblock, area, 1);
+	set_next_block_prev_block_free(fblock, area, 0);
 	if (fblock->prev == NULL)
 		g_free_lists[free_list_index(fblock->block.size)].head = fblock->next;
 	else
