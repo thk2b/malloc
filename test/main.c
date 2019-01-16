@@ -178,8 +178,8 @@
 // 	show_alloc_mem();
 // }
 
-int main(void)
-{
+// int main(void)
+// {
 	// for (int i = 0; i < 2; i++)
 	// {
 	// 	char *p = malloc(32);
@@ -207,8 +207,12 @@ int main(void)
 	// memcpy(p, D, 256);
 	// p = realloc(p, 768);
 	// memcpy(p, D, ALLIGN(768, 8));
+// }
 
-	char *s = malloc(256);
-	s = realloc(s, 102392);
+int main(void)
+{
+	char *s = malloc(0);
+	free(s);
+	malloc(0);
 	dump_mem();
 }

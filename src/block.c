@@ -77,14 +77,14 @@ int				coalesce(t_block *block, size_t size, t_area *area)
 
 	total = 0;
 	if (block->free == 1 && (block->free = 0) == 0)
-		free_list_remove((t_fblock*)block);
+		free_list_remove((t_fblock*)block, area);
 	cur = BLOCK_NEXT(block);
 	area_end = AREA_CUR_END(area);
 	while (total < size && (void*)cur < area_end)
 	{
 		next = BLOCK_NEXT(cur);
 		if (cur->free)
-			free_list_remove((t_fblock*)cur);
+			free_list_remove((t_fblock*)cur, area);
 		total += sizeof(t_block) + cur->size;
 		#ifdef MALLOC_LOG
 		malloc_log(cur, "reaped block");
@@ -115,7 +115,7 @@ static inline t_block	*extend_block_back(t_block *block, size_t size, t_area *ar
 	back_block = (t_block*)((char*)block - size_behind);
 	coalesce(back_block, total_size, area);
 	memmove(DATA(back_block), DATA(block), block->size);
-	split_block(back_block, size);
+	split_block(back_block, size, area);
 	return (back_block);
 }
 
@@ -140,7 +140,7 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block
 	if (size_ahead < extention_size)
 		return (extend_block_back(block, size, area, size_ahead));
 	coalesce(block, size_ahead, area);
-	split_block(block, size);
+	split_block(block, size, area);
 	return (block);
 }
 
@@ -149,7 +149,7 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block
 **		resize block to newsize and create a free block immediately after it.
 **		add the free block to the appropriate free list
 */
-t_fblock	*split_block(t_block *block, size_t new_size)
+t_fblock	*split_block(t_block *block, size_t new_size, t_area *area)
 {
 	t_fblock	*fblock;
 	size_t		fblock_size;
@@ -169,6 +169,6 @@ t_fblock	*split_block(t_block *block, size_t new_size)
 	malloc_log(block, "split block");
 	malloc_log(&fblock->block, "new block");
 	#endif
-	free_list_insert(fblock);
+	free_list_insert(fblock, area);
 	return (fblock);
 }

@@ -13,7 +13,7 @@
 **		error
 */
 
-static inline void	write_boundary_tag(t_block *block)
+static inline void	write_boundary_tag(t_block *block) //TODO: macro me
 {
 	char	*boundary;
 
@@ -24,7 +24,6 @@ static inline void	write_boundary_tag(t_block *block)
 void				free(void *ptr)
 {
 	t_block		*block;
-	t_block		*next;
 	t_fblock	*prev_fblock;
 	t_area		*area;
 
@@ -40,10 +39,8 @@ void				free(void *ptr)
 	}
 	block->free = 1;
 	write_boundary_tag(block);
-	if ((void*)(next = BLOCK_NEXT(block)) < AREA_CUR_END(area))
-		next->prev_free = 1;
 	assert(prev_fblock < (t_fblock*)block);
-	free_list_insert_after(prev_fblock, (t_fblock*)block);
+	free_list_insert_after(prev_fblock, (t_fblock*)block, area);
 	#ifdef MALLOC_LOG
 	malloc_log(block, "freed_block");
 	#endif

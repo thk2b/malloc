@@ -17,15 +17,23 @@
 
 static inline void	*allocate_free_block(t_fblock *fblock, size_t size)
 {
+	t_area		*area;
+
+	if (fblock->block.free == 0)
+	{
+		#ifdef MALLOC_LOG
+		malloc_log((t_block*)fblock, "allocated free block");
+		#endif
+		return (DATA((t_block*)fblock));
+	}
+	fblock->block.free = 0;
+	(void)size;
+	area = find_area_fblock(fblock);
+	free_list_remove(fblock, area);
+	split_block(&fblock->block, size, area);
 	#ifdef MALLOC_LOG
 	malloc_log((t_block*)fblock, "allocated free block");
 	#endif
-	if (fblock->block.free == 0)
-		return (DATA((t_block*)fblock));
-	fblock->block.free = 0;
-	(void)size;
-	free_list_remove(fblock);
-	split_block(&fblock->block, size);
 	return (DATA((t_block*)fblock));
 }
 

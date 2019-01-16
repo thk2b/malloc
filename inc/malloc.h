@@ -58,9 +58,10 @@ typedef struct	s_free_list
 }				t_free_list;
 
 size_t			free_list_index(size_t block_size);//TODO:macro or inline
-void			free_list_insert(t_fblock *fblock);
-void			free_list_insert_after(t_fblock *prev, t_fblock *fblock);
-void			free_list_remove(t_fblock *fblock);
+void			free_list_insert(t_fblock *fblock, t_area *area);
+void			free_list_insert_after(t_fblock *prev, t_fblock *fblock, t_area *area);
+void			free_list_remove(t_fblock *fblock, t_area *area);
+
 /*
 **	errors
 */
@@ -93,7 +94,7 @@ t_area			*find_area_with_available_size(size_t size);
 t_area			*find_area_fblock(t_fblock *fblock);
 t_fblock		*find_free_block(size_t size);
 t_block			*find_block(void *ptr, t_fblock **prev_fblock, t_area **area);
-t_fblock		*split_block(t_block *block, size_t size);
+t_fblock		*split_block(t_block *block, size_t size, t_area *area);
 t_block			*extend_block(t_block *block, size_t size, t_fblock **last_free_block, t_area *area);
 
 #ifdef MALLOC_LOG
