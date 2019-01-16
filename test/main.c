@@ -213,6 +213,6 @@ int main(void)
 {
 	char *s = malloc(0);
 	free(s);
-	malloc(0);
+	// malloc(0);
 	dump_mem();
 }
