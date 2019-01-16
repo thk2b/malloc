@@ -54,8 +54,6 @@ static size_t	lookback(t_block *block, size_t until, void *area_start)
 	if (block->prev_free == 0)
 		return (0);
 	cur = BLOCK_PREV(block);
-		extern int g_logfd; put_hex(g_logfd, (size_t)cur, 1);
-		malloc_log(block, ">");
 	while ((void*)cur >= area_start && cur->free && sum < until)
 	{
 		sum += cur->size + sizeof(t_block);

@@ -32,7 +32,7 @@ void		init_log(void)
 	signal(SIGSEGV, sigsegv);
 	signal(SIGABRT, sigsegv);
 	signal(SIGBUS, sigsegv);
-	if((g_logfd = open("/tmp/.malloc_log", O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
+	if((g_logfd = open(MALLOC_LOG, O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
 	{
 		write(2, "can't open log\n", 16);
 		exit(1);

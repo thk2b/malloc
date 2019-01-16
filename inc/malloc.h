@@ -98,6 +98,7 @@ t_fblock		*split_block(t_block *block, size_t size, t_area *area);
 t_block			*extend_block(t_block *block, size_t size, t_fblock **last_free_block, t_area *area);
 
 #ifdef MALLOC_LOG
+# define MALLOC_LOG_PATH "/tmp/.malloc_log"
 
 void			init_log(void);
 void			malloc_log(t_block *block, char *message);
