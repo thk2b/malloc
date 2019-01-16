@@ -29,7 +29,13 @@ static inline void	set_next_block_prev_block_free(t_fblock *fblock, t_area *area
 	next = BLOCK_NEXT((t_block*)fblock);
 	if ((void*)next < area_end)
 	{
-		assert(next->prev_free != value);
+		// if (next->prev_free == value)
+		// {
+		// 	malloc_log((t_block*)fblock, "block being set");
+		// 	extern int g_logfd; put_dec(g_logfd, value);
+		// 	malloc_log(next, "next");
+		// }
+		// assert(next->prev_free != value);
 		next->prev_free = value;
 	}
 }
@@ -39,6 +45,7 @@ void	free_list_insert_after(t_fblock *prev, t_fblock *fblock, t_area *area)
 	extern t_free_list	g_free_lists[];
 	t_fblock			*next;
 
+	assert(AREA_PTR_IS_IN_RANGE(area, fblock));
 	if (BLOCK_NEXT((t_block*)fblock) == AREA_CUR_END(area))
 	{
 		area->cur_size -= (fblock->block.size + sizeof(t_block));

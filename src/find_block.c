@@ -50,18 +50,19 @@ static inline void		init_prev_fblocks(t_fblock **fblocks)
 */
 t_block					*find_block(void *ptr, t_fblock **prev_fblock, t_area **areap)
 {
-	extern t_area	*g_area_head;//FIXME: start from the end?
+	extern t_area	*g_area_head;
 	t_area			*area;
 	t_fblock		*local_prev_fblock[N_FREE_LISTS] = {0};
+	t_block			*block;
 
 	init_prev_fblocks(local_prev_fblock);
 	area = g_area_head;
-	while (area)
+	while (area)// OPTIMIZE: only search area if block is in range, once found search for nearest previous free block
 	{
-		if (AREA_PTR_IS_IN_RANGE(area, ptr))
+		if ((block = find_block_in_area(area, ptr, local_prev_fblock, prev_fblock)))
 		{
 			*areap = area;
-			return (find_block_in_area(area, ptr, local_prev_fblock, prev_fblock));
+			return (block);
 		}
 		area = area->next;
 	}

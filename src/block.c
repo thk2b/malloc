@@ -126,17 +126,17 @@ t_block				*extend_block(t_block *block, size_t size, t_fblock **last_free_block
 	size_t	size_ahead;
 	size_t	extention_size;
 
+	extention_size = size - block->size;
 	if (BLOCK_NEXT(block) == AREA_CUR_END(area) && AREA_CAN_FIT(area, size))
 	{
-		block->size += size;
-		area->cur_size += size;
+		block->size += extention_size;
+		area->cur_size += extention_size;
 		#ifdef MALLOC_LOG
 		malloc_log(block, "extended block");
 		#endif
 		return (block);
 	}
 	assert(size > block->size);
-	extention_size = size - block->size;
 	size_ahead = lookahead(block, extention_size, area, last_free_block);
 	if (size_ahead < extention_size)
 		return (extend_block_back(block, size, area, size_ahead));

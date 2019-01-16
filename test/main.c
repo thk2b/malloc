@@ -209,10 +209,27 @@
 	// memcpy(p, D, ALLIGN(768, 8));
 // }
 
+// int main(void)
+// {
+// 	char *s = malloc(0);
+// 	free(s);
+// 	malloc(32768);
+// 	dump_mem();
+// }
+
 int main(void)
 {
-	char *s = malloc(0);
+	char *s = malloc(8000);
+	malloc(0);
+	malloc(0);
+	malloc(0);
+	malloc(0);
+	malloc(0);
+	malloc(0);
+	char *t = malloc(8000);
+	malloc(0);
+
 	free(s);
-	malloc(32768);
+	free(t);
 	dump_mem();
 }

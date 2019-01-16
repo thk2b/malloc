@@ -57,7 +57,7 @@ t_area					*new_area(size_t size)
 
 	pgsz = getpagesize();
 	size = MAX(ALLIGN(size, pgsz), MIN_AREA_SIZE(pgsz));
-	area = (t_area*)mmap((void*)g_area_tail, size,
+	area = (t_area*)mmap((void*)(g_area_tail + 2 * pgsz), size,
 		PROT_READ | PROT_WRITE,
 		MAP_ANONYMOUS | MAP_PRIVATE,
 		0, 0);
