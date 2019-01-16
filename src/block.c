@@ -166,6 +166,7 @@ t_fblock	*split_block(t_block *block, size_t new_size, t_area *area)
 	fblock = (t_fblock*)BLOCK_NEXT(block);
 	fblock->block.free = 1;
 	fblock->block.size = fblock_size - sizeof(t_block);
+	fblock->block.prev_free = block->free;
 	#ifdef MALLOC_LOG
 	malloc_log(block, "split block");
 	malloc_log(&fblock->block, "new block");
