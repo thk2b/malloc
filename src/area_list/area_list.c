@@ -35,23 +35,24 @@ static void	*request_mem(void *addr, size_t size)
 }
 
 t_area			*area_list__insert(t_area_list *al, t_area *a)
+//FIXME: split into two function, possibly remove some redunduncies
 {
 	t_area	*prev;
 	t_area	*next;
 
+	if (al->head == NULL || (void*)a < (void*)(al->head))
+	{
+		next = al->head;
+		prev = NULL;
+		al->head = a;
+	}
 	if ((void*)(al->tail) < (void*)a)
 	{
 		next = NULL;
 		prev = al->head;
 		al->tail = a;
 	}
-	else if ((void*)a < (void*)(al->head))
-	{
-		next = al->head;
-		prev = NULL;
-		al->head = a;
-	}
-	else
+	else if (al->head && al->tail)
 	{
 		prev = area_list__search(al, area__find_prev, (void*)a);
 		assert(prev);

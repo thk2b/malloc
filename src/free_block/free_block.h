@@ -7,6 +7,7 @@
 #ifndef FREE_BLOCK_H
 # define FREE_BLOCK_H
 # include <shared.h>
+# define FREE_BLOCK__MIN_SIZE (sizeof(t_free_block*) * 2 + sizeof(size_t))
 
 typedef struct			s_free_block
 {

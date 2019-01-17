@@ -19,6 +19,9 @@ t_block		*area__allocate_new_block(t_area *a, size_t size)
 	assert(area__can_fit(a, size + sizeof(t_block)));
 	b = block__allocate((void*)((char*)a + a->cur_size), size);
 	a->cur_size += size + sizeof(t_block);
+	#ifdef LOG
+	block__log(b, "new block");
+	#endif
 	return (b);
 }
 
@@ -55,8 +58,9 @@ t_block		*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 void		area__hexdump(t_area *a, void *ctx)
 {
 	UNUSED(ctx);
-	hexdump((void*)a, sizeof(t_area), AREA__COLOR);
+	hexdump((void*)a, sizeof(t_area), AREA__USED_COLOR);
 	area__foreach(a, block__hexdump, NULL);
+	hexdump((void*)AREA__CUR_END(a), AREA__AVAILABLE_SIZE(a), AREA__REMAINING_COLOR);
 }
 
 void		area__show_alloc(t_area *area, void *ctx)

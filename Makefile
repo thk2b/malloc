@@ -15,7 +15,7 @@ INC = -I inc -I src -I src/area -I src/area_list -I src/block -I src/free_block 
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
-	dump_mem.c\
+	hexdump_mem.c\
 	errors.c\
 	free.c\
 	globals.c\

@@ -2,7 +2,7 @@
 #include <shared.h>
 
 extern t_free_list	g_free_lists[];
-extern t_area_list	*g_area_list;
+extern t_area_list	g_area_list;
 
 static inline void	malloc__log(size_t size)
 {
@@ -12,7 +12,7 @@ static inline void	malloc__log(size_t size)
 		return ;
 	put_str(fd, "malloc(");
 	put_dec(fd, size);
-	put_str(fd, ")");
+	put_str(fd, ")\n");
 }
 
 extern void			*malloc(size_t size)
@@ -24,7 +24,7 @@ extern void			*malloc(size_t size)
 	t_area			*a;
 	t_block			*b;
 
-	size = ALLIGN(size, 8);
+	size = MAX(ALLIGN(size, 8), FREE_BLOCK__MIN_SIZE);
 	#ifdef LOG
 	malloc__log(size);
 	# endif
@@ -33,7 +33,7 @@ extern void			*malloc(size_t size)
 	fb = free_list__search(fl, &a, free_list__first_fit, (void*)&size);
 	if (fb)
 		b = area__allocate_free_block(a, fb);
-	else */ if ((a = area_list__request_mem(g_area_list, size)))
+	else */ if ((a = area_list__request_mem(&g_area_list, size)))
 		b = area__allocate_new_block(a, size);
 	else
 		return (error__no_mem());
