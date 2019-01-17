@@ -9,6 +9,12 @@
 # include <shared.h>
 # include <stdint.h>
 
+# define BLOCK__DATA(b) ((void*)((char*)(b) + sizeof(t_block)))
+# define BLOCK__NEXT(b) ((t_block*)((char*)(b) + (b)->size + sizeof(t_block)))
+
+# define BLOCK__HEADER_COLOR ""
+# define BLOCK__DATA_COLOR ""
+
 typedef struct	s_block
 {
 	size_t		prev_free:1;
@@ -17,7 +23,6 @@ typedef struct	s_block
 	uint8_t		chksum;
 }				t_block;
 
-void			*block__data(t_block *block);
 t_block			*block__allocate(void *addr, size_t size);
 t_block			*block__from_ptr(void *addr);
 void			block__show_alloc(t_block *b, void *ctx);

@@ -6,6 +6,8 @@ extern t_area_list	*g_area_list;
 
 extern void			free(void *ptr)
 {
+	UNUSED(ptr);
+	/* Stage 2
 	t_area			*a;
 	t_block			*b;
 	t_free_block	*fb;
@@ -22,4 +24,5 @@ extern void			free(void *ptr)
 	fb = area__deallocate_block(a, b);
 	fl = free_list__find(g_free_lists, b->size);
 	free_list__insert(fl, a, fb);
+	*/
 }

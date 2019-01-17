@@ -7,7 +7,7 @@ LINK_NAME = libft_malloc.so
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -Werror -Wpedantic #-Ofast
+CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -fsanitize=undefined #-Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
@@ -19,12 +19,13 @@ SRC = $(addprefix src/,\
 	errors.c\
 	free.c\
 	globals.c\
+	log.c\
 	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\
-	$(addprefix area/, )\
-	$(addprefix area_list/, )\
-	$(addprefix block/, )\
+	$(addprefix area/, area.c)\
+	$(addprefix area_list/, area_list.c)\
+	$(addprefix block/, block.c)\
 	$(addprefix free_block/, )\
 	$(addprefix free_list/, )\
 	$(addprefix lib/, hexdump.c lib.c)\

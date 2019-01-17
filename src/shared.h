@@ -17,5 +17,6 @@ int		log__get_fd(void);
 
 void	*error__no_mem(void);
 void	error__ptr_was_not_allocated(void *ptr);
+void	error__log_open_failed(void);
 
 #endif
