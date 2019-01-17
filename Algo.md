@@ -1,36 +1,38 @@
 # Algorithm
 
-## Malloc
+## Application
+
+### Malloc
 
 ```
 malloc(size)
-	block := Block.find_free(size)
+	block, area := Block.find_free(size)
 	if block is null
-		block := Block.new(size)
+		block, area := Block.new(size)
 	if block is null
 		return null # No memory
-	block.allocate()
+	block.allocate(area)
 	return block.data
 ```
 
-## Free
+### Free
 
 ```
 free(address)
-	block := Block.find(address)
+	block, area := Block.find(address, area)
 	if block is null
 		exit(1) # Not allocated
-	block.deallocate()
+	block.deallocate(area)
 ```
 
-## Realloc
+### Realloc
 
 ```
 realloc(address, size)
-	block := Block.find(address)
+	block, area := Block.find(address)
 	if block is null
 		exit(1) # Not allocated
-	extended_block := block.extend(size)
+	extended_block := block.extend(size, area)
 	if extended_block is null
 		new_block := malloc(size)
 		copy(new_block.data, address, block->size)
@@ -39,7 +41,7 @@ realloc(address, size)
 	return extended_block.data
 ```
 
-## Display
+### Display
 
 ```
 show_alloc_mem()
@@ -64,3 +66,54 @@ hexdump_mem()
 			block.hexdump()
 			block := block.next
 ```
+
+## Modules
+
+### Searches
+
+Bool			first_fit(FBlock, Area, target_size)
+Fblock			best_fit(Fblock, Area, target_size, Fblock)
+Bool			match_address(Block, Area, address)
+
+### Block
+
+Block, Area		Block.find(address)
+				Block.deallocate(area)
+FBlock, Area	FBlock.find_free(size)
+				FBlock.allocate(area)
+size			Fblock.lookback(target_size)
+size			Fblock.lookahead(target_size)
+FBlock			FBlock.extend(target_size)
+Fblock, Fblock	Fblock.split(target_size)
+				Fblock.print(fd)
+				Block.print(fd)
+				Block.log(msg)
+
+### AreaList
+
+				AreaList.request_memory() // AreaList.extend()
+Area			AreaList.find(address)
+AreaList		AreaList.append(Area)
+AreaList		AreaList.shift(Area)
+				Area.log(msg)
+
+### Area
+
+Block			Area.search(fn, ctx)
+Block			Area.search_back(fn, ctx)
+Bool			Area.in_bounds(Block)
+Bool			Area.is_first(Block)
+Bool			Area.is_last(Block)
+Bool			Area.can_fit(size)
+				Area.print(fd)
+				Area.log(msg)
+
+### FreeList
+
+FreeList		FreeList.find(size)
+Fblock			FreeList.search(fn, ctx)
+Fblock			FreeList.reduce(fn, ctx)
+				FreeList.insert(Fblock)
+				FreeList.insertAfter(Fblock)
+				FreeList.remove(Fblock)
+				FreeList.removeRange(Fblock, Fblock)
