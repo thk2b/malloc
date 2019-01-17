@@ -13,5 +13,6 @@ typedef struct	s_block
 
 void			*block__data(t_block *block);
 t_block			*block__allocate(void *addr, size_t size);
+t_block			*block__from_ptr(void *addr);
 
 #endif

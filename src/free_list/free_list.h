@@ -3,6 +3,8 @@
 # include <area.h>
 # include <free_block.h>
 
+# define FL__N_FREE_LISTS 3
+
 typedef struct	s_free_list
 {
 	t_free_block	*head;

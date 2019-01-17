@@ -27,6 +27,9 @@
 		"fcntl.h": "c",
 		"__bit_reference": "c",
 		"chrono": "c",
-		"iterator": "cpp"
+		"iterator": "cpp",
+		"free_list.h": "c",
+		"block.h": "c",
+		"free_block.h": "c"
 	}
 }
