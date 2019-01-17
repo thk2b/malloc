@@ -2,7 +2,7 @@
 #include <area_list.h>
 
 t_area_list	g_area_list = {
-	NULL, NULL, 0
+	NULL, NULL
 };
 
 t_free_list	g_free_lists[FL__N_FREE_LISTS] = {

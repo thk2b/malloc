@@ -25,8 +25,8 @@ typedef struct	s_block
 
 t_block			*block__allocate(void *addr, size_t size);
 t_block			*block__from_ptr(void *addr);
-void			block__show_alloc(t_block *b, void *ctx);
-void			block__hexdump(t_block *b, void *ctx);
+void			block__show_alloc(t_block *b, size_t index, void *ctx);
+void			block__hexdump(t_block *b, size_t index, void *ctx);
 # ifdef MALLOC_LOG
 void			block__log(t_block *b, char *msg);
 # endif

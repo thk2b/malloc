@@ -58,13 +58,26 @@ t_area		*area_list__search(t_area_list *al, t_area_list__search_fn fn, void *ctx
 void		area_list__foreach(t_area_list *al, t_area_list__foreach_fn fn, void *ctx)
 {
 	t_area	*a;
+	size_t	index;
 
+	index = 0;
 	a = al->head;
 	while (a)
 	{
-		fn(a, ctx);
+		fn(a, index++, ctx);
 		a = a->next;
 	}
+}
+
+void		area_list__show_alloc_mem(t_area_list *al)
+{
+	size_t	total;
+
+	total = 0;
+	area_list__foreach(al, area__show_alloc, (void*)&total);
+	put_str(1, "Total ");
+	put_dec(1, total);
+	put_str(1, " bytes\n");
 }
 
 #ifdef LOG

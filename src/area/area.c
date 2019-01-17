@@ -32,12 +32,14 @@ void		area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)
 {
 	t_block	*b;
 	void	*end;
+	size_t	index;
 
+	index = 0;
 	end = AREA__CUR_END(a);
 	b = AREA__HEAD(a);
 	while ((void*)b < end)
 	{
-		fn(b, ctx);
+		fn(b, index++, ctx);
 		b = BLOCK__NEXT(b);
 	}
 }
@@ -58,8 +60,9 @@ t_block		*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 	return (NULL);
 }
 
-void		area__hexdump(t_area *a, void *ctx)
+void		area__hexdump(t_area *a, size_t index, void *ctx)
 {
+	UNUSED(index);
 	UNUSED(ctx);
 	hexdump((void*)a, sizeof(t_area), AREA__HEADER_COLOR);
 	area__foreach(a, block__hexdump, NULL);
@@ -67,10 +70,12 @@ void		area__hexdump(t_area *a, void *ctx)
 	put_str(1, a->next ? "\n    ⋮" : "\n");
 }
 
-void		area__show_alloc(t_area *area, void *ctx)
+void		area__show_alloc(t_area *area, size_t index, void *ctx)
 {
-	UNUSED(ctx);
-	put_str(1, "Area\n");
+	*(size_t*)ctx += area->size;
+	put_str(1, "Area ");
+	put_dec(1, index);
+	put_str(1, "\n");
 	area__foreach(area, block__show_alloc, NULL);
 	put_dec(1, area->cur_size);
 	put_str(1, "/");
@@ -92,5 +97,6 @@ void		area__log(t_area *a, char *msg)
 	put_dec(fd, a->size);
 	put_str(fd, "\t");
 	put_str(fd, msg);
+	put_str(fd, "\n");
 }
 #endif

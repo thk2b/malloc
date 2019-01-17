@@ -26,7 +26,7 @@ typedef struct		s_area
 }					t_area;
 
 typedef t_area		*(*t_area__search_fn)(t_block *block, void *ctx);
-typedef void		(*t_area__foreach_fn)(t_block *block, void *ctx);
+typedef void		(*t_area__foreach_fn)(t_block *block, size_t index, void *ctx);
 
 // int					area__is_in_bounds(t_area *a, void *addr);
 // int					area__is_head(t_area *a, void *addr);
@@ -42,8 +42,8 @@ t_block				*area__allocate_free_block(t_area *a, t_free_block *fb);
 t_free_block		*area__deallocate_block(t_area *a, t_block *block);
 t_free_block		*area__split_free_block(t_area *a, t_free_block *b, size_t target_size);
 t_free_block		*area__extend_free_block(t_area *a, t_free_block *b, size_t target_size);
-void				area__hexdump(t_area *a, void *ctx);
-void				area__show_alloc(t_area *a, void *ctx);
+void				area__hexdump(t_area *a, size_t index, void *ctx);
+void				area__show_alloc(t_area *a, size_t index, void *ctx);
 
 #ifdef LOG
 void				area__log(t_area *area, char *msg);

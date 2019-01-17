@@ -12,18 +12,22 @@ t_block	*block__allocate(void *addr, size_t size)
 	return (b);
 }
 
-void	block__show_alloc(t_block *block, void *ctx)
+void	block__show_alloc(t_block *block, size_t index, void *ctx)
 {
+	UNUSED(index);
 	UNUSED(ctx);
-	put_str(1, "\tBlock\t");
+	put_str(1, "\tBlock ");
+	put_dec(1, index);
+	put_str(1, "\t");
 	put_hex(1, (size_t)BLOCK__DATA(block), 1);
 	put_str(1, block->free ? "\tF\t" : "\tU\t");
-	put_num(1, block->size);
+	put_dec(1, block->size);
 	put_str(1, " bytes\n");
 }
 
-void	block__hexdump(t_block *b, void *ctx)
+void	block__hexdump(t_block *b, size_t index, void *ctx)
 {
+	UNUSED(index);
 	UNUSED(ctx);
 	hexdump((void*)b, sizeof(t_block), BLOCK__HEADER_COLOR);
 	hexdump(BLOCK__DATA(b), b->size, BLOCK__DATA_COLOR);
