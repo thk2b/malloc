@@ -1,5 +1,11 @@
-#ifndef BLOCK_H
-# define BLOCK_H
+/*
+**	Block
+**	Represents an area of memory satisfying a unique request
+**	Is immutable, the size and contents cannot be altered
+*/
+
+#ifndef _BLOCK_H
+# define _BLOCK_H
 # include <shared.h>
 # include <stdint.h>
 
