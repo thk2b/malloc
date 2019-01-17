@@ -10,6 +10,9 @@ int			area__can_fit(t_area *a, size_t size)
 void		area__extend(t_area *a, size_t extention_size)
 {
 	a->size += extention_size;
+	#ifdef LOG
+	area__log(a, "extended");
+	#endif
 }
 
 t_block		*area__allocate_new_block(t_area *a, size_t size)
@@ -58,9 +61,10 @@ t_block		*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 void		area__hexdump(t_area *a, void *ctx)
 {
 	UNUSED(ctx);
-	hexdump((void*)a, sizeof(t_area), AREA__USED_COLOR);
+	hexdump((void*)a, sizeof(t_area), AREA__HEADER_COLOR);
 	area__foreach(a, block__hexdump, NULL);
 	hexdump((void*)AREA__CUR_END(a), AREA__AVAILABLE_SIZE(a), AREA__REMAINING_COLOR);
+	put_str(1, a->next ? "\n    ⋮" : "\n");
 }
 
 void		area__show_alloc(t_area *area, void *ctx)
@@ -81,12 +85,12 @@ void		area__log(t_area *a, char *msg)
 
 	if ((fd = log__get_fd()) < 0)
 		return ;
+	log__line_count(fd);
 	put_str(fd, "area\t");
 	put_hex(fd, (size_t)a, 1);
 	put_str(fd, "\t");
 	put_dec(fd, a->size);
 	put_str(fd, "\t");
 	put_str(fd, msg);
-	put_str(fd, "\n");
 }
 #endif

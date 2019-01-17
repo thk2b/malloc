@@ -14,6 +14,7 @@
 # define UNUSED(v) ((void)(v))
 
 int		log__get_fd(void);
+void	log__line_count(int fd);
 
 void	*error__no_mem(void);
 void	error__ptr_was_not_allocated(void *ptr);

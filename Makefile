@@ -24,7 +24,7 @@ SRC = $(addprefix src/,\
 	realloc.c\
 	show_alloc_mem.c\
 	$(addprefix area/, area.c)\
-	$(addprefix area_list/, area_list.c)\
+	$(addprefix area_list/, area_list.c area_list__insert.c)\
 	$(addprefix block/, block.c)\
 	$(addprefix free_block/, )\
 	$(addprefix free_list/, )\

@@ -11,11 +11,19 @@ static void	open_log(int *fd)
 		error__log_open_failed();
 }
 
+void		log__line_count(int fd)
+{
+	static int	c = 0;
+
+	put_dec(fd, c++);
+	put_str(fd, "\t");
+}
+
 int			log__get_fd(void)
 {
-	int	fd = 0;
+	static int	fd = 0;
 
-	if ((fd = 0))
+	if (fd == 0)
 		open_log(&fd);
 	return (fd);
 }

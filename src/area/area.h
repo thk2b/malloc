@@ -13,8 +13,8 @@
 # define AREA__CUR_END(a) ((void*)((char*)(a) + (a)->cur_size))
 # define AREA__IS_END(a, ptr) ((void*)((char*)(a) + (a)->size) == (void*)(ptr))
 # define AREA__HEAD(a) ((t_block*)((char*)a + sizeof(t_area)))
-# define AREA__USED_COLOR ""
-# define AREA__REMAINING_COLOR ""
+# define AREA__HEADER_COLOR CYAN
+# define AREA__REMAINING_COLOR WHITE
 
 typedef struct		s_area
 {
