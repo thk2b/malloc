@@ -5,35 +5,27 @@ endif
 NAME = libft_malloc_$(HOSTTYPE).so
 LINK_NAME = libft_malloc.so
 
-# LIBDIR = libft
-# LIB = libft.a
-
 CC = gcc
 
 CC_FLAGS = -Wall -Wextra -Werror -Wpedantic #-Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
-INC = -I inc #-I $(LIBDIR)/includes 
+INC = -I inc -I src/srea -I src/area_list src/block -I src/free_block -I src/free_list -I src/lib
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
-	free_list_index.c\
-	area.c\
-	block.c\
-	calloc.c\
 	dump_mem.c\
-	error.c\
-	find_block.c\
-	find_free_block.c\
-	free_list.c\
 	free.c\
 	globals.c\
-	lib.c\
-	log.c\
 	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\
+	$(addprefix area/, )\
+	$(addprefix area_list/, )\
+	$(addprefix block/, )\
+	$(addprefix free_block/, )\
+	$(addprefix free_list/, )\
 )
 
 OBJ = $(SRC:.c=.o)
@@ -44,18 +36,13 @@ $(NAME): $(OBJ)
 	$(COMPILE) -shared -o $(NAME) $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 
-#$(LIB):
-#	make -C $(LIBDIR)
-
 $(OBJ): %.o: %.c
-	$(COMPILE) $(CC_SO_FLAGS) -c $< -o $@
+	$(COMPILE) $(CC_SO_FLAGS) -DMALLOC_LOG -DMALLOC_DEBUG -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
-#	make clean -C $(LIBDIR)
 
 fclean: clean
 	rm -f $(NAME) $(LINK_NAME)
-#	make fclean -C $(LIBDIR)
 
 re: fclean all
