@@ -1,9 +1,5 @@
 #include <malloc.h>
 #include <shared.h>
-#include <area_list.h>
-#include <block.h>
-#include <free_list.h>
-#include <free_block.h>
 
 extern t_free_list	g_free_lists[];
 extern t_area_list	*g_area_list;
@@ -19,7 +15,10 @@ extern void			free(void *ptr)
 	if (a)
 		b = block__from_ptr(ptr);
 	if (a == NULL || b == NULL)
-		return (error__ptr_was_not_allocated(ptr));
+	{
+		error__ptr_was_not_allocated(ptr);
+		return ;
+	}
 	fb = area__deallocate_block(a, b);
 	fl = free_list__find(g_free_lists, b->size);
 	free_list__insert(fl, a, fb);

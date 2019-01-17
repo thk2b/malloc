@@ -11,11 +11,12 @@ CC_FLAGS = -Wall -Wextra -Werror -Wpedantic #-Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
-INC = -I inc -I src/srea -I src/area_list src/block -I src/free_block -I src/free_list -I src/lib
+INC = -I inc -I src -I src/area -I src/area_list -I src/block -I src/free_block -I src/free_list -I src/lib
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
 	dump_mem.c\
+	errors.c\
 	free.c\
 	globals.c\
 	malloc.c\
@@ -26,6 +27,7 @@ SRC = $(addprefix src/,\
 	$(addprefix block/, )\
 	$(addprefix free_block/, )\
 	$(addprefix free_list/, )\
+	$(addprefix lib/, hexdump.c lib.c)\
 )
 
 OBJ = $(SRC:.c=.o)

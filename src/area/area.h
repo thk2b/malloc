@@ -30,7 +30,7 @@ t_block				*area__search_after(t_area *a, t_block *block, area__search_fn fn, vo
 t_block				*area__search_before(t_area *a, t_block *block, area__search_fn fn, void *ctx);
 t_block				*area__allocate_new_block(t_area *a, size_t size);
 t_block				*area__allocate_free_block(t_area *a, t_free_block *fb);
-t_block				*area__deallocate_block(t_area *a, size_t size);
+t_free_block		*area__deallocate_block(t_area *a, t_block *block);
 t_free_block		*area__split_free_block(t_area *a, t_free_block *b, size_t target_size);
 t_free_block		*area__extend_free_block(t_area *a, t_free_block *b, size_t target_size);
 void				area__hexdump(t_area *a, void *ctx);

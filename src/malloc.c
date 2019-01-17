@@ -1,9 +1,5 @@
 #include <malloc.h>
 #include <shared.h>
-#include <area_list.h>
-#include <block.h>
-#include <free_list.h>
-#include <free_block.h>
 
 extern t_free_list	g_free_lists[];
 extern t_area_list	*g_area_list;

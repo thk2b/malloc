@@ -1,11 +1,11 @@
 #ifndef SHARED_H
 # define SHARED_H
 # include <malloc.h>
-# include <area_list.h>
-# include <area.h>
 # include <_block.h>
-# include <free_list.h>
 # include <free_block.h>
+# include <area.h>
+# include <area_list.h>
+# include <free_list.h>
 # include <lib.h>
 
 # define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -16,5 +16,8 @@
 # ifdef MALLOC_LOG
 #  define MALLOC_LOG_PATH "/tmp/.malloc_log"
 # endif
+
+void	*error__no_mem(void);
+void	error__ptr_was_not_allocated(void *ptr);
 
 #endif

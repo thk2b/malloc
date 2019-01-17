@@ -34,6 +34,7 @@
 		"_block.h": "c",
 		"shared.h": "c",
 		"area.h": "c",
-		"lib.h": "c"
+		"lib.h": "c",
+		"area_list.h": "c"
 	}
 }
