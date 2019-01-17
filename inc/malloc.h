@@ -1,6 +1,11 @@
 #ifndef MALLOC_H
 # define MALLOC_H
 # include <stddef.h>
+# define LOG
+
+# ifdef LOG
+#  define LOG_PATH "/tmp/.malloc_log"
+# endif
 
 extern void	*malloc(size_t size);
 extern void	*calloc(size_t count, size_t size);

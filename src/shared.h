@@ -13,9 +13,7 @@
 # define ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
 # define UNUSED(v) ((void)(v))
 
-# ifdef MALLOC_LOG
-#  define MALLOC_LOG_PATH "/tmp/.malloc_log"
-# endif
+
 
 void	*error__no_mem(void);
 void	error__ptr_was_not_allocated(void *ptr);
