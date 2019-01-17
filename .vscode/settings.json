@@ -33,6 +33,7 @@
 		"free_block.h": "c",
 		"_block.h": "c",
 		"shared.h": "c",
-		"area.h": "c"
+		"area.h": "c",
+		"lib.h": "c"
 	}
 }

@@ -23,7 +23,9 @@ t_free_block	*free_list__search(t_free_list *fl, t_area **areap, free_list__sear
 void			free_list__insert(t_free_list *fl, t_area *area, t_free_block *fb);
 void			free_list__remove(t_free_list *fl, t_area *area, t_free_block *fb);
 void			free_list__remove_range(t_free_list *fl, t_area *area, t_free_block *from, t_free_block *to);
-
 int				free_list__first_fit(t_area *area, t_free_block *fb, void *ctx);
-
+void			free_list__hexdump(t_free_list *b);
+# ifdef MALLOC_LOG
+void			free_list_log(t_free_list *fl, char *msg);
+# endif
 #endif

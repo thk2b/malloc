@@ -6,13 +6,15 @@
 # include <_block.h>
 # include <free_list.h>
 # include <free_block.h>
+# include <lib.h>
 
 # define MIN(a,b) ((a) < (b) ? (a) : (b))
 # define MAX(a,b) ((a) > (b) ? (a) : (b))
 # define ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
+# define UNUSED(v) ((void)(v))
 
-#ifdef MALLOC_LOG
-# define MALLOC_LOG_PATH "/tmp/.malloc_log"
+# ifdef MALLOC_LOG
+#  define MALLOC_LOG_PATH "/tmp/.malloc_log"
 # endif
 
 #endif

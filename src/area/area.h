@@ -17,12 +17,15 @@ typedef struct		s_area
 }					t_area;
 
 typedef t_area		*(*area__search_fn)(t_block *block, void *ctx);
+typedef void		(*area__foreach_fn)(t_block *block, void *ctx);
 
 int					area__is_in_bounds(t_area *a, void *addr);
 int					area__is_head(t_area *a, void *addr);
 int					area__is_tail(t_area *a, void *addr);
 int					area__can_fit(t_area *a, size_t size);
+void				area__extend(t_area *a, size_t extention_size);
 t_block				*area__search(t_area *a, area__search_fn fn, void *ctx);
+void				area__foreach(t_area *a, area__foreach_fn fn, void *ctx);
 t_block				*area__search_after(t_area *a, t_block *block, area__search_fn fn, void *ctx);
 t_block				*area__search_before(t_area *a, t_block *block, area__search_fn fn, void *ctx);
 t_block				*area__allocate_new_block(t_area *a, size_t size);
@@ -30,6 +33,11 @@ t_block				*area__allocate_free_block(t_area *a, t_free_block *fb);
 t_block				*area__deallocate_block(t_area *a, size_t size);
 t_free_block		*area__split_free_block(t_area *a, t_free_block *b, size_t target_size);
 t_free_block		*area__extend_free_block(t_area *a, t_free_block *b, size_t target_size);
+void				area__hexdump(t_area *a, void *ctx);
+void				area__show_alloc(t_area *a, void *ctx);
+#ifdef MALLOC_LOG
+void				area__log(t_area *area, char *msg);
+#endif
 
 // int					area__search_first_fit(t_block *block, void *ctx);
 // int					area__search_first_fit_coalesce(t_block *block, void *ctx);

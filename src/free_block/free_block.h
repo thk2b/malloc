@@ -20,5 +20,8 @@ typedef struct			s_free_block
 t_free_block			*free_block__deallocate(t_block *b, t_free_block *prev);
 void					free_block__extend(t_free_block *fb, size_t target_size);
 void					free_block__remove(t_free_block *fb);
-
+void					free_block__hexdump(t_free_block *fb);
+# ifdef MALLOC_LOG
+void					free_block_log(t_block_list *fb, char *msg);
+# endif
 #endif
