@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <string.h>
 #include <shared.h>
 
 void	*error__no_mem(void)

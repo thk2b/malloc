@@ -13,7 +13,7 @@
 # define ALLIGN(size,allign) (((size) + ((allign) - 1)) & ~((allign) - 1))
 # define UNUSED(v) ((void)(v))
 
-
+int		log__get_fd(void);
 
 void	*error__no_mem(void);
 void	error__ptr_was_not_allocated(void *ptr);

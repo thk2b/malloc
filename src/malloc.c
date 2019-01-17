@@ -4,18 +4,18 @@
 extern t_free_list	g_free_lists[];
 extern t_area_list	*g_area_list;
 
-static inline	malloc__log(size_t size)
+static inline void	malloc__log(size_t size)
 {
 	int fd;
 
 	if ((fd = log__get_fd()) < 0)
 		return ;
-	put_str(g_log_fd, "malloc(");
-	put_dec(g_log_fd, size);
-	put_str(g_log_fd, ")");
+	put_str(fd, "malloc(");
+	put_dec(fd, size);
+	put_str(fd, ")");
 }
 
-extern void	*malloc(size_t size)
+extern void			*malloc(size_t size)
 {
 	t_free_list		*fl;
 	t_area			*a;
