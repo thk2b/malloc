@@ -23,7 +23,7 @@ t_block			*area__allocate_new_block(t_area *a, size_t size)
 	b = block__allocate((void*)((char*)a + a->cur_size), size);
 	a->cur_size += size + sizeof(t_block);
 	#ifdef LOG
-	block__log(b, "new block");
+	block__log(b, "new");
 	#endif
 	return (b);
 }
@@ -120,12 +120,12 @@ void			area__log(t_area *a, char *msg)
 	if ((fd = log__get_fd()) < 0)
 		return ;
 	log__line_count(fd);
-	put_str(fd, "area\t");
+	put_str(fd, msg);
+	put_str(fd, "\t");
+	put_str(fd, "area\t\t");
 	put_hex(fd, (size_t)a, 1);
 	put_str(fd, "\t");
 	put_dec(fd, a->size);
-	put_str(fd, "\t");
-	put_str(fd, msg);
 	put_str(fd, "\n");
 }
 #endif

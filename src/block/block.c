@@ -59,12 +59,11 @@ void	block__log(t_block *b, char *msg)
 	if ((fd = log__get_fd()) < 0)
 		return ;
 	log__line_count(fd);
-	put_str(fd, "block\t");
+	put_str(fd, msg);
+	put_str(fd, "\tblock\t\t");
 	put_hex(fd, (size_t)b, 1);
 	put_str(fd, "\t");
 	put_dec(fd, b->size);
-	put_str(fd, "\t");
-	put_str(fd, msg);
 	put_str(fd, "\n");
 }
 #endif

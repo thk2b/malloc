@@ -1,7 +1,9 @@
 #ifndef MALLOC_H
 # define MALLOC_H
 # include <stddef.h>
-# define LOG
+# ifndef LOG
+#  define LOG
+# endif
 
 # ifdef LOG
 #  define LOG_PATH "/tmp/.malloc_log"

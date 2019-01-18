@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 
 $(OBJ): %.o: %.c
-	$(COMPILE) $(CC_SO_FLAGS) -DMALLOC_LOG -DMALLOC_DEBUG -c $< -o $@
+	$(COMPILE) $(CC_SO_FLAGS) -DLOG -DMALLOC_DEBUG -c $< -o $@
 
 clean:
 	rm -f $(OBJ)

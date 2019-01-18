@@ -17,6 +17,9 @@ t_free_block		*free_block__deallocate(t_block *b)
 	fb = (t_free_block*)b;
 	fb->block.free = 1;
 	write_boundary_tag(fb);
+	#ifdef LOG
+	free_block__log(fb, "free'd");
+	#endif
 	return (fb);
 }
 
@@ -27,9 +30,30 @@ t_block				*free_block__allocate(t_free_block *fb)
 	b = &fb->block;
 	fb->next = NULL;//FIXME: remove
 	fb->prev = NULL;
-	fb->block.free = 1;
+	fb->block.free = 0;
+	#ifdef LOG
+	block__log(b, "unfree'd");
+	#endif	
 	return (b);
 }
+
+#ifdef LOG
+void			free_block__log(t_free_block *fb, char *msg)
+{
+	int fd;
+
+	if ((fd = log__get_fd()) < 0)
+		return ;
+	log__line_count(fd);
+	put_str(fd, msg);
+	put_str(fd, "\t");
+	put_str(fd, "free_block\t");
+	put_hex(fd, (size_t)fb, 1);
+	put_str(fd, "\t");
+	put_dec(fd, fb->block.size);
+	put_str(fd, "\n");
+}
+#endif
 
 void				free_block__hexdump(t_free_block *fb, size_t index, void *ctx)
 {

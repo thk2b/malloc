@@ -32,7 +32,7 @@ void			block__hexdump(t_block *b, size_t index, void *ctx);
 
 int				block__find_address(t_block *b, void *ctx);
 
-# ifdef MALLOC_LOG
+# ifdef LOG
 void			block__log(t_block *b, char *msg);
 # endif
 #endif
