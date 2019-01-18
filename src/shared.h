@@ -17,7 +17,7 @@ int		log__get_fd(void);
 void	log__line_count(int fd);
 
 void	*error__no_mem(void);
-void	error__ptr_was_not_allocated(void *ptr);
+void	error__ptr_was_not_allocated(char *msg, void *ptr);
 void	error__log_open_failed(void);
 
 #endif

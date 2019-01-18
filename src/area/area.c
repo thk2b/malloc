@@ -19,7 +19,7 @@ t_block		*area__allocate_new_block(t_area *a, size_t size)
 {
 	t_block	*b;
 
-	assert(area__can_fit(a, size + sizeof(t_block)));
+	assert(AREA__CAN_FIT(a, size + sizeof(t_block)));
 	b = block__allocate((void*)((char*)a + a->cur_size), size);
 	a->cur_size += size + sizeof(t_block);
 	#ifdef LOG

@@ -35,7 +35,7 @@ void	*realloc(void *ptr, size_t size)
 		b = area__search(a, block__find_address, ptr);
 	if (a == NULL || b == NULL)
 	{
-		error__ptr_was_not_allocated(ptr);
+		error__ptr_was_not_allocated("realloc", ptr);
 		return (NULL);
 	}
 	new_ptr = malloc(size);

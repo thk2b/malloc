@@ -9,7 +9,7 @@
 # include <shared.h>
 
 # define AREA__AVAILABLE_SIZE(a) ((a)->size - (a)->cur_size)
-# define AREA__CAN_FIT(a, s) ((AREA__AVAILABLE_SIZE(a) > s))
+# define AREA__CAN_FIT(a, s) ((AREA__AVAILABLE_SIZE(a) >= (s)))
 # define AREA__CUR_END(a) ((void*)((char*)(a) + (a)->cur_size))
 # define AREA__IS_END(a, ptr) ((void*)((char*)(a) + (a)->size) == (void*)(ptr))
 # define AREA__HEAD(a) ((t_block*)((char*)a + sizeof(t_area)))

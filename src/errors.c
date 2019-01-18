@@ -8,9 +8,11 @@ void	*error__no_mem(void)
 	return (NULL);
 }
 
-void	error__ptr_was_not_allocated(void *ptr)
+void	error__ptr_was_not_allocated(char *msg, void *ptr)
 {
-	put_str(2, "ERROR: Pointer ");
+	put_str(2, "ERROR: ");
+	put_str(2, msg);
+	put_str(2, ": Pointer ");
 	put_hex(2, (size_t)ptr, 1);
 	put_str(2, " was not allocated\n");
 }

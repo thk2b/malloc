@@ -6,12 +6,24 @@
 #define FACTOR 10
 #define D "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
+// int main(void)
+// {
+// 	for (int i = 0; i < 1000; i++)
+// 	{
+// 		char *s = malloc(00);
+// 		memset(s, 'a', 10);
+// 		char *t = malloc(100);
+// 		memset(t, 'a', 100);
+// 		char *u = malloc(1000);
+// 		memset(u, 'a', 1000);
+// 		// char *v = malloc(10000);
+// 		// memset(v, 'a', 10000);
+// 	}
+// 	hexdump_mem();
+// 	show_alloc_mem();
+// }
+
 int main(void)
 {
-	char *s = malloc(1000);
-	memset(s, 'a', 1000);
-	char *t = realloc(s, 10000);
-	memset(t, 'a', 10000);
-	hexdump_mem();
-	show_alloc_mem();
+
 }

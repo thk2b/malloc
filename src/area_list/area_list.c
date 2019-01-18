@@ -8,7 +8,9 @@ static int	area__find_can_fit(t_area *a, void *ctx)
 	size_t	size;
 
 	size = *(size_t*)ctx;
-	return (AREA__CAN_FIT(a, size + sizeof(t_block)));
+	if (a->is_single_block)
+		return (0);
+	return (AREA__CAN_FIT(a, size));
 }
 
 static void	*request_mem(void *addr, size_t size)
@@ -32,11 +34,13 @@ static void	*request_mem(void *addr, size_t size)
 t_area		*area_list__request_mem(t_area_list* al, size_t size)
 {
 	t_area	*a;
+	size_t	total_size;
 
-	a = area_list__search(al, area__find_can_fit, &size);
+	total_size = size + sizeof(t_block);
+	a = area_list__search(al, area__find_can_fit, &total_size);
 	if (a)
 		return (a);
-	a = request_mem(al->tail, size);
+	a = request_mem(al->tail, total_size);
 	a = area_list__insert(al, a);
 	return (a);
 }
