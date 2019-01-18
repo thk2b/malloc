@@ -15,6 +15,11 @@ t_free_list			*free_list__find(t_free_list *fls, size_t size)
 	return (fls + i);
 }
 
+/*
+**	Iterates through the free list
+**	Return the first free block for which fn returns 1
+**	Sets areap to the area in which the block is found.
+*/
 t_free_block	*free_list__search(t_free_list *fl, t_area **areap, t_free_list__search_fn fn, void *ctx)
 {
 	t_area			*area;
@@ -25,7 +30,7 @@ t_free_block	*free_list__search(t_free_list *fl, t_area **areap, t_free_list__se
 	area = area_list__search(&g_area_list, area__find_in_range, (void*)cur);
 	while (cur)
 	{
-		if (area == NULL || !AREA__IS_IN_BOUNDS(area, cur))
+		if (!AREA__IS_IN_BOUNDS(area, cur))
 		{
 			area = area_list__search_from(area, area__find_in_range, (void*)cur);
 			assert(area);
@@ -66,7 +71,7 @@ static inline void	insert_address_ordered(t_free_list *fl, t_area *a, t_free_blo
 	t_free_block	*prev;
 	t_free_block	*next;
 
-	UNUSED(a);
+	UNUSED(a);//FIXME: start search here
 	prev = free_list__search(fl, &prev_block_area, find_prev_free_block, (void*)fb);
 	if (prev == NULL)
 		fl->head = fb;

@@ -17,6 +17,11 @@ void	block__deallocate_prev(t_block *b)
 	b->prev_free = 1;
 }
 
+void	block__allocate_prev(t_block *b)
+{
+	b->prev_free = 0;
+}
+
 int		block__find_address(t_block *b, void *ctx)
 {
 	return (BLOCK__DATA(b) == ctx);

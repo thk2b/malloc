@@ -26,6 +26,7 @@ typedef struct	s_block
 t_block			*block__allocate(void *addr, size_t size);
 t_block			*block__from_ptr(void *addr);
 void			block__deallocate_prev(t_block *b);
+void			block__allocate_prev(t_block *b);
 void			block__show_alloc(t_block *b, size_t index, void *ctx);
 void			block__hexdump(t_block *b, size_t index, void *ctx);
 

@@ -40,6 +40,18 @@ t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 	return (fb);
 }
 
+t_block			*area__allocate_free_block(t_area *a, t_free_block *fb)
+{
+	t_block	*b;
+	t_block	*next;
+
+	next = BLOCK__NEXT(&fb->block);
+	if (AREA__IS_IN_BOUNDS(a, next))
+		block__allocate_prev(next);
+	b = free_block__allocate(fb);
+	return (b);
+}
+
 void			area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)
 {
 	t_block	*b;

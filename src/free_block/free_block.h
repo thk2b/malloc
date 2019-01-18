@@ -24,6 +24,7 @@ typedef struct			s_free_block
 }						t_free_block;
 
 t_free_block			*free_block__deallocate(t_block *b);
+t_block					*free_block__allocate(t_free_block *fb);
 void					free_block__extend(t_free_block *fb, size_t target_size);
 void					free_block__remove(t_free_block *fb);
 void					free_block__hexdump(t_free_block *fb, size_t index, void *ctx);

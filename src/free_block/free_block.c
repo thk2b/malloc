@@ -20,6 +20,17 @@ t_free_block		*free_block__deallocate(t_block *b)
 	return (fb);
 }
 
+t_block				*free_block__allocate(t_free_block *fb)
+{
+	t_block			*b;
+
+	b = &fb->block;
+	fb->next = NULL;//FIXME: remove
+	fb->prev = NULL;
+	fb->block.free = 1;
+	return (b);
+}
+
 void				free_block__hexdump(t_free_block *fb, size_t index, void *ctx)
 {
 	UNUSED(index);

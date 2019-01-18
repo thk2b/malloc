@@ -35,6 +35,8 @@ int main(void)
 	t = malloc(1000);
 	free(s);
 	free(t);
+	s = malloc(100);
+	t = malloc(1000);
 	hexdump_mem();
 	show_alloc_mem();
 }
