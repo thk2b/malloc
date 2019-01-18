@@ -8,11 +8,10 @@
 
 int main(void)
 {
-	for (int i = 0; i < 10; i++)
-	{
-		char *s = malloc(10000);
-		memset(s, 'a', 10000);
-	}
+	char *s = malloc(1000);
+	memset(s, 'a', 1000);
+	char *t = realloc(s, 10000);
+	memset(t, 'a', 10000);
 	hexdump_mem();
 	show_alloc_mem();
 }

@@ -60,6 +60,11 @@ t_block		*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 	return (NULL);
 }
 
+int			area__find_in_range(t_area *a, void *ctx)
+{
+	return (AREA__IS_IN_BOUNDS(a, ctx));
+}
+
 void		area__hexdump(t_area *a, size_t index, void *ctx)
 {
 	UNUSED(index);

@@ -20,7 +20,7 @@ static void	*request_mem(void *addr, size_t size)
 	pgsz = getpagesize();
 	min_sz = PGS_PER_MAP * pgsz;
 	size = MAX(ALLIGN(size, pgsz), min_sz);
-	a = (t_area*)mmap((char*)addr + 1000000, size, PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+	a = (t_area*)mmap((char*)addr, size, PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 	if (a == MAP_FAILED)
 		return (NULL);
 	a->size = size;

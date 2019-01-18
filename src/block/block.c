@@ -12,6 +12,11 @@ t_block	*block__allocate(void *addr, size_t size)
 	return (b);
 }
 
+int		block__find_address(t_block *b, void *ctx)
+{
+	return (BLOCK__DATA(b) == ctx);
+}
+
 void	block__show_alloc(t_block *block, size_t index, void *ctx)
 {
 	UNUSED(index);

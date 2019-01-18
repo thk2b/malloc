@@ -4,6 +4,7 @@
 extern t_free_list	g_free_lists[];
 extern t_area_list	g_area_list;
 
+#ifdef LOG
 static inline void	malloc__log(size_t size)
 {
 	int fd;
@@ -14,6 +15,7 @@ static inline void	malloc__log(size_t size)
 	put_dec(fd, size);
 	put_str(fd, ")\n");
 }
+#endif
 
 extern void			*malloc(size_t size)
 {
