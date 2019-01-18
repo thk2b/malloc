@@ -96,7 +96,7 @@ void			area__hexdump(t_area *a, size_t index, void *ctx)
 	hexdump((void*)a, sizeof(t_area), AREA__HEADER_COLOR);
 	area__foreach(a, block__hexdump, NULL);
 	hexdump((void*)AREA__CUR_END(a), AREA__AVAILABLE_SIZE(a), AREA__REMAINING_COLOR);
-	put_str(1, a->next ? "\n    ⋮" : "\n");
+	put_str(1, a->next ? "\n    ⋮\n" : "\n");
 }
 
 void			area__show_alloc(t_area *area, size_t index, void *ctx)

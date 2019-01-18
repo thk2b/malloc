@@ -23,6 +23,7 @@ t_area			*area_list__insert(t_area_list *al, t_area *a)
 	if (al->head == NULL)
 		return (area_list__init(al, a));
 	prev = area_list__search(al, area__find_prev, a);
+	next = prev ? prev->next : al->head;
 	if (prev && AREA__IS_END(prev, a))
 	{
 		area__extend(prev, a->size);
@@ -32,7 +33,6 @@ t_area			*area_list__insert(t_area_list *al, t_area *a)
 		al->head = a;
 	else if (prev->next == NULL)
 		al->tail = a;
-	next = prev ? prev->next : NULL;
 	if (prev)
 		prev->next = a;
 	a->prev = prev;

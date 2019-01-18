@@ -14,7 +14,7 @@
 # define AREA__IS_END(a, ptr) ((void*)((char*)(a) + (a)->size) == (void*)(ptr))
 # define AREA__HEAD(a) ((t_block*)((char*)a + sizeof(t_area)))
 # define AREA__END(a) ((void*)((char*)(a) + (a)->size))
-# define AREA__IS_IN_BOUNDS(a, ptr) ((void*)(a) <= ((void*)ptr) && ((void*)ptr) < AREA__END(a))
+# define AREA__IS_IN_BOUNDS(a, ptr) ((void*)(a) <= ((void*)ptr) && ((void*)ptr) < AREA__CUR_END(a))
 # define AREA__HEADER_COLOR CYAN
 # define AREA__REMAINING_COLOR WHITE
 

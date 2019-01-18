@@ -7,11 +7,12 @@ LINK_NAME = libft_malloc.so
 
 CC = gcc
 
+DEFINES = $(addprefix -D, LOG)
 CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -fsanitize=undefined #-Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
-INC = -I inc -I src -I src/area -I src/area_list -I src/block -I src/free_block -I src/free_list -I src/lib
+INC = $(addprefix -I, inc src src/area src/area_list src/block src/free_block src/free_list src/lib)
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
@@ -40,7 +41,7 @@ $(NAME): $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 
 $(OBJ): %.o: %.c
-	$(COMPILE) $(CC_SO_FLAGS) -DLOG -DMALLOC_DEBUG -c $< -o $@
+	$(COMPILE) $(CC_SO_FLAGS) $(DEFINES) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)

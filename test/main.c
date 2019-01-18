@@ -6,38 +6,34 @@
 #define FACTOR 10
 #define D "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
-// int main(void)
-// {
-// 	for (int i = 0; i < 10000; i++)
-// 	{
-// 		char *s = malloc(00);
-// 		memset(s, 'a', 10);
-// 		char *t = malloc(100);
-// 		memset(t, 'a', 100);
-// 		char *u = malloc(1000);
-// 		memset(u, 'a', 1000);
-// 		char *v = malloc(10000);
-// 		memset(v, 'a', 10000);
-// 	}
-	// hexdump_mem();
-	// show_alloc_mem();
-// }
+static void	do_alloc(size_t size, size_t n)
+{
+	char *s[n];
+
+	for (size_t i = 0; i < n; i++)
+	{
+		s[i] = malloc(size);
+		memset(s[i], 'a', size);
+	}
+	for (size_t i = 1; i < n; i += 2)
+		free(s[i]);
+	for (size_t i = 0; i < n; i += 2)
+		free(s[i]);
+}
+
+static void	test_free(void)
+{
+	for (int i = 0; i < 1000; i++)
+	{
+		do_alloc(100, 3);
+		do_alloc(1000, 3);
+		do_alloc(10000, 3);
+	}
+	hexdump_mem();
+	show_alloc_mem();
+}
 
 int main(void)
 {
-	char *s, *t;
-
-	s = malloc(100);
-	t = malloc(100);
-	free(s);
-	free(t);
-	s = malloc(1000);
-	t = malloc(1000);
-	free(s);
-	free(t);
-	s = malloc(100);
-	s = malloc(100);
-	t = malloc(1000);
-	hexdump_mem();
-	show_alloc_mem();
+	test_free();
 }

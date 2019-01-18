@@ -12,7 +12,7 @@ t_free_list			*free_list__find(t_free_list *fls, size_t size)
 	{
 		i++;
 	}
-	return (fls + i);
+	return (fls + (i - 1));
 }
 
 /*
@@ -27,7 +27,10 @@ t_free_block	*free_list__search(t_free_list *fl, t_area **areap, t_free_list__se
 	void			*area_end;
 
 	cur = fl->head;
+	if (cur == NULL)
+		return (NULL);
 	area = area_list__search(&g_area_list, area__find_in_range, (void*)cur);
+	assert(area);
 	while (cur)
 	{
 		if (!AREA__IS_IN_BOUNDS(area, cur))
@@ -73,9 +76,10 @@ static inline void	insert_address_ordered(t_free_list *fl, t_area *a, t_free_blo
 
 	UNUSED(a);//FIXME: start search here
 	prev = free_list__search(fl, &prev_block_area, find_prev_free_block, (void*)fb);
+	next = prev ? prev->next : fl->head;
+	assert((void*)prev < (void*)fb && ((void*)next == NULL || (void*)fb < (void*)next));
 	if (prev == NULL)
 		fl->head = fb;
-	next = prev ? prev->next : NULL;
 	if (prev)
 		prev->next = fb;
 	fb->prev = prev;
