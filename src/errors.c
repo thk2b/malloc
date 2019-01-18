@@ -2,9 +2,13 @@
 #include <string.h>
 #include <shared.h>
 
-void	*error__no_mem(void)
+void	*error__no_mem(char *msg)
 {
-	put_str(2, "ERROR: No memory\n");
+	put_str(2, "ERROR: ");
+	put_str(2, msg);
+	put_str(2, ": ");
+	put_str(2, strerror(errno));
+	put_str(2, "\n");
 	return (NULL);
 }
 

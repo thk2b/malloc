@@ -38,7 +38,7 @@ extern void			*malloc(size_t size)
 	else */ if ((a = area_list__request_mem(&g_area_list, size)))
 		b = area__allocate_new_block(a, size);
 	else
-		return (error__no_mem());
+		return (NULL);
 	return (BLOCK__DATA(b));
 }
 

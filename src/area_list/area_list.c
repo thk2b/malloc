@@ -22,9 +22,9 @@ static void	*request_mem(void *addr, size_t size)
 	pgsz = getpagesize();
 	min_sz = PGS_PER_MAP * pgsz;
 	size = MAX(ALLIGN(size, pgsz), min_sz);
-	a = (t_area*)mmap((char*)addr, size, PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+	a = (t_area*)mmap((char*)addr, size, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 	if (a == MAP_FAILED)
-		return (NULL);
+		return (error__no_mem("mmap"));
 	a->size = size;
 	a->cur_size = sizeof(t_area);
 	a->is_single_block = a->size > min_sz;
@@ -41,6 +41,8 @@ t_area		*area_list__request_mem(t_area_list* al, size_t size)
 	if (a)
 		return (a);
 	a = request_mem(al->tail, total_size);
+	if (a == NULL)
+		return (NULL);
 	a = area_list__insert(al, a);
 	return (a);
 }

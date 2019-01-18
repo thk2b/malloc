@@ -20,7 +20,7 @@ int main(void)
 		memset(v, 'a', 10000);
 	}
 	// hexdump_mem();
-	show_alloc_mem();
+	// show_alloc_mem();
 }
 
 // int main(void)
