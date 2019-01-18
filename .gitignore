@@ -1,3 +1,4 @@
 .malloc_log
 a.out* 
 dumps
+.nfs*

@@ -26,8 +26,8 @@ SRC = $(addprefix src/,\
 	$(addprefix area/, area.c)\
 	$(addprefix area_list/, area_list.c area_list__insert.c)\
 	$(addprefix block/, block.c)\
-	$(addprefix free_block/, )\
-	$(addprefix free_list/, )\
+	$(addprefix free_block/, free_block.c)\
+	$(addprefix free_list/, free_list.c)\
 	$(addprefix lib/, hexdump.c lib.c)\
 )
 

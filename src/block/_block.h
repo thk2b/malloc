@@ -20,11 +20,12 @@ typedef struct	s_block
 	size_t		prev_free:1;
 	size_t		free:1;
 	size_t		size:sizeof(size_t) * 8 - 2;
-	uint8_t		chksum;
+	// uint8_t		chksum;
 }				t_block;
 
 t_block			*block__allocate(void *addr, size_t size);
 t_block			*block__from_ptr(void *addr);
+void			block__deallocate_prev(t_block *b);
 void			block__show_alloc(t_block *b, size_t index, void *ctx);
 void			block__hexdump(t_block *b, size_t index, void *ctx);
 

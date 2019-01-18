@@ -1,7 +1,7 @@
 #include <shared.h>
 #include <assert.h>
 
-int			area__can_fit(t_area *a, size_t size)
+int				area__can_fit(t_area *a, size_t size)
 {
 	assert(a->size > a->cur_size);
 	return (a->size - a->cur_size > size);
@@ -15,7 +15,7 @@ void		area__extend(t_area *a, size_t extention_size)
 	#endif
 }
 
-t_block		*area__allocate_new_block(t_area *a, size_t size)
+t_block			*area__allocate_new_block(t_area *a, size_t size)
 {
 	t_block	*b;
 
@@ -28,7 +28,19 @@ t_block		*area__allocate_new_block(t_area *a, size_t size)
 	return (b);
 }
 
-void		area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)
+t_free_block	*area__deallocate_block(t_area *a, t_block *b)
+{
+	t_free_block	*fb;
+	t_block			*next;
+
+	next = BLOCK__NEXT(b);
+	if (AREA__IS_IN_BOUNDS(a, next))
+		block__deallocate_prev(next);
+	fb = free_block__deallocate(b);
+	return (fb);
+}
+
+void			area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)
 {
 	t_block	*b;
 	void	*end;
@@ -44,7 +56,7 @@ void		area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)
 	}
 }
 
-t_block		*area__search(t_area *a, t_area__search_fn fn, void *ctx)
+t_block			*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 {
 	t_block	*b;
 	void	*end;
@@ -60,12 +72,12 @@ t_block		*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 	return (NULL);
 }
 
-int			area__find_in_range(t_area *a, void *ctx)
+int				area__find_in_range(t_area *a, void *ctx)
 {
 	return (AREA__IS_IN_BOUNDS(a, ctx));
 }
 
-void		area__hexdump(t_area *a, size_t index, void *ctx)
+void			area__hexdump(t_area *a, size_t index, void *ctx)
 {
 	UNUSED(index);
 	UNUSED(ctx);
@@ -75,7 +87,7 @@ void		area__hexdump(t_area *a, size_t index, void *ctx)
 	put_str(1, a->next ? "\n    ⋮" : "\n");
 }
 
-void		area__show_alloc(t_area *area, size_t index, void *ctx)
+void			area__show_alloc(t_area *area, size_t index, void *ctx)
 {
 	*(size_t*)ctx += area->size;
 	put_str(1, "Area ");
@@ -89,7 +101,7 @@ void		area__show_alloc(t_area *area, size_t index, void *ctx)
 }
 
 #ifdef LOG
-void		area__log(t_area *a, char *msg)
+void			area__log(t_area *a, char *msg)
 {
 	int fd;
 

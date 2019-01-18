@@ -8,8 +8,13 @@ t_block	*block__allocate(void *addr, size_t size)
 	b->prev_free = 0;
 	b->free = 0;
 	b->size = size;
-	b->chksum = 0;//TODO: Implement
+	// b->chksum = 0;//TODO: Implement
 	return (b);
+}
+
+void	block__deallocate_prev(t_block *b)
+{
+	b->prev_free = 1;
 }
 
 int		block__find_address(t_block *b, void *ctx)
@@ -32,8 +37,11 @@ void	block__show_alloc(t_block *block, size_t index, void *ctx)
 
 void	block__hexdump(t_block *b, size_t index, void *ctx)
 {
-	UNUSED(index);
-	UNUSED(ctx);
+	if (b->free)
+	{
+		free_block__hexdump((t_free_block*)b, index, ctx);
+		return ;
+	}
 	hexdump((void*)b, sizeof(t_block), BLOCK__HEADER_COLOR);
 	hexdump(BLOCK__DATA(b), b->size, BLOCK__DATA_COLOR);
 }
