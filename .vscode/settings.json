@@ -36,6 +36,7 @@
 		"area.h": "c",
 		"lib.h": "c",
 		"area_list.h": "c",
-		"errno.h": "c"
+		"errno.h": "c",
+		"printf.h": "c"
 	}
 }

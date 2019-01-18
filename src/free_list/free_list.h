@@ -28,4 +28,9 @@ void			free_list__hexdump(t_free_list *b);
 # ifdef MALLOC_LOG
 void			free_list_log(t_free_list *fl, char *msg);
 # endif
+
+int				free_list__find_first_fit(t_block *block, void *ctx);
+int				free_list__find_first_fit_coalesce(t_block *block, void *ctx);
+int				free_list__find_first_fit_split(t_block *block, void *ctx);
+
 #endif

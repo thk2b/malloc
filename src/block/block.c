@@ -21,7 +21,7 @@ void	block__show_alloc(t_block *block, size_t index, void *ctx)
 {
 	UNUSED(index);
 	UNUSED(ctx);
-	put_str(1, "\tBlock ");
+	put_str(1, "\tBlock\t");
 	put_dec(1, index);
 	put_str(1, "\t");
 	put_hex(1, (size_t)BLOCK__DATA(block), 1);

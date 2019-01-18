@@ -30,10 +30,6 @@ typedef struct		s_area
 typedef int			(*t_area__search_fn)(t_block *block, void *ctx);
 typedef void		(*t_area__foreach_fn)(t_block *block, size_t index, void *ctx);
 
-// int					area__is_in_bounds(t_area *a, void *addr);
-// int					area__is_head(t_area *a, void *addr);
-// int					area__is_tail(t_area *a, void *addr);
-int					area__is_end(t_area *a, void *addr);
 void				area__extend(t_area *a, size_t extention_size);
 t_block				*area__search(t_area *a, t_area__search_fn fn, void *ctx);
 void				area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx);
@@ -50,12 +46,8 @@ int					area__find_in_range(t_area *a, void *ctx);
 void				area__hexdump(t_area *a, size_t index, void *ctx);
 void				area__show_alloc(t_area *a, size_t index, void *ctx);
 
-#ifdef LOG
+# ifdef LOG
 void				area__log(t_area *area, char *msg);
-#endif
-
-// int					area__search_first_fit(t_block *block, void *ctx);
-// int					area__search_first_fit_coalesce(t_block *block, void *ctx);
-// int					area__search_first_fit_split(t_block *block, void *ctx);
+# endif
 
 #endif
