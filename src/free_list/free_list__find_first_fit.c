@@ -7,6 +7,6 @@ int		free_list__find_first_fit(t_area *a, t_free_block *fb, void *ctx)
 
 	UNUSED(a);
 	assert(fb->block.free);
-	size = (size_t)ctx;
+	size = *(size_t*)ctx;
 	return (fb->block.size >= size);
 }
