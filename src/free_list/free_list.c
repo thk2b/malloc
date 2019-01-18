@@ -95,3 +95,21 @@ void				free_list__insert(t_free_list *fl, t_area *a, t_free_block *fb)
 {
 	insert_address_ordered(fl, a, fb);
 }
+
+void				free_list__remove(t_free_list *fl, t_area *area, t_free_block *fb)
+{
+	t_free_block	*prev;
+	t_free_block	*next;
+
+	UNUSED(area);
+	prev = fb->prev;
+	next = fb->next;
+	if (prev == NULL)
+		fl->head = next;
+	else
+		prev->next = next;
+	if (next)
+		next->prev = prev;
+	fb->next = NULL;//FIXME: remove
+	fb->prev = NULL;
+}

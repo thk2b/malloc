@@ -28,8 +28,6 @@ t_block				*free_block__allocate(t_free_block *fb)
 	t_block			*b;
 
 	b = &fb->block;
-	fb->next = NULL;//FIXME: remove
-	fb->prev = NULL;
 	fb->block.free = 0;
 	#ifdef LOG
 	block__log(b, "unfreed");
