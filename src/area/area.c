@@ -62,6 +62,9 @@ void			area__destroy_free_block(t_area *a, t_free_block *fb)//CHECKME: other thi
 {
 	t_free_list	*fl;
 
+	#ifdef LOG
+	free_block__log(fb, "destroy");
+	#endif
 	fl = free_list__find(g_free_lists, fb->block.size);
 	free_list__remove(fl, a, fb);
 }

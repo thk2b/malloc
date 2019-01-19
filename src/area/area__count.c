@@ -40,7 +40,7 @@ size_t				area__count_free_space_before(t_area *a, t_block *b, size_t until)
 	if (b->prev_free == 0)
 		return (0);
 	cur = BLOCK__PREV(b);
-	while ((void*)cur > end && count < until && cur->free)
+	while ((void*)cur >= end && count < until && cur->free)
 	{
 		count += cur->size + sizeof(t_block);
 		if (cur->prev_free == 0)

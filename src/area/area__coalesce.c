@@ -23,8 +23,11 @@ static inline t_free_block	*do_coalesce(t_area *a, t_free_block *fb, size_t requ
 		assert(AREA__CAN_FIT(a, requested_size - total));
 		a->cur_size += requested_size - total;
 	}
-	fb->block.size = total;
+	fb->block.size = total - sizeof(t_block);
 	assert(total >= requested_size);
+	#ifdef LOG
+	free_block__log(fb, "coalessed");
+	#endif
 	return (fb);
 }
 
@@ -59,7 +62,8 @@ t_free_block				*area__coalesce(t_area *a, t_free_block *fb, size_t requested_si
 		return (NULL);
 	if (space_before)
 		fb = do_coalesce_back(a, fb, space_before, requested_size);
-	fb = do_coalesce(a, fb, requested_size);
+	else
+		fb = do_coalesce(a, fb, requested_size);
 	// if (fb->block.size > requested_size)
 		// area__split_free_block(a, fb, requested_size);
 	return (fb);

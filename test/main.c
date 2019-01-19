@@ -22,7 +22,7 @@ void	do_alloc(size_t size, size_t n)
 
 void	test_free(void)
 {
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		do_alloc(100, 3);
 		do_alloc(1000, 3);
@@ -55,7 +55,40 @@ void	test_simple_coalescing(void)
 	show_alloc_mem();
 }
 
+void	test_coalescing_forward(void)
+{
+	char *s = malloc(104);
+	memset(s, 'a', 104);
+	char *t = malloc(104);
+	memset(t, 'a', 104);
+	char *u = malloc(104);
+	memset(u, 'a', 104);
+	char *v = malloc(104);
+	memset(v, 'a', 104);
+	free(t);
+	free(u);
+	free(s);
+	s = malloc(240);
+	memset(s, 'b', 240);
+	hexdump_mem();
+	show_alloc_mem();
+}
+
+void	test_coalescing_backward(void)
+{
+	char *s = malloc(0);
+	char *t = malloc(256);
+	memset(t, 'a', 256);
+	malloc(0);
+	free(s);
+	free(t);
+	s = malloc(264);
+	memset(s, 'b', 264);
+	hexdump_mem();
+	show_alloc_mem();
+}
+
 int main(void)
 {
-	test_simple_coalescing();
+	test_free();
 }

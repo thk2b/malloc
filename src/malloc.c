@@ -1,5 +1,6 @@
 #include <malloc.h>
 #include <shared.h>
+#include <assert.h>
 
 extern t_free_list	g_free_lists[];
 extern t_area_list	g_area_list;
@@ -40,6 +41,8 @@ extern void			*malloc(size_t size)
 		b = area__allocate_new_block(a, size);
 	else
 		return (NULL);
+	assert(b->free == 0);
+	assert(b->size >= size);
 	return (BLOCK__DATA(b));
 }
 

@@ -79,8 +79,9 @@ t_free_block	*free_list__dynamic_search(t_free_list *fl, t_area **areap, t_free_
 		if (fn(area, cur, &next, ctx))
 		{
 			*areap = area;
-			return (cur);
+			return (next ? next : cur);
 		}
+		assert(next == NULL || cur > next);
 		cur = next ? next : cur->next;
 	}
 	*areap = NULL;

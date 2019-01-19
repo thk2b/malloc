@@ -3,6 +3,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <shared.h>
 
 static void	sig_handler(int sig)
@@ -18,7 +19,8 @@ static void	sig_handler(int sig)
 	put_dec(fd, (size_t)sig);
 	put_str(fd, "\n");
 	// show_alloc_mem();
-	// hexdump_mem();
+	hexdump_mem();
+	close(fd);
 	exit(1);
 }
 
