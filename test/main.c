@@ -1,12 +1,11 @@
 #include <malloc.h>
 #include <string.h>
 #include <stdio.h>
+#include <limits.h>
 
-#define LIM 10
-#define FACTOR 10
 #define D "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
-static void	do_alloc(size_t size, size_t n)
+void	do_alloc(size_t size, size_t n)
 {
 	char *s[n];
 
@@ -21,7 +20,7 @@ static void	do_alloc(size_t size, size_t n)
 		free(s[i]);
 }
 
-static void	test_free(void)
+void	test_free(void)
 {
 	for (int i = 0; i < 10000; i++)
 	{
@@ -31,6 +30,15 @@ static void	test_free(void)
 	}
 	hexdump_mem();
 	show_alloc_mem();
+}
+
+void	test_invalid_free(void)
+{
+	free(NULL);
+	free((void*)11);
+	free((void*)INT_MAX);
+	free((void*)SIZE_T_MAX);
+	free((void*)140236853095200);
 }
 
 int main(void)

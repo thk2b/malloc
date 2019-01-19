@@ -75,9 +75,15 @@ t_area			*area_list__search_around(t_area *a, t_area_list__search_fn fn, void *c
 	while (left || right)
 	{
 		if (right == NULL)
-			cur = cur->prev;
+		{
+			cur = left;
+			left = left->prev;
+		}
 		else if (left == NULL)
-			cur = cur->next;
+		{
+			cur = right;
+			right = right->next;
+		}
 		else if (direction == 0)
 		{
 			cur = left;
@@ -90,6 +96,7 @@ t_area			*area_list__search_around(t_area *a, t_area_list__search_fn fn, void *c
 		}
 		if (cur == NULL)
 			break ;
+		assert(cur != a);
 		direction = !direction;
 		if (fn(cur, ctx))
 			return (cur);

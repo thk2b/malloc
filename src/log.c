@@ -11,11 +11,14 @@ static void	sig_handler(int sig)
 
 	if ((fd = log__get_fd()) < 0)
 		return ;
+	put_str(2, "Caught signal ");
+	put_dec(2, (size_t)sig);
+	put_str(2, "\n");
 	put_str(fd, "Caught signal ");
 	put_dec(fd, (size_t)sig);
 	put_str(fd, "\n");
 	// show_alloc_mem();
-	hexdump_mem();
+	// hexdump_mem();
 	exit(1);
 }
 

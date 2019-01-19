@@ -38,7 +38,7 @@ extern void			free(void *ptr)
 	if (a)
 		b = area__search(a, block__find_address, ptr);
 /*		b = block__from_ptr(ptr);*/
-	if (a == NULL || b == NULL)
+	if (a == NULL || b == NULL || b->free == 1)
 	{
 		error__ptr_was_not_allocated("free", ptr);
 		return ;

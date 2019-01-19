@@ -35,6 +35,7 @@ t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 	t_free_block	*fb;
 	t_block			*next;
 
+	assert(b->free == 0);
 	next = BLOCK__NEXT(b);
 	if (AREA__IS_IN_BOUNDS(a, next))
 		block__deallocate_prev(next);
