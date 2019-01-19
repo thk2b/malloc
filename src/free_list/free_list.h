@@ -34,7 +34,7 @@ void			free_list_log(t_free_list *fl, char *msg);
 # endif
 
 int				free_list__find_first_fit(t_area *a, t_free_block *b, void *ctx);
-int				free_list__find_first_fit_coalesce(t_area *a, t_block *b, void *ctx);
+int				free_list__find_first_fit_coalesce(t_area *a, t_free_block *fb, t_free_block **next, void *ctx);
 // int				free_list__find_first_fit_split(t_block *block, void *ctx);
 
 #endif

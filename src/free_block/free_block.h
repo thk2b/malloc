@@ -8,7 +8,6 @@
 # define FREE_BLOCK_H
 # include <shared.h>
 # define FREE_BLOCK__MIN_SIZE (sizeof(t_free_block*) * 2 + sizeof(size_t))
-# define FREE_BLOCK__PREV (fb) (NULL)
 
 # define FREE_BLOCK__BLOCK_COLOR YELLOW
 # define FREE_BLOCK__POINTERS_COLOR BLUE

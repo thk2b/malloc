@@ -11,6 +11,7 @@
 
 # define BLOCK__DATA(b) ((void*)((char*)(b) + sizeof(t_block)))
 # define BLOCK__NEXT(b) ((t_block*)((char*)(b) + (b)->size + sizeof(t_block)))
+# define BLOCK__PREV(b) (NULL)
 
 # define BLOCK__HEADER_COLOR YELLOW
 # define BLOCK__DATA_COLOR GREEN

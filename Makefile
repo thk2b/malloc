@@ -24,11 +24,11 @@ SRC = $(addprefix src/,\
 	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\
-	$(addprefix area/, area.c)\
+	$(addprefix area/, area.c area__count.c area__coalesce.c)\
 	$(addprefix area_list/, area_list.c area_list__insert.c)\
 	$(addprefix block/, block.c)\
 	$(addprefix free_block/, free_block.c)\
-	$(addprefix free_list/, free_list.c free_list__find_first_fit.c)\
+	$(addprefix free_list/, free_list.c free_list__find_first_fit.c free_list__find_first_fit_coalesce.c)\
 	$(addprefix lib/, hexdump.c lib.c)\
 )
 
