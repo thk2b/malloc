@@ -49,6 +49,43 @@ t_free_block	*free_list__search(t_free_list *fl, t_area **areap, t_free_list__se
 	*areap = NULL;
 	return (NULL);
 }
+/*
+**	Iterates through the free list
+**	Return the first free block for which fn returns 1
+**	If next is not NULL, continue the search from there
+**	Sets areap to the area in which the block is found.
+*/
+t_free_block	*free_list__dynamic_search(t_free_list *fl, t_area **areap, t_free_list__dynamic_search_fn fn, void *ctx)
+{
+	t_area			*area;
+	t_free_block	*cur;
+	t_free_block	*next;
+	void			*area_end;
+
+	cur = fl->head;
+	if (cur == NULL)
+		return (NULL);
+	area = area_list__search(&g_area_list, area__find_in_range, (void*)cur);
+	assert(area);
+	while (cur)
+	{
+		if (!AREA__IS_IN_BOUNDS(area, cur))
+		{
+			area = area_list__search_from(area, area__find_in_range, (void*)cur);
+			assert(area);
+			area_end = AREA__CUR_END(area);
+		}
+		next = NULL;
+		if (fn(area, cur, &next, ctx))
+		{
+			*areap = area;
+			return (cur);
+		}
+		cur = next ? next : cur->next;
+	}
+	*areap = NULL;
+	return (NULL);
+}
 
 t_free_block	*free_list__search_in_area(t_free_list *fl, t_area *a, t_free_list__search_fn fn, void *ctx)
 {

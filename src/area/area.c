@@ -39,6 +39,7 @@ t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 	next = BLOCK__NEXT(b);
 	if (AREA__IS_IN_BOUNDS(a, next))
 		block__deallocate_prev(next);
+	//TODO: remove wilderness block
 	fb = free_block__deallocate(b);
 	return (fb);
 }
