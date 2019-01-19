@@ -1,4 +1,5 @@
 #include <shared.h>
+#include <assert.h>
 
 int		free_list__find_first_fit_coalesce(t_area *a, t_free_block *fb, t_free_block **next, void *ctx)
 {
@@ -13,6 +14,7 @@ int		free_list__find_first_fit_coalesce(t_area *a, t_free_block *fb, t_free_bloc
 	new_fb = area__coalesce(a, fb, requested_size + sizeof(t_block), &last_encountered_adjacent_fb);
 	if (new_fb == NULL)
 	{
+		assert(last_encountered_adjacent_fb == NULL || last_encountered_adjacent_fb > fb);
 		*next = last_encountered_adjacent_fb;
 		return (0);
 	}

@@ -20,11 +20,11 @@ static inline t_free_block	*do_coalesce(t_area *a, t_free_block *fb, size_t requ
 	}
 	if ((void*)cur == end && total < requested_size)
 	{
-		assert(AREA__CAN_FIT(a, requested_size - total));
 		a->cur_size += requested_size - total;
+		total = requested_size;
 	}
-	fb->block.size = total - sizeof(t_block);
 	assert(total >= requested_size);
+	fb->block.size = total - sizeof(t_block);
 	#ifdef LOG
 	free_block__log(fb, "coalessed");
 	#endif
