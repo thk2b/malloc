@@ -50,6 +50,21 @@ t_free_block	*free_list__search(t_free_list *fl, t_area **areap, t_free_list__se
 	return (NULL);
 }
 
+t_free_block	*free_list__search_in_area(t_free_list *fl, t_area *a, t_free_list__search_fn fn, void *ctx)
+{
+	t_free_block	*b;
+	t_free_block	*last;
+
+	b = a->first_free_block[fl->id];
+	last = a->last_free_block[fl->id];
+	while (b && b <= last)
+	{
+		if (fn(a, b, ctx))
+			return (b);
+		b = b->next;
+	}
+	return (NULL);
+}
 /*
 **	Insert in address order
 **	Invariant: For all fb of fl, fb->prev < fb < fb->next where < compares memory addresses
@@ -68,24 +83,50 @@ static int			find_prev_free_block(t_area *area, t_free_block *fb, void *ctx)
 	return ((void*)fb < ctx && (fb->next == NULL || ctx < (void*)fb->next));
 }
 
-static inline void	insert_address_ordered(t_free_list *fl, t_area *a, t_free_block *fb)
-{
-	t_area			*prev_block_area;
-	t_free_block	*prev;
-	t_free_block	*next;
+// static inline void	insert_address_ordered(t_free_list *fl, t_area *a, t_free_block *fb)
+// {
+// 	t_area			*prev_block_area;
+// 	t_free_block	*prev;
+// 	t_free_block	*next;
 
-	UNUSED(a);//FIXME: start search here
-	prev = free_list__search(fl, &prev_block_area, find_prev_free_block, (void*)fb);
-	next = prev ? prev->next : fl->head;
-	assert((void*)prev < (void*)fb && ((void*)next == NULL || (void*)fb < (void*)next));
+// 	UNUSED(a);//FIXME: start search here
+// 	prev = free_list__search(fl, &prev_block_area, find_prev_free_block, (void*)fb);
+// 	next = prev ? prev->next : fl->head;
+// 	assert((void*)prev < (void*)fb && ((void*)next == NULL || (void*)fb < (void*)next));
+// 	if (prev == NULL)
+// 		fl->head = fb;
+// 	if (prev)
+// 		prev->next = fb;
+// 	fb->prev = prev;
+// 	if (next)
+// 		next->prev = fb;
+// 	fb->next = next;
+// }
+
+#include <printf.h>
+static inline void			insert_between(t_free_list *fl, t_free_block *prev, t_free_block *fb, t_free_block *next)
+{
+	if (!(prev < fb && (next == NULL || fb < next)))
+		dprintf(2, "%p %p %p\n", (void*)prev, (void*)fb, (void*)next);
+	assert(prev < fb && (next == NULL || fb < next));
 	if (prev == NULL)
 		fl->head = fb;
-	if (prev)
+	else
 		prev->next = fb;
 	fb->prev = prev;
 	if (next)
 		next->prev = fb;
 	fb->next = next;
+}
+
+static inline void			insert_free_node(t_free_list *fl, t_free_block *nearest_fb, t_free_block *fb)
+{
+	if (nearest_fb == NULL)
+		insert_between(fl, NULL, fb, NULL);
+	else if (nearest_fb < fb)
+		insert_between(fl, nearest_fb, fb, nearest_fb->next);
+	else
+		insert_between(fl, nearest_fb->prev, fb, nearest_fb);
 }
 
 /*
@@ -95,9 +136,49 @@ static inline void	insert_address_ordered(t_free_list *fl, t_area *a, t_free_blo
 **	x	LIFO			- _
 **	->	Address order	- O(n) insert, ordered list, reuse early addresses, smoothe out irregular freeing patterns
 */
-void				free_list__insert(t_free_list *fl, t_area *a, t_free_block *fb)
+
+static inline t_free_block	*nearest_free_block(t_free_list *fl, t_area *a, t_free_block *fb)
 {
-	insert_address_ordered(fl, a, fb);
+	t_free_block	*nearest_fb;
+	t_area			*nearest_area_with_fb;
+
+	assert(fl->id < FL__N_FREE_LISTS);
+	if (AREA__HAS_FREE_BLOCK(a, fl->id))
+	{
+		nearest_fb = free_list__search_in_area(fl, a, find_prev_free_block, (void*)fb);
+		if (nearest_fb == NULL)
+			nearest_fb = a->first_free_block[fl->id];
+		assert(nearest_fb);
+	}
+	else
+	{
+		nearest_area_with_fb = area_list__search_around(a, area__find_has_free_block, (void*)&fl->id);
+		if (nearest_area_with_fb == NULL)
+			nearest_fb = NULL;
+		else if (nearest_area_with_fb < a)
+			nearest_fb = nearest_area_with_fb->last_free_block[fl->id];
+		else
+			nearest_fb = nearest_area_with_fb->first_free_block[fl->id];
+	}
+	return (nearest_fb);
+}
+
+
+static inline void			insert_local_address_ordered(t_free_list *fl, t_area *a, t_free_block *fb)
+{
+	t_free_block	*nearest_fb;
+
+	nearest_fb = nearest_free_block(fl, a, fb);
+	insert_free_node(fl, nearest_fb, fb);
+	if (fb < a->first_free_block[fl->id] || a->first_free_block[fl->id] == NULL)
+		a->first_free_block[fl->id] = fb;
+	if (fb > a->last_free_block[fl->id] || a->last_free_block[fl->id] == NULL)
+		a->last_free_block[fl->id] = fb;
+}
+
+void					free_list__insert(t_free_list *fl, t_area *a, t_free_block *fb)
+{
+	insert_local_address_ordered(fl, a, fb);
 }
 
 void				free_list__remove(t_free_list *fl, t_area *area, t_free_block *fb)
@@ -105,7 +186,10 @@ void				free_list__remove(t_free_list *fl, t_area *area, t_free_block *fb)
 	t_free_block	*prev;
 	t_free_block	*next;
 
-	UNUSED(area);
+	if (fb == area->first_free_block[fl->id])
+		area->first_free_block[fl->id] = fb->next;
+	if (fb == area->last_free_block[fl->id])
+		area->last_free_block[fl->id] = fb->prev;
 	prev = fb->prev;
 	next = fb->next;
 	if (prev == NULL)

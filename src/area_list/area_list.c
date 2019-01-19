@@ -61,6 +61,42 @@ t_area		*area_list__search(t_area_list *al, t_area_list__search_fn fn, void *ctx
 	return (NULL);
 }
 
+t_area			*area_list__search_around(t_area *a, t_area_list__search_fn fn, void *ctx)
+{
+	char	direction;
+	t_area	*left;
+	t_area	*right;
+	t_area	*cur;
+
+	cur = a;
+	left = a->prev;
+	right = a->next;
+	direction = 0;
+	while (left || right)
+	{
+		if (right == NULL)
+			cur = cur->prev;
+		else if (left == NULL)
+			cur = cur->next;
+		else if (direction == 0)
+		{
+			cur = left;
+			left = left->prev;
+		}
+		else if (direction == 1)
+		{
+			cur = right;
+			right = right->next;
+		}
+		if (cur == NULL)
+			break ;
+		direction = !direction;
+		if (fn(cur, ctx))
+			return (cur);
+	}
+	return (NULL);
+}
+
 t_area		*area_list__search_from(t_area *start, t_area_list__search_fn fn, void *ctx)
 {
 	t_area	*a;

@@ -1,5 +1,6 @@
 #ifndef SHARED_H
 # define SHARED_H
+# define FL__N_FREE_LISTS 3
 # include <malloc.h>
 # include <_block.h>
 # include <free_block.h>

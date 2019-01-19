@@ -14,7 +14,8 @@
 # define AREA__IS_END(a, ptr) ((void*)((char*)(a) + (a)->size) == (void*)(ptr))
 # define AREA__HEAD(a) ((t_block*)((char*)a + sizeof(t_area)))
 # define AREA__END(a) ((void*)((char*)(a) + (a)->size))
-# define AREA__IS_IN_BOUNDS(a, ptr) ((void*)(a) <= ((void*)ptr) && ((void*)ptr) < AREA__CUR_END(a))
+# define AREA__IS_IN_BOUNDS(a, ptr) ((void*)(a) <= ((void*)(ptr)) && ((void*)(ptr)) < AREA__CUR_END(a))
+# define AREA__HAS_FREE_BLOCK(a, i) ((i) < FL__N_FREE_LISTS && (void*)(a)->first_free_block[(i)] != NULL && (void*)(a)->last_free_block[(i)] != NULL)
 # define AREA__HEADER_COLOR CYAN
 # define AREA__REMAINING_COLOR WHITE
 
@@ -25,6 +26,8 @@ typedef struct		s_area
 	size_t			is_single_block:1;
 	size_t			size:sizeof(size_t) * 8 - 1;
 	size_t			cur_size;
+	t_free_block	*first_free_block[FL__N_FREE_LISTS];
+	t_free_block	*last_free_block[FL__N_FREE_LISTS];
 }					t_area;
 
 typedef int			(*t_area__search_fn)(t_block *block, void *ctx);
@@ -42,6 +45,7 @@ t_free_block		*area__split_free_block(t_area *a, t_free_block *b, size_t target_
 t_free_block		*area__extend_free_block(t_area *a, t_free_block *b, size_t target_size);
 
 int					area__find_in_range(t_area *a, void *ctx);
+int					area__find_has_free_block(t_area *a, void *ctx);
 
 void				area__hexdump(t_area *a, size_t index, void *ctx);
 void				area__show_alloc(t_area *a, size_t index, void *ctx);

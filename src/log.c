@@ -14,7 +14,8 @@ static void	sig_handler(int sig)
 	put_str(fd, "Caught signal ");
 	put_dec(fd, (size_t)sig);
 	put_str(fd, "\n");
-	// hexdump_mem();
+	// show_alloc_mem();
+	hexdump_mem();
 	exit(1);
 }
 

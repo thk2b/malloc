@@ -11,7 +11,7 @@ static inline void	free__log(void	*ptr)
 
 	if ((fd = log__get_fd()) < 0)
 		return ;
-	put_str(fd, "malloc(");
+	put_str(fd, "free(");
 	put_hex(fd, (size_t)ptr, 1);
 	put_str(fd, ")\n");
 }

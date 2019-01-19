@@ -7,7 +7,7 @@ int				area__can_fit(t_area *a, size_t size)
 	return (a->size - a->cur_size > size);
 }
 
-void		area__extend(t_area *a, size_t extention_size)
+void			area__extend(t_area *a, size_t extention_size)
 {
 	if (a->is_single_block)
 		a->is_single_block = 0;
@@ -89,6 +89,11 @@ t_block			*area__search(t_area *a, t_area__search_fn fn, void *ctx)
 int				area__find_in_range(t_area *a, void *ctx)
 {
 	return (AREA__IS_IN_BOUNDS(a, ctx));
+}
+
+int				area__find_has_free_block(t_area *a, void *ctx)
+{
+	return (AREA__HAS_FREE_BLOCK(a, *(size_t*)ctx));
 }
 
 void			area__hexdump(t_area *a, size_t index, void *ctx)

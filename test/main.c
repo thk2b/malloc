@@ -23,7 +23,7 @@ static void	do_alloc(size_t size, size_t n)
 
 static void	test_free(void)
 {
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 10000; i++)
 	{
 		do_alloc(100, 3);
 		do_alloc(1000, 3);
