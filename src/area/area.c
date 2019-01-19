@@ -9,6 +9,8 @@ int				area__can_fit(t_area *a, size_t size)
 
 void		area__extend(t_area *a, size_t extention_size)
 {
+	if (a->is_single_block)
+		a->is_single_block = 0;
 	a->size += extention_size;
 	#ifdef LOG
 	area__log(a, "extended");
