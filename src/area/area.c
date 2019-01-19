@@ -1,6 +1,8 @@
 #include <shared.h>
 #include <assert.h>
 
+extern t_free_list	g_free_lists[];
+
 int				area__can_fit(t_area *a, size_t size)
 {
 	assert(a->size > a->cur_size);
@@ -54,6 +56,14 @@ t_block			*area__allocate_free_block(t_area *a, t_free_block *fb)
 		block__allocate_prev(next);
 	b = free_block__allocate(fb);
 	return (b);
+}
+
+void			area__destroy_free_block(t_area *a, t_free_block *fb)//CHECKME: other things to do?
+{
+	t_free_list	*fl;
+
+	fl = free_list__find(g_free_lists, fb->block.size);
+	free_list__remove(fl, a, fb);
 }
 
 void			area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)

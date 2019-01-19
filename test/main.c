@@ -41,7 +41,21 @@ void	test_invalid_free(void)
 	free((void*)140236853095200);
 }
 
+void	test_simple_coalescing(void)
+{
+	char *s = malloc(104);
+	memset(s, 'a', 104);
+	char *t = malloc(104);
+	memset(t, 'a', 104);
+	free(t);
+	free(s);
+	char *u = malloc(208);
+	memset(u, 'b', 208);
+	hexdump_mem();
+	show_alloc_mem();
+}
+
 int main(void)
 {
-	test_free();
+	test_simple_coalescing();
 }

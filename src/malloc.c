@@ -29,7 +29,8 @@ extern void			*malloc(size_t size)
 	malloc__log(size);
 	# endif
 	fl = free_list__find(g_free_lists, size);
-	fb = free_list__search(fl, &a, free_list__find_first_fit, (void*)&size);
+	fb = free_list__dynamic_search(fl, &a, free_list__find_first_fit_coalesce, (void*)&size);
+	// fb = free_list__search(fl, &a, free_list__find_first_fit, (void*)&size);
 	if (fb)
 	{
 		b = area__allocate_free_block(a, fb);

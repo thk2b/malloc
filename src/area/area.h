@@ -43,7 +43,7 @@ t_block				*area__search_after(t_area *a, t_block *block, t_area__search_fn fn, 
 t_block				*area__search_before(t_area *a, t_block *block, t_area__search_fn fn, void *ctx);
 t_block				*area__allocate_new_block(t_area *a, size_t size);
 t_block				*area__allocate_free_block(t_area *a, t_free_block *fb);
-t_block				*area__destroy_free_block(t_area *a, t_free_block *fb);
+void				area__destroy_free_block(t_area *a, t_free_block *fb);
 t_free_block		*area__deallocate_block(t_area *a, t_block *block);
 t_free_block		*area__coalesce(t_area *a, t_free_block *fb, size_t requested_size, t_free_block **last_encountered_adjacent_fb);
 t_free_block		*area__split_free_block(t_area *a, t_free_block *b, size_t target_size);

@@ -18,12 +18,12 @@ static inline t_free_block	*do_coalesce(t_area *a, t_free_block *fb, size_t requ
 		area__destroy_free_block(a, cur);
 		cur = (t_free_block*)BLOCK__NEXT((t_block*)cur);
 	}
-	if ((void*)cur == end)
+	if ((void*)cur == end && total < requested_size)
 	{
 		assert(AREA__CAN_FIT(a, requested_size - total));
 		a->cur_size += requested_size - total;
 	}
-	fb->block.size += total;
+	fb->block.size = total;
 	assert(total >= requested_size);
 	return (fb);
 }
