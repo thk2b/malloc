@@ -48,12 +48,12 @@ t_block						*area__coalesce_block(t_area *a, t_block *b, size_t requested_size)
 	size_t			space_after;
 	size_t			total_size;
 
-	space_after = area__count_free_space_after(a, b, requested_size, NULL);
-	space_before = 0;
-	total_size = space_after + sizeof(t_block) + b->size; 
+	space_after = 0;
+	space_before = area__count_free_space_before(a, b, requested_size);
+	total_size = space_before + sizeof(t_block) + b->size; 
 	if (total_size < requested_size)
-		space_before = area__count_free_space_before(a, b, requested_size);
-	total_size += space_before;
+		space_after = area__count_free_space_after(a, b, requested_size, NULL);
+	total_size += space_after;
 	if (total_size < requested_size)
 		return (NULL);
 	if (space_before)

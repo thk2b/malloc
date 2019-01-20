@@ -41,10 +41,10 @@ static inline t_free_block	*do_coalesce_back(t_area *a, t_free_block *fb, size_t
 	return (do_coalesce(a, new_fb, requested_size));
 }
 
-static inline int			should_coalesce(size_t reclaimed_size, size_t requested_size)
-{
-	return (reclaimed_size >= requested_size / 4);
-}
+// static inline int			should_coalesce(size_t reclaimed_size, size_t requested_size)
+// {
+// 	return (reclaimed_size >= requested_size / 4);
+// }
 
 /*
 **	Attempt to gather at least requested_size from free blocks surounding fb
@@ -61,12 +61,12 @@ t_free_block				*area__coalesce_free_block(t_area *a, t_free_block *fb, size_t r
 	size_t			space_after;
 	size_t			total_size;
 
-	space_after = area__count_free_space_after(a, &fb->block, requested_size, last_encountered_adjacent_fb);
-	space_before = 0;
-	total_size = space_after + sizeof(t_block) + fb->block.size; 
+	space_before = area__count_free_space_before(a, &fb->block, requested_size);
+	space_after = 0;
+	total_size = space_before + sizeof(t_block) + fb->block.size; 
 	if (total_size < requested_size)
-		space_before = area__count_free_space_before(a, &fb->block, requested_size);
-	total_size += space_before;
+		space_after = area__count_free_space_after(a, &fb->block, requested_size, last_encountered_adjacent_fb);
+	total_size += space_after;
 	if (total_size < requested_size)
 		return (NULL);
 	if (should_coalesce(space_before + space_after, requested_size) == 0)
