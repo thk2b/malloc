@@ -125,5 +125,5 @@ void	test_wilderness(void)
 
 int main(void)
 {
-	test_free();
+	test_split_block();
 }

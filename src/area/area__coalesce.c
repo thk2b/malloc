@@ -50,6 +50,7 @@ static inline t_free_block	*do_coalesce_back(t_area *a, t_free_block *fb, size_t
 **	When extending, free blocks are removed from their list and destroyed apropriately
 **	The returned free block may be before fb in the case where there was free space before fb
 **	If rhe resulting block exceeds requested_size, it is split
+**	The coalesced block is not added to a free list
 */
 t_free_block				*area__coalesce(t_area *a, t_free_block *fb, size_t requested_size, t_free_block **last_encountered_adjacent_fb)
 {
