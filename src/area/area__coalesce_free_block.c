@@ -41,10 +41,10 @@ static inline t_free_block	*do_coalesce_back(t_area *a, t_free_block *fb, size_t
 	return (do_coalesce(a, new_fb, requested_size));
 }
 
-// static inline int			should_coalesce(size_t reclaimed_size, size_t requested_size)
-// {
-// 	return (reclaimed_size >= requested_size / 4);
-// }
+static inline int			should_coalesce(size_t reclaimed_size, size_t requested_size)
+{
+	return (reclaimed_size >= requested_size / 4);
+}
 
 /*
 **	Attempt to gather at least requested_size from free blocks surounding fb

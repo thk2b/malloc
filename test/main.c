@@ -28,8 +28,8 @@ void	test_free(void)
 		do_alloc(1000, 3);
 		do_alloc(10000, 3);
 	}
-	// hexdump_mem();
-	// show_alloc_mem();
+	hexdump_mem();
+	show_alloc_mem();
 }
 
 void	test_invalid_free(void)
@@ -142,13 +142,17 @@ void	test_realloc_split_block(void)
 void	test_wilderness(void)
 {
 	char *s = malloc(1024);
+	char *t = malloc(1024);
 	memset(s, 'a', 1024);
+	memset(t, 'a', 1024);
 	free(s);
+	free(t);
+	malloc(0);
 	hexdump_mem();
 	show_alloc_mem();
 }
 
 int main(void)
 {
-	test_realloc_split_block();
+	test_free();
 }

@@ -106,7 +106,8 @@ t_free_block	*free_list__search_in_area(t_free_list *fl, t_area *a, t_free_list_
 
 void			free_list__insert(t_free_list *fl, t_area *a, t_free_block *fb)
 {
-	free_list__insert_local_address_ordered(fl, a, fb);
+	free_list__insert_address_ordered(fl, a, fb);
+	// free_list__insert_local_address_ordered(fl, a, fb);
 }
 
 void				free_list__remove(t_free_list *fl, t_area *area, t_free_block *fb)
