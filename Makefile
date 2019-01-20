@@ -28,7 +28,7 @@ SRC = $(addprefix src/,\
 	$(addprefix area_list/, area_list.c area_list__insert.c)\
 	$(addprefix block/, block.c)\
 	$(addprefix free_block/, free_block.c)\
-	$(addprefix free_list/, free_list.c free_list__find_first_fit.c free_list__find_first_fit_coalesce.c)\
+	$(addprefix free_list/, free_list.c free_list__find_first_fit.c free_list__find_first_fit_coalesce.c free_list__insert_address_ordered.c free_list__insert_local_address_ordered.c)\
 	$(addprefix lib/, hexdump.c lib.c)\
 )
 
