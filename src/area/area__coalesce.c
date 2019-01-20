@@ -13,9 +13,10 @@ static inline t_free_block	*do_coalesce(t_area *a, t_free_block *fb, size_t requ
 	cur = fb;
 	while ((void*)cur < end && total < requested_size)
 	{
-		assert(cur->block.free);
+		// assert(cur->block.free);
 		total += cur->block.size + sizeof(t_block);
-		area__destroy_free_block(a, cur);
+		if (fb->block.free)
+			area__destroy_free_block(a, cur);
 		cur = (t_free_block*)BLOCK__NEXT((t_block*)cur);
 	}
 	if ((void*)cur == end && total < requested_size)
@@ -37,6 +38,7 @@ static inline t_free_block	*do_coalesce_back(t_area *a, t_free_block *fb, size_t
 
 	assert(AREA__IS_IN_BOUNDS(a, (char*)fb - offset));
 	new_fb = (t_free_block*)((char*)fb - offset);
+	// memmove(BLOCK__DATA(new_fb), BLOCK__DATA(fb), fb->block.size);
 	assert(new_fb->block.free);
 	return (do_coalesce(a, new_fb, requested_size));
 }
@@ -64,8 +66,8 @@ t_free_block				*area__coalesce(t_area *a, t_free_block *fb, size_t requested_si
 		fb = do_coalesce_back(a, fb, space_before, requested_size);
 	else
 		fb = do_coalesce(a, fb, requested_size);
-	// if (fb->block.size > requested_size)
-		// area__split_free_block(a, fb, requested_size);
+	if (fb->block.size > requested_size)
+		area__split_free_block(a, fb, requested_size);
 	return (fb);
 	// return (area__coalesce(a, fb, space_before, requested_size));
 }

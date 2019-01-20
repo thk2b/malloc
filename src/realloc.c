@@ -38,6 +38,9 @@ void	*realloc(void *ptr, size_t size)
 		error__ptr_was_not_allocated("realloc", ptr);
 		return (NULL);
 	}
+	// n = (t_block*)area__coalesce(a, (t_free_block*)b, size, NULL);
+	// if (n)
+		// return (BLOCK__DATA(n));
 	new_ptr = malloc(size);
 	memcpy(new_ptr, ptr, MIN(size, b->size));
 	return (new_ptr);
