@@ -60,7 +60,7 @@ t_block						*area__coalesce_block(t_area *a, t_block *b, size_t requested_size)
 		b = do_coalesce_back(a, b, space_before, requested_size);
 	else
 		b = do_coalesce(a, b, requested_size);
-	// if (b->size > requested_size)
-	// 	area__split_block(a, b, requested_size);
+	if (b->size > requested_size)
+		area__split_block(a, b, requested_size);
 	return (b);
 }
