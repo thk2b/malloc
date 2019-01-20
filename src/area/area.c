@@ -61,12 +61,16 @@ t_block			*area__allocate_free_block(t_area *a, t_free_block *fb)
 void			area__destroy_free_block(t_area *a, t_free_block *fb)//CHECKME: other things to do?
 {
 	t_free_list	*fl;
+	t_block	*next;
 
 	#ifdef LOG
 	free_block__log(fb, "destroy");
 	#endif
 	fl = free_list__find(g_free_lists, fb->block.size);
 	free_list__remove(fl, a, fb);
+	next = BLOCK__NEXT(&fb->block);
+	if (AREA__IS_IN_BOUNDS(a, next))
+		block__allocate_prev(next);
 }
 
 void			area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx)

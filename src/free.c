@@ -17,6 +17,8 @@ static inline void	free__log(void	*ptr)
 }
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
 extern void			free(void *ptr)
 {
 	t_area			*a;
@@ -41,6 +43,11 @@ extern void			free(void *ptr)
 	if (a == NULL || b == NULL || b->free == 1)
 	{
 		error__ptr_was_not_allocated("free", ptr);
+		if (a)
+		{
+			hexdump_mem();
+			exit(1);
+		}
 		return ;
 	}
 	fb = area__deallocate_block(a, b);
