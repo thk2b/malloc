@@ -46,7 +46,7 @@ size_t				area__count_free_space_before(t_area *a, t_block *b, size_t until)
 		count += cur->size + sizeof(t_block);
 		if (cur->prev_free == 0)
 			break ;
-		cur = BLOCK__PREV(b);
+		cur = BLOCK__PREV(cur);
 	}
 	return (count);
 }

@@ -43,5 +43,6 @@ void	*realloc(void *ptr, size_t size)
 		// return (BLOCK__DATA(n));
 	new_ptr = malloc(size);
 	memcpy(new_ptr, ptr, MIN(size, b->size));
+	free(BLOCK__DATA(b));
 	return (new_ptr);
 }

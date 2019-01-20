@@ -40,7 +40,7 @@ extern void			free(void *ptr)
 /*		b = block__from_ptr(ptr);*/
 	if (a == NULL || b == NULL || b->free == 1)
 	{
-		error__ptr_was_not_allocated("free", ptr);
+		// error__ptr_was_not_allocated("free", ptr);
 		return ;
 	}
 	if ((fb = area__deallocate_block(a, b)) == NULL)

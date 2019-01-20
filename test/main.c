@@ -125,5 +125,5 @@ void	test_wilderness(void)
 
 int main(void)
 {
-	test_split_block();
+	test_coalescing_backward();
 }
