@@ -130,6 +130,15 @@ void	test_realloc_coalesce(void)
 	show_alloc_mem();
 }
 
+void	test_realloc_split_block(void)
+{
+	char *s = malloc(524);
+	memset(s, 'a', 524);
+	s = realloc(s, 256);
+	hexdump_mem();
+	show_alloc_mem();
+}
+
 void	test_wilderness(void)
 {
 	char *s = malloc(1024);
@@ -141,5 +150,5 @@ void	test_wilderness(void)
 
 int main(void)
 {
-	test_realloc_coalesce();
+	test_realloc_split_block();
 }

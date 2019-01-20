@@ -24,7 +24,7 @@ SRC = $(addprefix src/,\
 	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\
-	$(addprefix area/, area.c area__count.c area__coalesce_free_block.c area__coalesce_block.c area__split_free_block.c)\
+	$(addprefix area/, area.c area__count.c area__coalesce_free_block.c area__coalesce_block.c area__split_free_block.c area__split_block.c)\
 	$(addprefix area_list/, area_list.c area_list__insert.c)\
 	$(addprefix block/, block.c)\
 	$(addprefix free_block/, free_block.c)\

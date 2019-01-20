@@ -52,7 +52,7 @@ void	*realloc(void *ptr, size_t size)
 		return (ptr);
 	if (size < b->size)
 	{
-		// area__split_block(a, b, size);
+		area__split_block(a, b, size);
 		return (ptr);
 	}
 	if ((new_block = area__coalesce_block(a, b, size)) == NULL)
