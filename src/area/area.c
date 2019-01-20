@@ -38,7 +38,7 @@ t_block			*area__allocate_new_block(t_area *a, size_t size)
 // 	t_free_block	*wilderness;
 
 // 	b->free = 0;
-// 	wilderness = area__coalesce(a, (t_free_block*)b, a->cur_size, NULL);
+// 	wilderness = area__coalesce_free_block(a, (t_free_block*)b, a->cur_size, NULL);
 // 	if (wilderness == NULL)
 // 	{
 // 		wilderness = (t_free_block*)b;
@@ -91,6 +91,7 @@ void			area__destroy_free_block(t_area *a, t_free_block *fb)//CHECKME: other thi
 	t_free_list	*fl;
 	t_block	*next;
 
+	assert(fb->block.free);
 	#ifdef LOG
 	free_block__log(fb, "destroy");
 	#endif

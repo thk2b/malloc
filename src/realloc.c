@@ -19,11 +19,21 @@ static inline void	realloc__log(void *ptr, size_t size)
 
 extern t_area_list	g_area_list;
 
+static void	*malloc_copy_free(t_block *b, size_t size)
+{
+	void	*new_ptr;
+
+	new_ptr = malloc(size);
+	memcpy(new_ptr, BLOCK__DATA(b), MIN(size, b->size));
+	free(BLOCK__DATA(b));
+	return (new_ptr);
+}
+
 void	*realloc(void *ptr, size_t size)
 {
-	void				*new_ptr;
-	t_block				*b;
-	t_area				*a;
+	t_block	*b;
+	t_block	*new_block;
+	t_area	*a;
 
 	#ifdef LOG
 	realloc__log(ptr, size);
@@ -38,11 +48,14 @@ void	*realloc(void *ptr, size_t size)
 		error__ptr_was_not_allocated("realloc", ptr);
 		return (NULL);
 	}
-	// n = (t_block*)area__coalesce(a, (t_free_block*)b, size, NULL);
-	// if (n)
-		// return (BLOCK__DATA(n));
-	new_ptr = malloc(size);
-	memcpy(new_ptr, ptr, MIN(size, b->size));
-	free(BLOCK__DATA(b));
-	return (new_ptr);
+	if (b->size == size)
+		return (ptr);
+	if (size < b->size)
+	{
+		// area__split_block(a, b, size);
+		return (ptr);
+	}
+	if ((new_block = area__coalesce_block(a, b, size)) == NULL)
+		return (malloc_copy_free(b, size));
+	return (BLOCK__DATA(new_block));
 }

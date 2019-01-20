@@ -25,7 +25,7 @@ size_t				area__count_free_space_after(t_area *a, t_block *b, size_t until, t_fr
 	}
 	if ((void*)cur == end)
 		return (AREA__CAN_FIT(a, until - count) ? until : count);
-	if (local_lefb)
+	if (local_lefb && last_encountered_fb)
 		*last_encountered_fb = local_lefb;
 	return (count);
 }

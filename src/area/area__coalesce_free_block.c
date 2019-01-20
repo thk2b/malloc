@@ -15,8 +15,7 @@ static inline t_free_block	*do_coalesce(t_area *a, t_free_block *fb, size_t requ
 	{
 		assert(cur->block.free);
 		total += cur->block.size + sizeof(t_block);
-		if (fb->block.free)
-			area__destroy_free_block(a, cur);
+		area__destroy_free_block(a, cur);
 		cur = (t_free_block*)BLOCK__NEXT((t_block*)cur);
 	}
 	if ((void*)cur == end && total < requested_size)
@@ -56,7 +55,7 @@ static inline int			should_coalesce(size_t reclaimed_size, size_t requested_size
 **	If rhe resulting block exceeds requested_size, it is split
 **	The coalesced block is not added to a free list
 */
-t_free_block				*area__coalesce(t_area *a, t_free_block *fb, size_t requested_size, t_free_block **last_encountered_adjacent_fb)
+t_free_block				*area__coalesce_free_block(t_area *a, t_free_block *fb, size_t requested_size, t_free_block **last_encountered_adjacent_fb)
 {
 	size_t			space_before;
 	size_t			space_after;
