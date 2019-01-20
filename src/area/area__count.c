@@ -21,7 +21,7 @@ size_t				area__count_free_space_after(t_area *a, t_block *b, size_t until, t_fr
 		if (fl == free_list__find(g_free_lists, cur->size))
 			local_lefb = (t_free_block*)cur;
 		count += cur->size + sizeof(t_block);
-		cur = BLOCK__NEXT(b);
+		cur = BLOCK__NEXT(cur);
 	}
 	if ((void*)cur == end)
 		return (AREA__CAN_FIT(a, until - count) ? until : count);
