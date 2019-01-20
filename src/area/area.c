@@ -33,23 +33,23 @@ t_block			*area__allocate_new_block(t_area *a, size_t size)
 	return (b);
 }
 
-static inline void	remove_wilderness_block(t_area *a, t_block *b)
-{
-	t_free_block	*wilderness;
+// static inline void	remove_wilderness_block(t_area *a, t_block *b)
+// {
+// 	t_free_block	*wilderness;
 
-	b->free = 0;
-	wilderness = area__coalesce(a, (t_free_block*)b, a->cur_size, NULL);
-	if (wilderness == NULL)
-	{
-		wilderness = (t_free_block*)b;
-	}
-	free_list__remove(free_list__find(g_free_lists, wilderness->block.size), a, wilderness);
-	a->cur_size -= wilderness->block.size + sizeof(t_block);
-	b->size = 0;
-	#ifdef LOG
-	area__log(a, "removed wilderness");
-	#endif
-}
+// 	b->free = 0;
+// 	wilderness = area__coalesce(a, (t_free_block*)b, a->cur_size, NULL);
+// 	if (wilderness == NULL)
+// 	{
+// 		wilderness = (t_free_block*)b;
+// 	}
+// 	free_list__remove(free_list__find(g_free_lists, wilderness->block.size), a, wilderness);
+// 	a->cur_size -= wilderness->block.size + sizeof(t_block);
+// 	b->size = 0;
+// 	#ifdef LOG
+// 	area__log(a, "removed wilderness");
+// 	#endif
+// }
 
 t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 {
@@ -62,19 +62,23 @@ t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 		block__deallocate_prev(next);
 	if (AREA__CUR_END(a) == (void*)BLOCK__NEXT(b))
 	{
-		remove_wilderness_block(a, b);
-		return (NULL);
+		// remove_wilderness_block(a, b);
+		// return (NULL);
 	}
 	//TODO: remove wilderness block
 	fb = free_block__deallocate(b);
 	return (fb);
 }
 
+#include <printf.h>
 t_block			*area__allocate_free_block(t_area *a, t_free_block *fb)
 {
 	t_block	*b;
 	t_block	*next;
 
+	if (fb->block.free == 0)
+		dprintf(2, "%p\n", (void*)fb);
+	assert(fb->block.free);
 	next = BLOCK__NEXT(&fb->block);
 	if (AREA__IS_IN_BOUNDS(a, next))
 		block__allocate_prev(next);

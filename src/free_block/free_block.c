@@ -27,6 +27,7 @@ t_block				*free_block__allocate(t_free_block *fb)
 {
 	t_block			*b;
 
+	assert(fb->block.free);
 	b = &fb->block;
 	fb->block.free = 0;
 	#ifdef LOG

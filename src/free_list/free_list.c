@@ -205,7 +205,6 @@ static inline t_free_block	*nearest_free_block(t_free_list *fl, t_area *a, t_fre
 	return (nearest_fb);
 }
 
-
 static inline void			insert_local_address_ordered(t_free_list *fl, t_area *a, t_free_block *fb)
 {
 	t_free_block	*nearest_fb;

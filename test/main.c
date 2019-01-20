@@ -22,7 +22,7 @@ void	do_alloc(size_t size, size_t n)
 
 void	test_free(void)
 {
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		do_alloc(100, 3);
 		do_alloc(1000, 3);
@@ -125,5 +125,5 @@ void	test_wilderness(void)
 
 int main(void)
 {
-	test_wilderness();
+	test_free();
 }
