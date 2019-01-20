@@ -34,6 +34,9 @@ extern void			*malloc(size_t size)
 	// fb = free_list__search(fl, &a, free_list__find_first_fit, (void*)&size);
 	if (fb)
 	{
+		if (fb->block.size > size)
+			area__split_free_block(a, fb, size);
+		fl = free_list__find(g_free_lists, fb->block.size);
 		b = area__allocate_free_block(a, fb);
 		free_list__remove(fl, a, fb);
 	}

@@ -28,8 +28,8 @@ void	test_free(void)
 		do_alloc(1000, 3);
 		do_alloc(10000, 3);
 	}
-	hexdump_mem();
-	show_alloc_mem();
+	// hexdump_mem();
+	// show_alloc_mem();
 }
 
 void	test_invalid_free(void)
@@ -88,7 +88,33 @@ void	test_coalescing_backward(void)
 	show_alloc_mem();
 }
 
+void	test_coalesce_split_block(void)
+{
+	char *s = malloc(800);
+	char *t = malloc(800);
+	memset(s, 'a', 800);
+	memset(t, 'a', 800);
+	malloc(800);
+	free(s);
+	free(t);
+	s = malloc(900);
+	memset(s, 'b', 900);
+	hexdump_mem();
+	show_alloc_mem();
+}
+void	test_split_block(void)
+{
+	char *s = malloc(800);
+	malloc(800);
+	memset(s, 'a', 800);
+	free(s);
+	s = malloc(400);
+	memset(s, 'b', 400);
+	hexdump_mem();
+	show_alloc_mem();
+}
+
 int main(void)
 {
-	test_free();
+	test_coalesce_split_block();
 }

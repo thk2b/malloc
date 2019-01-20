@@ -8,7 +8,7 @@ LINK_NAME = libft_malloc.so
 CC = gcc
 
 DEFINES = $(addprefix -D, LOG)
-CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -fsanitize=undefined #-Ofast
+CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -fsanitize=undefined -Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC
 
@@ -24,7 +24,7 @@ SRC = $(addprefix src/,\
 	malloc.c\
 	realloc.c\
 	show_alloc_mem.c\
-	$(addprefix area/, area.c area__count.c area__coalesce.c)\
+	$(addprefix area/, area.c area__count.c area__coalesce.c area__split_free_block.c)\
 	$(addprefix area_list/, area_list.c area_list__insert.c)\
 	$(addprefix block/, block.c)\
 	$(addprefix free_block/, free_block.c)\
