@@ -228,6 +228,8 @@ void				free_list__remove(t_free_list *fl, t_area *area, t_free_block *fb)
 	t_free_block	*prev;
 	t_free_block	*next;
 
+	if (fb->block.free == 0)
+		return ;
 	if (fb == area->first_free_block[fl->id])
 		area->first_free_block[fl->id] = AREA__IS_IN_BOUNDS(area, fb->next) ? fb->next : NULL;
 	if (fb == area->last_free_block[fl->id])

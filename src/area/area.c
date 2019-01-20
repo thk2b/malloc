@@ -1,5 +1,6 @@
 #include <shared.h>
 #include <assert.h>
+#include <string.h>
 
 extern t_free_list	g_free_lists[];
 
@@ -32,6 +33,24 @@ t_block			*area__allocate_new_block(t_area *a, size_t size)
 	return (b);
 }
 
+static inline void	remove_wilderness_block(t_area *a, t_block *b)
+{
+	t_free_block	*wilderness;
+
+	b->free = 0;
+	wilderness = area__coalesce(a, (t_free_block*)b, a->cur_size, NULL);
+	if (wilderness == NULL)
+	{
+		wilderness = (t_free_block*)b;
+	}
+	free_list__remove(free_list__find(g_free_lists, wilderness->block.size), a, wilderness);
+	a->cur_size -= wilderness->block.size + sizeof(t_block);
+	b->size = 0;
+	#ifdef LOG
+	area__log(a, "removed wilderness");
+	#endif
+}
+
 t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 {
 	t_free_block	*fb;
@@ -41,6 +60,11 @@ t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 	next = BLOCK__NEXT(b);
 	if (AREA__IS_IN_BOUNDS(a, next))
 		block__deallocate_prev(next);
+	if (AREA__CUR_END(a) == (void*)BLOCK__NEXT(b))
+	{
+		remove_wilderness_block(a, b);
+		return (NULL);
+	}
 	//TODO: remove wilderness block
 	fb = free_block__deallocate(b);
 	return (fb);

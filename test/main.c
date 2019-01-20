@@ -114,7 +114,16 @@ void	test_split_block(void)
 	show_alloc_mem();
 }
 
+void	test_wilderness(void)
+{
+	char *s = malloc(1024);
+	memset(s, 'a', 1024);
+	free(s);
+	hexdump_mem();
+	show_alloc_mem();
+}
+
 int main(void)
 {
-	test_coalesce_split_block();
+	test_wilderness();
 }
