@@ -24,7 +24,7 @@ t_area			*area_list__insert(t_area_list *al, t_area *a)
 		return (area_list__init(al, a));
 	prev = area_list__search(al, area__find_prev, a);
 	next = prev ? prev->next : al->head;
-	if (prev && AREA__IS_END(prev, a))
+	if (prev && prev->is_single_block == 0 && AREA__IS_END(prev, a))
 	{
 		area__extend(prev, a->size);
 		return (prev);
@@ -40,7 +40,7 @@ t_area			*area_list__insert(t_area_list *al, t_area *a)
 		next->prev = a;
 	a->next = next;
 	#ifdef LOG
-	area__log(a, "new");
+	area__log(a, a->is_single_block ? "new single" : "new");
 	#endif
 	return (a);
 }

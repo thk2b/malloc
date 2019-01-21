@@ -132,6 +132,22 @@ void		area_list__foreach(t_area_list *al, t_area_list__foreach_fn fn, void *ctx)
 	}
 }
 
+void		area_list__remove(t_area_list *al, t_area *a)
+{
+	if (al->head == a)
+		al->head = a->next;
+	if (a->prev)
+		a->prev->next = a->next;
+	if (a->next)
+		a->next->prev = a->prev;
+	a->next = NULL;
+	a->prev = NULL;
+	#ifdef LOG
+	area__log(a, "remove");
+	#endif
+	munmap((void*)a, a->size);
+}
+
 void		area_list__show_alloc_mem(t_area_list *al)
 {
 	size_t	total;

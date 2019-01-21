@@ -3,6 +3,7 @@
 #include <string.h>
 
 extern t_free_list	g_free_lists[];
+extern t_area_list	g_area_list;
 
 int				area__can_fit(t_area *a, size_t size)
 {
@@ -12,8 +13,7 @@ int				area__can_fit(t_area *a, size_t size)
 
 void			area__extend(t_area *a, size_t extention_size)
 {
-	if (a->is_single_block)
-		a->is_single_block = 0;
+	assert(a->is_single_block == 0);
 	a->size += extention_size;
 	#ifdef LOG
 	area__log(a, "extended");
@@ -42,6 +42,11 @@ t_free_block	*area__deallocate_block(t_area *a, t_block *b)
 	next = BLOCK__NEXT(b);
 	if (AREA__IS_IN_BOUNDS(a, next))
 		block__deallocate_prev(next);
+	if (a->is_single_block)
+	{
+		area_list__remove(&g_area_list, a);
+		return (NULL);
+	}
 	if (AREA__CUR_END(a) == (void*)BLOCK__NEXT(b))
 	{
 		area__deallocate_wilderness_block(a, b);

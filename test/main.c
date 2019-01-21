@@ -152,7 +152,20 @@ void	test_wilderness(void)
 	show_alloc_mem();
 }
 
+void	test_single_block(void)
+{
+	char *t = malloc(10000);
+	char *s = malloc(10000);
+	malloc(0);
+	memset(t, 'a', 10000);
+	memset(s, 'a', 10000);
+	free(t);
+	free(s);
+	show_alloc_mem();
+	hexdump_mem();
+}
+
 int main(void)
 {
-	test_free();
+	test_single_block();
 }

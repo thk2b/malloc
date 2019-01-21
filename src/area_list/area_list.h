@@ -22,6 +22,7 @@ t_area			*area_list__search_around(t_area *a, t_area_list__search_fn fn, void *c
 t_area			*area_list__search_from(t_area *start, t_area_list__search_fn fn, void *ctx);
 void			area_list__foreach(t_area_list *al, t_area_list__foreach_fn fn, void *ctx);
 t_area			*area_list__insert(t_area_list *al, t_area *a);
+void			area_list__remove(t_area_list *al, t_area *a);
 t_area			*area_list__request_mem(t_area_list *al, size_t size);
 int				area_list__release_mem(t_area_list *al, t_area *a);
 void			area_list__show_alloc_mem(t_area_list *al);
