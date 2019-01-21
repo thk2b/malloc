@@ -42,6 +42,8 @@ source scripts/reset.sh
 
 - Memory is defragmented at allocation size
 
+# Screenshoots
+
 # Further improvements
 
 - [ ] Block checksums for fast freeing
