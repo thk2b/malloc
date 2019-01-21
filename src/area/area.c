@@ -28,7 +28,7 @@ t_block			*area__allocate_new_block(t_area *a, size_t size)
 	b = block__allocate((void*)((char*)a + a->cur_size), size);
 	a->cur_size += size + sizeof(t_block);
 	#ifdef LOG
-	block__log(b, "new");
+	block__log(b, "new\t");
 	#endif
 	return (b);
 }

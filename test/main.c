@@ -154,6 +154,7 @@ void	test_wilderness(void)
 
 void	test_single_block(void)
 {
+	malloc(0);
 	char *t = malloc(10000);
 	char *s = malloc(10000);
 	malloc(0);

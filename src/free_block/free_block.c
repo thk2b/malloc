@@ -18,7 +18,7 @@ t_free_block		*free_block__deallocate(t_block *b)
 	fb->block.free = 1;
 	write_boundary_tag(fb);
 	#ifdef LOG
-	free_block__log(fb, "freed");
+	free_block__log(fb, "freed\t");
 	#endif
 	return (fb);
 }
@@ -31,7 +31,7 @@ t_block				*free_block__allocate(t_free_block *fb)
 	b = &fb->block;
 	fb->block.free = 0;
 	#ifdef LOG
-	block__log(b, "unfreed");
+	block__log(b, "unfreed\t");
 	#endif	
 	return (b);
 }
