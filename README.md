@@ -1,8 +1,6 @@
 # malloc
 A malloc implementation
 
-`Note: This is a first draft. The project is functional, but will be improved and optimized.`
-
 # API
 ```c
 void	*malloc(size_t size);
@@ -34,20 +32,18 @@ source scripts/reset.sh
 
 - Memory must be managed via `mmap(2)` and `mmunmap(2)`
 
-- Pre-allocate 2 zones to satisfy at least 100 allocations:
-  - small (1 to n bytes)
-  - medium (n + 1 to m bytes)
-
-If no free elements are found in the apropriate zone, the next is used.
-
-- Large allocations are directly satisfied with `mmap`.
-
-- Allocated memory must be properly alligned.
-
 # Architecture
 
-- placement policy: first fit
+- Free blocks are stored in an adress-ordered linked list
 
-- free blocks are held in explicit address-ordered segregated free lists
+- 3 free lists are used, one for each size class
 
-- adjacent free blocks are coallesed before additional memory is requested from the operating system
+- Free blocks are selected on a first fit basis
+
+- Memory is defragmented at allocation size
+
+# Screenshoots
+
+# Further improvements
+
+- [ ] Block checksums for fast freeing
