@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/05 07:08:36 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/05 07:12:25 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 #include <shared.h>
 
@@ -5,7 +17,8 @@ extern t_free_list	g_free_lists[];
 extern t_area_list	g_area_list;
 
 #ifdef LOG
-static inline void	free__log(void	*ptr)
+
+static inline void	free__log(void *ptr)
 {
 	int fd;
 
@@ -15,6 +28,7 @@ static inline void	free__log(void	*ptr)
 	put_hex(fd, (size_t)ptr, 1);
 	put_str(fd, ")\n");
 }
+
 #endif
 
 extern void			free(void *ptr)
@@ -26,7 +40,8 @@ extern void			free(void *ptr)
 
 	#ifdef LOG
 	free__log(ptr);
-	# endif
+	#endif
+
 	if (ptr == NULL)
 		return ;
 	a = area_list__search(&g_area_list, area__find_in_range, ptr);
@@ -34,7 +49,6 @@ extern void			free(void *ptr)
 		b = area__search(a, block__find_address, ptr);
 	if (a == NULL || b == NULL || b->free == 1)
 	{
-		// error__ptr_was_not_allocated("free", ptr);
 		return ;
 	}
 	if ((fb = area__deallocate_block(a, b)) == NULL)

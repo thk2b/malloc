@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   realloc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/05 07:21:39 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/05 07:22:01 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 #include <shared.h>
 #include <string.h>
@@ -19,7 +31,7 @@ static inline void	realloc__log(void *ptr, size_t size)
 
 extern t_area_list	g_area_list;
 
-static void	*malloc_copy_free(t_block *b, size_t size)
+static void			*malloc_copy_free(t_block *b, size_t size)
 {
 	void	*new_ptr;
 
@@ -29,7 +41,7 @@ static void	*malloc_copy_free(t_block *b, size_t size)
 	return (new_ptr);
 }
 
-void	*realloc(void *ptr, size_t size)
+void				*realloc(void *ptr, size_t size)
 {
 	t_block	*b;
 	t_block	*new_block;
