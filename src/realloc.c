@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:21:39 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:22:01 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/05 07:32:23 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 
 #ifdef LOG
+
 static inline void	realloc__log(void *ptr, size_t size)
 {
 	int fd;
@@ -27,6 +28,7 @@ static inline void	realloc__log(void *ptr, size_t size)
 	put_dec(fd, size);
 	put_str(fd, ")\n");
 }
+
 #endif
 
 extern t_area_list	g_area_list;
@@ -56,10 +58,7 @@ void				*realloc(void *ptr, size_t size)
 	if (a)
 		b = area__search(a, block__find_address, ptr);
 	if (a == NULL || b == NULL)
-	{
-		error__ptr_was_not_allocated("realloc", ptr);
-		return (NULL);
-	}
+		return (error__ptr_was_not_allocated("realloc", ptr));
 	if (b->size == size)
 		return (ptr);
 	if (size < b->size)

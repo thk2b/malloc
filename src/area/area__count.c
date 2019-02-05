@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   area__count.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/05 07:48:13 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/05 07:48:13 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <shared.h>
 
 extern t_free_list	g_free_lists[];
 
-size_t				area__count_free_space_after(t_area *a, t_block *b, size_t until, t_free_block **last_encountered_fb)
+size_t				area__count_free_space_after(
+	t_area *a, t_block *b, size_t until, t_free_block **last_encountered_fb)
 {
 	size_t			count;
 	t_block			*cur;
@@ -30,7 +43,8 @@ size_t				area__count_free_space_after(t_area *a, t_block *b, size_t until, t_fr
 	return (count);
 }
 
-size_t				area__count_free_space_before(t_area *a, t_block *b, size_t until)
+size_t				area__count_free_space_before(
+	t_area *a, t_block *b, size_t until)
 {
 	size_t			count;
 	t_block			*cur;

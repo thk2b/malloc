@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   area__coalesce_block.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/05 07:48:50 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/05 07:51:24 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <shared.h>
 #include <assert.h>
 #include <libft.h>
 
-static inline t_block	*do_coalesce(t_area *a, t_block *b, size_t requested_size)
+static inline t_block	*do_coalesce(t_area *a,
+	t_block *b, size_t requested_size)
 {
 	size_t			total;
 	t_block			*cur;
@@ -31,7 +44,8 @@ static inline t_block	*do_coalesce(t_area *a, t_block *b, size_t requested_size)
 	return (b);
 }
 
-static inline t_block	*do_coalesce_back(t_area *a, t_block *b, size_t offset, size_t requested_size, char copy)
+static inline t_block	*do_coalesce_back(
+	t_area *a, t_block *b, size_t offset, size_t requested_size)
 {
 	t_free_block	*new_free_block;
 	t_block			*new_block;
@@ -42,12 +56,28 @@ static inline t_block	*do_coalesce_back(t_area *a, t_block *b, size_t offset, si
 	area__destroy_free_block(a, new_free_block);
 	new_free_block->block.free = 0;
 	new_block = (t_block*)new_free_block;
-	if (copy)
-		ft_memcpy(BLOCK__DATA(new_block), BLOCK__DATA(b), MIN(b->size, requested_size));
 	return (do_coalesce(a, new_block, requested_size));
 }
 
-t_block					*area__coalesce_block(t_area *a, t_block *b, size_t requested_size)
+static inline t_block	*do_coalesce_back_copy(
+	t_area *a, t_block *b, size_t offset, size_t requested_size)
+{
+	t_free_block	*new_free_block;
+	t_block			*new_block;
+
+	assert(AREA__IS_IN_BOUNDS(a, (char*)b - offset));
+	new_free_block = (t_free_block*)((char*)b - offset);
+	assert(new_free_block->block.free);
+	area__destroy_free_block(a, new_free_block);
+	new_free_block->block.free = 0;
+	new_block = (t_block*)new_free_block;
+	ft_memcpy(BLOCK__DATA(new_block),
+		BLOCK__DATA(b), MIN(b->size, requested_size));
+	return (do_coalesce(a, new_block, requested_size));
+}
+
+t_block					*area__coalesce_block(t_area *a,
+	t_block *b, size_t requested_size)
 {
 	size_t			space_before;
 	size_t			space_after;
@@ -55,14 +85,14 @@ t_block					*area__coalesce_block(t_area *a, t_block *b, size_t requested_size)
 
 	space_after = 0;
 	space_before = area__count_free_space_before(a, b, requested_size);
-	total_size = space_before + sizeof(t_block) + b->size; 
+	total_size = space_before + sizeof(t_block) + b->size;
 	if (total_size < requested_size)
 		space_after = area__count_free_space_after(a, b, requested_size, NULL);
 	total_size += space_after;
 	if (total_size < requested_size)
 		return (NULL);
 	if (space_before)
-		b = do_coalesce_back(a, b, space_before, requested_size, 1);
+		b = do_coalesce_back_copy(a, b, space_before, requested_size);
 	else
 		b = do_coalesce(a, b, requested_size);
 	if (b->size > requested_size)
@@ -78,7 +108,7 @@ void					area__deallocate_wilderness_block(t_area *a, t_block *b)
 	free_space_before = area__count_free_space_before(a, b, a->cur_size);
 	wilderness_size = free_space_before + sizeof(t_block) + b->size;
 	if (free_space_before)
-		b = do_coalesce_back(a, b, free_space_before, wilderness_size, 0);
+		b = do_coalesce_back(a, b, free_space_before, wilderness_size);
 	area__destroy_block(a, b);
 	#ifdef LOG
 	area__log(a, "removed wilderness");

@@ -32,25 +32,34 @@ typedef struct		s_area
 
 typedef int			(*t_area__search_fn)(t_block *block, void *ctx);
 typedef int			(*t_area__count_fn)(t_block *block, void *ctx);
-typedef void		(*t_area__foreach_fn)(t_block *block, size_t index, void *ctx);
+typedef void		(*t_area__foreach_fn)(t_block *block,
+	size_t index, void *ctx);
 
 void				area__extend(t_area *a, size_t extention_size);
 t_block				*area__search(t_area *a, t_area__search_fn fn, void *ctx);
-size_t				area__count_free_space_after(t_area *a, t_block *b, size_t until, t_free_block **last_encountered_fb);
-size_t				area__count_free_space_before(t_area *a, t_block *b, size_t until);
+size_t				area__count_free_space_after(t_area *a,
+	t_block *b, size_t until, t_free_block **last_encountered_fb);
+size_t				area__count_free_space_before(t_area *a,
+	t_block *b, size_t until);
 void				area__foreach(t_area *a, t_area__foreach_fn fn, void *ctx);
-t_block				*area__search_after(t_area *a, t_block *block, t_area__search_fn fn, void *ctx);
-t_block				*area__search_before(t_area *a, t_block *block, t_area__search_fn fn, void *ctx);
+t_block				*area__search_after(t_area *a, t_block *block,
+	t_area__search_fn fn, void *ctx);
+t_block				*area__search_before(t_area *a, t_block *block,
+	t_area__search_fn fn, void *ctx);
 t_block				*area__allocate_new_block(t_area *a, size_t size);
 t_block				*area__allocate_free_block(t_area *a, t_free_block *fb);
 void				area__destroy_free_block(t_area *a, t_free_block *fb);
 void				area__destroy_block(t_area *a, t_block *b);
 t_free_block		*area__deallocate_block(t_area *a, t_block *block);
 void				area__deallocate_wilderness_block(t_area *a, t_block *b);
-t_free_block		*area__coalesce_free_block(t_area *a, t_free_block *fb, size_t requested_size, t_free_block **last_encountered_adjacent_fb);
-t_block				*area__coalesce_block(t_area *a, t_block *fb, size_t requested_size);
-int					area__split_free_block(t_area *a, t_free_block *b, size_t target_size);
-int					area__split_block(t_area *a, t_block *b, size_t target_size);
+t_free_block		*area__coalesce_free_block(t_area *a, t_free_block *fb,
+	size_t requested_size, t_free_block **last_encountered_adjacent_fb);
+t_block				*area__coalesce_block(t_area *a, t_block *fb,
+	size_t requested_size);
+int					area__split_free_block(t_area *a, t_free_block *b,
+	size_t target_size);
+int					area__split_block(t_area *a, t_block *b,
+	size_t target_size);
 
 int					area__find_in_range(t_area *a, void *ctx);
 int					area__find_has_free_block(t_area *a, void *ctx);

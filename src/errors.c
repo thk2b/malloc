@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:07:43 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:08:24 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/05 07:31:42 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ void	*error__no_mem(char *msg)
 	return (NULL);
 }
 
-void	error__ptr_was_not_allocated(char *msg, void *ptr)
+void	*error__ptr_was_not_allocated(char *msg, void *ptr)
 {
 	put_str(2, "ERROR: ");
 	put_str(2, msg);
 	put_str(2, ": Pointer ");
 	put_hex(2, (size_t)ptr, 1);
 	put_str(2, " was not allocated\n");
+	return (NULL);
 }
 
 #ifdef LOG
