@@ -1,6 +1,6 @@
 #include <shared.h>
 #include <assert.h>
-#include <string.h>
+#include <libft.h>
 
 static inline t_block	*do_coalesce(t_area *a, t_block *b, size_t requested_size)
 {
@@ -43,7 +43,7 @@ static inline t_block	*do_coalesce_back(t_area *a, t_block *b, size_t offset, si
 	new_free_block->block.free = 0;
 	new_block = (t_block*)new_free_block;
 	if (copy)
-		memcpy(BLOCK__DATA(new_block), BLOCK__DATA(b), MIN(b->size, requested_size));
+		ft_memcpy(BLOCK__DATA(new_block), BLOCK__DATA(b), MIN(b->size, requested_size));
 	return (do_coalesce(a, new_block, requested_size));
 }
 

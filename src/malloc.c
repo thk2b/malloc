@@ -31,7 +31,6 @@ extern void			*malloc(size_t size)
 	# endif
 	fl = free_list__find(g_free_lists, size);
 	fb = free_list__dynamic_search(fl, &a, free_list__find_first_fit_coalesce, (void*)&size);
-	// fb = free_list__search(fl, &a, free_list__find_first_fit, (void*)&size);
 	if (fb)
 	{
 		if (fb->block.size > size && area__split_free_block(a, fb, size))

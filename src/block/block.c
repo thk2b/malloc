@@ -8,7 +8,6 @@ t_block	*block__allocate(void *addr, size_t size)
 	b->prev_free = 0;
 	b->free = 0;
 	b->size = size;
-	// b->chksum = 0;//TODO: Implement
 	return (b);
 }
 

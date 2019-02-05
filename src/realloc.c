@@ -42,7 +42,7 @@ void	*realloc(void *ptr, size_t size)
 		return (malloc(size));
 	a = area_list__search(&g_area_list, area__find_in_range, ptr);
 	if (a)
-		b = area__search(a, block__find_address, ptr); //TODO: area__block_from_ptr
+		b = area__search(a, block__find_address, ptr);
 	if (a == NULL || b == NULL)
 	{
 		error__ptr_was_not_allocated("realloc", ptr);

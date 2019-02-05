@@ -55,18 +55,3 @@ void	put_str(int fd, char *str)
 		i++;
 	write(fd, str, i);
 }
-
-#ifdef TEST
-# include <stdio.h>
-# include <limits.h>
-
-int		main(int ac, char **av)
-{
-	(void)ac;
-	(void)av;
-	put_hex(1, SIZE_MAX - 1);
-	printf("\n%#lx\n", SIZE_MAX - 1);
-	put_dec(1, SIZE_MAX);
-	printf("\n%zu\n", SIZE_MAX);
-}
-#endif

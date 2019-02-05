@@ -1,6 +1,5 @@
 #include <shared.h>
 #include <assert.h>
-#include <string.h>
 
 static inline t_free_block	*do_coalesce(t_area *a, t_free_block *fb, size_t requested_size)
 {

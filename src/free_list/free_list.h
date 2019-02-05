@@ -14,7 +14,6 @@ typedef struct	s_free_list
 	t_free_block	*head;
 	size_t			min_size;
 	uint8_t			id;
-	//size_t		cur_largest_block;
 }				t_free_list;
 
 typedef int		(*t_free_list__search_fn)(t_area *area, t_free_block *fb, void *ctx);

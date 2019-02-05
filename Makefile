@@ -8,11 +8,12 @@ LINK_NAME = libft_malloc.so
 CC = gcc
 
 # DEFINES = $(addprefix -D, LOG)
-CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -fsanitize=undefined -Ofast
-CC_FLAGS += -g
+CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -Ofast
+# CC_FLAGS += -g -fsanitize=undefined
 CC_SO_FLAGS = -fPIC
 
-INC = $(addprefix -I, inc src src/area src/area_list src/block src/free_block src/free_list src/lib)
+LIB = libft/libft.a
+INC = $(addprefix -I, libft/includes inc src src/area src/area_list src/block src/free_block src/free_list src/lib)
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
@@ -36,8 +37,11 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(COMPILE) -shared -o $(NAME) $(OBJ)
+$(LIB):
+	make -C libft
+
+$(NAME): $(OBJ) $(LIB)
+	$(COMPILE) $(LIB) -shared -o $(NAME) $(OBJ)
 	ln -sf $(NAME) $(LINK_NAME)
 
 $(OBJ): %.o: %.c
@@ -45,8 +49,10 @@ $(OBJ): %.o: %.c
 
 clean:
 	rm -f $(OBJ)
+	make clean -C libft
 
 fclean: clean
 	rm -f $(NAME) $(LINK_NAME)
+	make fclean -C libft
 
 re: fclean all

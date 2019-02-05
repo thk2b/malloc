@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <shared.h>
 #include <string.h>
+#include <libft.h>
 
 void	*calloc(size_t count, size_t size)
 {
@@ -10,6 +11,6 @@ void	*calloc(size_t count, size_t size)
 	total = size * count;
 	addr = malloc(size);
 	if (addr)
-		bzero(addr, size);
+		ft_bzero(addr, size);
 	return (addr);
 }

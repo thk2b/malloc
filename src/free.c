@@ -30,14 +30,8 @@ extern void			free(void *ptr)
 	if (ptr == NULL)
 		return ;
 	a = area_list__search(&g_area_list, area__find_in_range, ptr);
-	/*if (a && a->is_single_block)
-	{
-		area_list__remove(a);
-		return ;
-	}*/
 	if (a)
 		b = area__search(a, block__find_address, ptr);
-/*		b = block__from_ptr(ptr);*/
 	if (a == NULL || b == NULL || b->free == 1)
 	{
 		// error__ptr_was_not_allocated("free", ptr);
