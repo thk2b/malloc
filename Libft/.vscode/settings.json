@@ -1,0 +1,10 @@
+{
+	"files.associations": {
+		"libft.h": "c",
+		"printf.h": "c",
+		"string": "c",
+		"string_view": "c",
+		"utility": "c",
+		"hash_map.h": "c"
+	}
+}

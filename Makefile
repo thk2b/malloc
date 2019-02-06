@@ -12,8 +12,8 @@ CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -Ofast
 # CC_FLAGS += -g -fsanitize=undefined
 CC_SO_FLAGS = -fPIC
 
-LIB = libft/libft.a
-INC = $(addprefix -I, libft/includes inc src src/area src/area_list src/block src/free_block src/free_list src/lib)
+LIB = Libft/libft.a
+INC = $(addprefix -I, Libft/includes inc src src/area src/area_list src/block src/free_block src/free_list src/lib)
 COMPILE = $(CC) $(CC_FLAGS) $(INC)
 
 SRC = $(addprefix src/,\
@@ -38,7 +38,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(LIB):
-	make -C libft
+	make -C Libft
 
 $(NAME): $(OBJ) $(LIB)
 	$(COMPILE) $(LIB) -shared -o $(NAME) $(OBJ)
@@ -49,10 +49,10 @@ $(OBJ): %.o: %.c
 
 clean:
 	rm -f $(OBJ)
-	make clean -C libft
+	make clean -C Libft
 
 fclean: clean
 	rm -f $(NAME) $(LINK_NAME)
-	make fclean -C libft
+	make fclean -C Libft
 
 re: fclean all
