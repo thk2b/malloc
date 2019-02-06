@@ -1,25 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   block.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/06 06:51:01 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/06 06:56:00 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <shared.h>
-
-t_block	*block__allocate(void *addr, size_t size)
-{
-	t_block	*b;
-
-	b = (t_block*)addr;
-	b->prev_free = 0;
-	b->free = 0;
-	b->size = size;
-	return (b);
-}
-
-void	block__deallocate_prev(t_block *b)
-{
-	b->prev_free = 1;
-}
-
-void	block__allocate_prev(t_block *b)
-{
-	b->prev_free = 0;
-}
 
 int		block__find_address(t_block *b, void *ctx)
 {
@@ -50,7 +41,8 @@ void	block__hexdump(t_block *b, size_t index, void *ctx)
 	hexdump(BLOCK__DATA(b), b->size, BLOCK__DATA_COLOR);
 }
 
-#ifdef LOG 
+#ifdef LOG
+
 void	block__log(t_block *b, char *msg)
 {
 	int fd;
@@ -65,4 +57,5 @@ void	block__log(t_block *b, char *msg)
 	put_dec(fd, b->size);
 	put_str(fd, "\n");
 }
+
 #endif

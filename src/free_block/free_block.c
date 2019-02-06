@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_block.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/06 06:55:01 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/06 06:58:28 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <assert.h>
 #include <shared.h>
 
@@ -32,12 +44,13 @@ t_block				*free_block__allocate(t_free_block *fb)
 	fb->block.free = 0;
 	#ifdef LOG
 	block__log(b, "unfreed\t");
-	#endif	
+	#endif
 	return (b);
 }
 
 #ifdef LOG
-void			free_block__log(t_free_block *fb, char *msg)
+
+void				free_block__log(t_free_block *fb, char *msg)
 {
 	int fd;
 
@@ -52,14 +65,19 @@ void			free_block__log(t_free_block *fb, char *msg)
 	put_dec(fd, fb->block.size);
 	put_str(fd, "\n");
 }
+
 #endif
 
-void				free_block__hexdump(t_free_block *fb, size_t index, void *ctx)
+void				free_block__hexdump(t_free_block *fb,
+	size_t index, void *ctx)
 {
 	UNUSED(index);
 	UNUSED(ctx);
 	hexdump((void*)fb, sizeof(t_block), FREE_BLOCK__BLOCK_COLOR);
-	hexdump((void*)BLOCK__DATA(&fb->block), sizeof(t_free_block) - sizeof(t_block), FREE_BLOCK__POINTERS_COLOR);
-	hexdump((void*)((char*)fb + sizeof(t_free_block)), fb->block.size - FREE_BLOCK__MIN_SIZE, FREE_BLOCK__DATA_COLOR);
-	hexdump((void*)((char*)BLOCK__NEXT(&fb->block) - sizeof(size_t)), sizeof(size_t), FREE_BLOCK__FOOTER_COLOR);
+	hexdump((void*)BLOCK__DATA(&fb->block),
+		sizeof(t_free_block) - sizeof(t_block), FREE_BLOCK__POINTERS_COLOR);
+	hexdump((void*)((char*)fb + sizeof(t_free_block)),
+		fb->block.size - FREE_BLOCK__MIN_SIZE, FREE_BLOCK__DATA_COLOR);
+	hexdump((void*)((char*)BLOCK__NEXT(&fb->block) - sizeof(size_t)),
+		sizeof(size_t), FREE_BLOCK__FOOTER_COLOR);
 }

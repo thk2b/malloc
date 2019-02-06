@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   block_.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/06 06:53:31 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/06 06:56:07 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*
 **	Block
 **	Represents an area of memory satisfying a unique request
 **	Is immutable, the size and contents cannot be altered
 */
 
-#ifndef _BLOCK_H
-# define _BLOCK_H
+#ifndef BLOCK_H_
+# define BLOCK_H_
 # include <shared.h>
 # include <stdint.h>
 
@@ -34,6 +46,8 @@ void			block__hexdump(t_block *b, size_t index, void *ctx);
 int				block__find_address(t_block *b, void *ctx);
 
 # ifdef LOG
+
 void			block__log(t_block *b, char *msg);
+
 # endif
 #endif

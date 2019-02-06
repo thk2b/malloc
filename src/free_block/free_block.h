@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_block.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/06 06:55:09 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/06 06:56:36 by tkobb            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*
 **	FreeBlock
 **	Represents a block vailable for reuses
@@ -7,8 +19,8 @@
 #ifndef FREE_BLOCK_H
 # define FREE_BLOCK_H
 # include <shared.h>
-# define FREE_BLOCK__MIN_SIZE (sizeof(t_free_block*) * 2 + sizeof(size_t))
 
+# define FREE_BLOCK__MIN_SIZE (sizeof(t_free_block*) * 2 + sizeof(size_t))
 # define FREE_BLOCK__BLOCK_COLOR YELLOW
 # define FREE_BLOCK__POINTERS_COLOR BLUE
 # define FREE_BLOCK__DATA_COLOR WHITE
@@ -23,10 +35,15 @@ typedef struct			s_free_block
 
 t_free_block			*free_block__deallocate(t_block *b);
 t_block					*free_block__allocate(t_free_block *fb);
-void					free_block__extend(t_free_block *fb, size_t target_size);
+void					free_block__extend(
+	t_free_block *fb, size_t target_size);
 void					free_block__remove(t_free_block *fb);
-void					free_block__hexdump(t_free_block *fb, size_t index, void *ctx);
+void					free_block__hexdump(
+	t_free_block *fb, size_t index, void *ctx);
+
 # ifdef LOG
+
 void					free_block__log(t_free_block *fb, char *msg);
+
 # endif
 #endif
