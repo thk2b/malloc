@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 06:53:31 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/06 06:56:07 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/06 07:20:13 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 **	Is immutable, the size and contents cannot be altered
 */
 
-#ifndef BLOCK_H_
-# define BLOCK_H_
+#ifndef BLOCK__H
+# define BLOCK__H
 # include <shared.h>
 # include <stdint.h>
 

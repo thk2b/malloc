@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_list__find_first_fit.c                        :+:      :+:    :+:   */
+/*   area_list__remove.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/06 07:19:12 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/06 07:19:12 by tkobb            ###   ########.fr       */
+/*   Created: 2019/02/06 07:23:50 by tkobb             #+#    #+#             */
+/*   Updated: 2019/02/06 07:29:35 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <shared.h>
-#include <assert.h>
+#include <sys/mman.h>
 
-int		free_list__find_first_fit(t_area *a, t_free_block *fb, void *ctx)
+void		area_list__remove(t_area_list *al, t_area *a)
 {
-	size_t	size;
-
-	UNUSED(a);
-	assert(fb->block.free);
-	size = *(size_t*)ctx;
-	return (fb->block.size >= size);
+	if (al->head == a)
+		al->head = a->next;
+	if (a->prev)
+		a->prev->next = a->next;
+	if (a->next)
+		a->next->prev = a->prev;
+	a->next = NULL;
+	a->prev = NULL;
+	#ifdef LOG
+	area__log(a, "remove");
+	#endif
+	munmap((void*)a, a->size);
 }
