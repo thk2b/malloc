@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define D "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-
 void	do_alloc(size_t size, size_t n)
 {
 	char *s[n];
@@ -47,6 +45,7 @@ void	test_simple_coalescing(void)
 	memset(s, 'a', 104);
 	char *t = malloc(104);
 	memset(t, 'a', 104);
+	hexdump_mem();
 	free(t);
 	free(s);
 	char *u = malloc(208);
@@ -168,5 +167,5 @@ void	test_single_block(void)
 
 int main(void)
 {
-	test_single_block();
+	test_simple_coalescing();
 }
