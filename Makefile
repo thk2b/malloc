@@ -7,7 +7,7 @@ LINK_NAME = libft_malloc.so
 
 CC = gcc
 
-# DEFINES = $(addprefix -D, LOG)
+DEFINES = $(addprefix -D, LOG HEXDUMP_BG)
 CC_FLAGS = -Wall -Wextra -Werror -Wpedantic -fsanitize=undefined -Ofast
 CC_FLAGS += -g
 CC_SO_FLAGS = -fPIC

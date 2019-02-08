@@ -65,7 +65,30 @@ int	test3(void)
 	return(0);
 }
 
+int test4(void)
+{
+	char *p;
+
+	p = malloc(16);
+	free(NULL);
+	if (realloc(p + 5, 10) == NULL)
+		write(1, "OK", 2);
+	return (0);
+}
+
+int test5(void)
+{
+	malloc(1024);
+	malloc(1024 * 32);
+	malloc(1024 * 1024);
+	malloc(1024 * 1024 * 16);
+	malloc(1024 * 1024 * 128);
+	show_alloc_mem();
+	// hexdump_mem();
+	return (0);
+}
+
 int	main(void)
 {
-	test3();
+	test5();
 }

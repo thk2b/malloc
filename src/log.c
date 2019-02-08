@@ -29,7 +29,7 @@ static void	open_log(int *fd)
 	*fd = open(LOG_PATH, O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (*fd == -1)
 		error__log_open_failed();
-	put_str(*fd, "ID\tEVENT\tENTITY\t\tADDRESS\t\tSIZE\n");
+	put_str(*fd, "ID\tEVENT\t\tENTITY\t\tADDRESS\t\tSIZE\n");
 	signal(SIGSEGV, sig_handler);
 	signal(SIGABRT, sig_handler);
 }

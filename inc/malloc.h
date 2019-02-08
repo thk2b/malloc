@@ -6,7 +6,7 @@
 #  define LOG_PATH "/tmp/.malloc_log"
 # endif
 
-# define PGS_PER_MAP 2
+# define PGS_PER_MAP 28
 
 extern void	*malloc(size_t size);
 extern void	*calloc(size_t count, size_t size);
