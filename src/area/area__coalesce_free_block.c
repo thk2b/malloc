@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:45:27 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:47:24 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:37:48 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static inline t_free_block	*do_coalesce(
 	}
 	assert(total >= requested_size);
 	fb->block.size = total - sizeof(t_block);
-	#ifdef LOG
+#ifdef LOG
 	free_block__log(fb, "coalessed");
-	#endif
+#endif
 	return (fb);
 }
 

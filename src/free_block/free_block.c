@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 06:55:01 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/06 06:58:28 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:38:26 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ t_free_block		*free_block__deallocate(t_block *b)
 	fb = (t_free_block*)b;
 	fb->block.free = 1;
 	write_boundary_tag(fb);
-	#ifdef LOG
+#ifdef LOG
 	free_block__log(fb, "freed\t");
-	#endif
+#endif
 	return (fb);
 }
 
@@ -42,9 +42,9 @@ t_block				*free_block__allocate(t_free_block *fb)
 	assert(fb->block.free);
 	b = &fb->block;
 	fb->block.free = 0;
-	#ifdef LOG
+#ifdef LOG
 	block__log(b, "unfreed\t");
-	#endif
+#endif
 	return (b);
 }
 

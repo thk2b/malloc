@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:33:24 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/06 07:42:04 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:38:55 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static inline void	dumb(unsigned char *d, size_t i)
 {
-	#ifndef HEXDUMP_BG
+#ifndef HEXDUMP_BG
 	put_str(1, HEXDUMP_ADDRESS);
 	put_hex(1, (size_t)(d + i), 0);
 	put_str(1, " ");
 	put_str(1, RESET);
-	#endif
+#endif
 }
 
 static inline void	dump(unsigned char *d, size_t i)

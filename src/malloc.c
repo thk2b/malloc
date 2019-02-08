@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:13:43 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:21:29 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:39:45 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ extern void			*malloc(size_t size)
 	t_block			*b;
 
 	size = MAX(ALLIGN(size, 8), FREE_BLOCK__MIN_SIZE);
-	#ifdef LOG
+#ifdef LOG
 	malloc__log(size);
-	#endif
+#endif
 	fl = free_list__find(g_free_lists, size);
 	fb = free_list__dynamic_search(
 		fl, &a, free_list__find_first_fit_coalesce, (void*)&size);

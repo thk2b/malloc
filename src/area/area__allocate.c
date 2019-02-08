@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:40:41 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:41:06 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:35:15 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ t_block			*area__allocate_new_block(t_area *a, size_t size)
 	assert(AREA__CAN_FIT(a, size + sizeof(t_block)));
 	b = block__allocate((void*)((char*)a + a->cur_size), size);
 	a->cur_size += size + sizeof(t_block);
-	#ifdef LOG
+#ifdef LOG
 	block__log(b, "new\t");
-	#endif
+#endif
 	return (b);
 }
 

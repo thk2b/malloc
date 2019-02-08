@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:08:36 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:12:25 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:39:26 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ extern void			free(void *ptr)
 	t_free_block	*fb;
 	t_free_list		*fl;
 
-	#ifdef LOG
+#ifdef LOG
 	free__log(ptr);
-	#endif
-
+#endif
 	if (ptr == NULL)
 		return ;
 	a = area_list__search(&g_area_list, area__find_in_range, ptr);

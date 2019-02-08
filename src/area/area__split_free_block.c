@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:52:44 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:53:14 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:35:59 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int					area__split_free_block(t_area *a,
 		return (0);
 	free_list__remove(free_list__find(g_free_lists, fb->block.size), a, fb);
 	fb->block.size = target_size;
-	#ifdef LOG
+#ifdef LOG
 	block__log(&fb->block, "split");
-	#endif
+#endif
 	new_block = BLOCK__NEXT(&fb->block);
 	new_block->size = new_block_size;
 	new_block->prev_free = 0;

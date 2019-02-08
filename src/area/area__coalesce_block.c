@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:48:50 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:51:24 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:35:29 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static inline t_block	*do_coalesce(t_area *a,
 	}
 	assert(total >= requested_size);
 	b->size = total - sizeof(t_block);
-	#ifdef LOG
+#ifdef LOG
 	block__log(b, "coalessed");
-	#endif
+#endif
 	return (b);
 }
 
@@ -110,7 +110,7 @@ void					area__deallocate_wilderness_block(t_area *a, t_block *b)
 	if (free_space_before)
 		b = do_coalesce_back(a, b, free_space_before, wilderness_size);
 	area__destroy_block(a, b);
-	#ifdef LOG
+#ifdef LOG
 	area__log(a, "removed wilderness");
-	#endif
+#endif
 }

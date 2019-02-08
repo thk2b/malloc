@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:21:39 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:32:23 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:39:55 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void				*realloc(void *ptr, size_t size)
 	t_block	*new_block;
 	t_area	*a;
 
-	#ifdef LOG
+#ifdef LOG
 	realloc__log(ptr, size);
-	#endif
+#endif
 	if (ptr == NULL)
 		return (malloc(size));
 	a = area_list__search(&g_area_list, area__find_in_range, ptr);

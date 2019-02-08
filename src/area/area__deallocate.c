@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:42:03 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:42:29 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:35:49 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void			area__destroy_free_block(t_area *a, t_free_block *fb)
 	t_block		*next;
 
 	assert(fb->block.free);
-	#ifdef LOG
+#ifdef LOG
 	free_block__log(fb, "destroy");
-	#endif
+#endif
 	fl = free_list__find(g_free_lists, fb->block.size);
 	free_list__remove(fl, a, fb);
 	next = BLOCK__NEXT(&fb->block);

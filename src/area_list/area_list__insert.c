@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 07:26:45 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/06 07:28:40 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:34:54 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static int				area__find_prev(t_area *a, void *ctx)
 
 static t_area			*area_list__init(t_area_list *al, t_area *a)
 {
-	#ifdef LOG
+#ifdef LOG
 	area__log(a, "new\t");
-	#endif
+#endif
 	al->head = a;
 	al->tail = a;
 	return (a);
@@ -44,7 +44,7 @@ t_area					*area_list__insert(t_area_list *al, t_area *a)
 	next = prev ? prev->next : al->head;
 	if (prev && prev->is_single_block == 0
 		&& a->is_single_block == 0 && AREA__IS_END(prev, a))
-			return (dumb(prev, a));
+		return (dumb(prev, a));
 	if (prev == NULL)
 		al->head = a;
 	else if (prev->next == NULL)
@@ -55,8 +55,8 @@ t_area					*area_list__insert(t_area_list *al, t_area *a)
 	if (next)
 		next->prev = a;
 	a->next = next;
-	#ifdef LOG
+#ifdef LOG
 	area__log(a, a->is_single_block ? "new single" : "new\t");
-	#endif
+#endif
 	return (a);
 }

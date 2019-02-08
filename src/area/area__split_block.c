@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:53:38 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:54:28 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:35:55 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int					area__split_block(t_area *a, t_block *b, size_t target_size)
 	if (new_block_size < FREE_BLOCK__MIN_SIZE)
 		return (0);
 	b->size = target_size;
-	#ifdef LOG
+#ifdef LOG
 	block__log(b, "split");
-	#endif
+#endif
 	new_block = BLOCK__NEXT(b);
 	new_block->size = new_block_size;
 	new_block->prev_free = 0;

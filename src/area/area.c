@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:38:17 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:44:52 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 06:36:05 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void			area__extend(t_area *a, size_t extention_size)
 {
 	assert(a->is_single_block == 0);
 	a->size += extention_size;
-	#ifdef LOG
+#ifdef LOG
 	area__log(a, "extended");
-	#endif
+#endif
 }
 
 void			area__hexdump(t_area *a, size_t index, void *ctx)
