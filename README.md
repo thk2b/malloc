@@ -50,8 +50,6 @@ Or link with `libft_malloc.so`.
 
 - Memory is defragmented at allocation size. When searching the free list for a block of the requested size, neighboring free blocks are included in the current blocks's size, and merged if the combined size is sufficient.
 
-- The last block
-
 # Further improvements
 
 - [ ] Block checksums for fast freeing
