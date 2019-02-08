@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 07:56:30 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/06 07:56:30 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 07:17:04 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #  define LOG_PATH "/tmp/.malloc_log"
 # endif
 
-# define PGS_PER_MAP 2
+# define PGS_PER_MAP 28
 
 extern void	*malloc(size_t size);
 extern void	*calloc(size_t count, size_t size);

@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 07:13:32 by tkobb             #+#    #+#             */
-/*   Updated: 2019/02/05 07:13:32 by tkobb            ###   ########.fr       */
+/*   Updated: 2019/02/08 07:17:46 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	open_log(int *fd)
 	*fd = open(LOG_PATH, O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (*fd == -1)
 		error__log_open_failed();
-	put_str(*fd, "ID\tEVENT\tENTITY\t\tADDRESS\t\tSIZE\n");
+	put_str(*fd, "ID\tEVENT\t\tENTITY\t\tADDRESS\t\tSIZE\n");
 	signal(SIGSEGV, sig_handler);
 	signal(SIGABRT, sig_handler);
 }
