@@ -23,7 +23,7 @@ make
 
 To run a program, dynamically link it by running
 ```sh
-source scripts/inject.sh COMMAND
+scripts/inject.sh COMMAND
 ```
 
 Or link with `libft_malloc.so`.
