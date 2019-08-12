@@ -18,14 +18,9 @@ To create the library:
 make
 ```
 
-To add the shared library as the system malloc library:
+To run a program, dynamically link it by running
 ```sh
-source scripts/inject.sh
-```
-
-To reset environment variables:
-```sh
-source scripts/reset.sh
+source scripts/inject.sh COMMAND
 ```
 
 Or link with `libft_malloc.so`.
