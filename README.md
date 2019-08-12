@@ -1,6 +1,9 @@
 # malloc
 A malloc implementation
 
+This screenshots displays the memory managed by the library. Yellow coresponds to block headers, green to client data and blue for free block headers and trailers.
+[screenshot](https://raw.githubusercontent.com/thk2b/malloc/master/media/screenshot.png)
+
 # API
 ```c
 void	*malloc(size_t size);
